@@ -13,17 +13,13 @@
       <div class="rithm-selection-container" *ngIf="running">
 
         <div class="rithm-selector">
-          <mat-form-field appearance="outline"
-            class="full-width">
-          <mat-label>Check Rhythm</mat-label>
-          <mat-select>
-              <mat-option 
-                *ngFor="let element of rithms" 
-                (click)="getRithm(element)"
-                [value] = element.name>
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Check Rhythm</mat-label>
+            <mat-select>
+              <mat-option *ngFor="let element of rithms" (click)="getRithm(element)" [value]=element.name>
                 {{ element.name }}
               </mat-option>
-          </mat-select>
+            </mat-select>
           </mat-form-field>
         </div>
 
@@ -41,8 +37,6 @@
 
       </div>
 
-      
-
     </div>
 
     <!-- Intervenções e Drogas -->
@@ -51,9 +45,33 @@
       <div class="section">
         <h3>Intervenções</h3>
         <div class="action-grid">
-          <button mat-raised-button color="accent" *ngFor="let drug of drugs.interventions" (click)="captureTime(drug)">
-            {{ drug.name }} <span *ngIf="drug.cliked">({{ drug.cliked }})</span>
-          </button>
+
+          <ng-container *ngFor="let drug of drugs.interventions">
+
+            <!-- Intervenções SEM menu -->
+            <div *ngIf="!drug.hasMenu" class="drug-container">
+              <button mat-raised-button color="accent" (click)="captureTime(drug)">
+                {{ drug.name }}
+                <span *ngIf="drug.cliked">({{ drug.cliked }})</span>
+              </button>
+            </div>
+
+            <!-- Botão com menu -->
+            <div *ngIf="drug.hasMenu" class="drug-container">
+              <button mat-raised-button color="accent" [matMenuTriggerFor]="menu" (click)="setActiveDrug(drug)">
+                {{ drug.name }}
+                <span *ngIf="drug.cliked">({{ drug.cliked }})</span>
+              </button>
+            </div>
+
+            <mat-menu #menu="matMenu" yPosition="above">
+              <button mat-menu-item *ngFor="let item of drug.detail" (click)="captureTime(item)">
+                {{ item.name }}
+              </button>
+            </mat-menu>
+
+          </ng-container>
+
         </div>
       </div>
 
@@ -72,14 +90,14 @@
   <div class="right-panel">
     <span class="time-display">{{ formatTime() }}</span>
     <div class="right-panel-subheader">
-        <h3>Registro de Intervenções</h3>
-        <button mat-stroked-button color="warn" (click)="restartApp()">Reiniciar tudo</button>
+      <h3>Registro de Intervenções</h3>
+      <button mat-stroked-button color="warn" (click)="restartApp()">Reiniciar tudo</button>
     </div>
 
     <div class="log-list">
       <div class="log-item" *ngFor="let lap of lapTimes; let i = index">
         <span class="log-time">{{ lap.timer }}</span>
-        <span class="log-name">{{ i + 1 }}° - {{ lap.name }}</span>
+        <span class="log-name">{{ i + 1 }}° {{lap.label}} - {{ lap.name }}</span>
         <button mat-icon-button color="warn" (click)="removeLapItem(i, lap)">
           <span class="material-symbols-outlined">close</span>
         </button>

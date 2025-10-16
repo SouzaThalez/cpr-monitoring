@@ -55,6 +55,9 @@ export const drugsPcrData ={
     interventions:[
         {
             name: 'Choque.Eletric',
+            id:1,
+            cliked:0,
+            hasMenu:true,
             detail:[
                 {
                     name: 'Desfib.SemSinc',
@@ -65,11 +68,10 @@ export const drugsPcrData ={
                     type:'Chock',
                 }
             ],
-            id:1,
-            cliked:0
         },
         {
             name: 'Pulso',
+            hasMenu:true,
             detail:[
                 {
                     name: 'Checou.Pulso',
@@ -85,20 +87,21 @@ export const drugsPcrData ={
         },
         {
             name: 'Compressao',
+            hasMenu:true,
             detail:[
                 {
                     name: 'Iniciou',
-                    label:'compressões',
+                    label:'Compressões',
                     type:'interv',
                 },
                 {
                     name: 'Trocou',
-                    label:'compressões',
+                    label:'Compressões',
                     type:'interv',
                 },
                 {
                     name: 'Parou',
-                    label:'compressões',
+                    label:'Compressões',
                     type:'interv',
                 }
             ],
@@ -108,36 +111,42 @@ export const drugsPcrData ={
         {
             name: 'Check.CAGADA',
             type:'cables',
+            hasMenu:false,
             id:4,
             cliked:0
         },
         {
             name: '5hs & 5Ts',
             type:'interv',
+            hasMenu:false,
             id:5,
             cliked:0
         },
         {
             name: 'IOT',
             type:'interv',
+            hasMenu:false,
             id:6,
             cliked:0
         },
         {
             name: 'Atropina',
             type:'drug',
+            hasMenu:false,
             id:7,
             cliked:0
         },
         {
             name: 'Trombolitico',
             type:'drug',
+            hasMenu:false,
             id:8,
             cliked:0
         },
         {
             name: 'N.Tirou 02',
             type:'interv',
+            hasMenu:false,
             id:9,
             cliked:0
         },

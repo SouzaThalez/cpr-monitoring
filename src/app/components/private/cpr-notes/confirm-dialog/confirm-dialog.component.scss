@@ -1,0 +1,29 @@
+.print-title{
+    text-align: center;
+}
+.print-text{
+    font-size: 17px;
+}
+
+.print-btns{
+    justify-content: center;
+    gap: 61px;
+    .button{
+        border-radius: 4px;
+        padding: 10px;
+        width: 85px;
+        text-align: center;
+        &.cancel-button{
+            background-color: #efa5a5;
+            color: white;
+        }
+        &.save-button{
+            background-color: #5fa45f;
+            color: white;
+        }
+        &:hover{
+            cursor: pointer;
+            color: black;
+        }
+    }
+}

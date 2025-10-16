@@ -5,12 +5,14 @@ import moment from 'moment';
 import { drugsPcrData } from '../../../data/drugsPcrData';
 import { pcrRithmsData } from '../../../data/pcrRithmsData';
 import { Drug } from '../../models/drug';
+import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
 
 // import { ConfirmDialogComponent } from '../shared/confirm-dialog/confirm-dialog.component';
 
 @Component({
   selector: 'app-cpr-notes',
-   standalone: false,
+  standalone: false,
   templateUrl: './cpr-notes.html',
   styleUrls: ['./cpr-notes.scss']
 })
@@ -27,9 +29,10 @@ export class CprNotes {
   private timer: any;
   initialTime: string = '';
   endTime: string = '';
+  activeDrug: any = null;
 
   constructor(
-    // private matDialog: MatDialog,
+    private matDialog: MatDialog,
     private httpClient: HttpClient,
     private router: Router
   ) { }
@@ -85,6 +88,7 @@ export class CprNotes {
   }
 
   captureTime(drug: any) {
+    
     drug.cliked = (drug.cliked || 0) + 1;
     const drugValue: Drug = {
       timer: this.formatTime(),
@@ -105,6 +109,12 @@ export class CprNotes {
     }
   }
 
+
+  setActiveDrug(drug: any) {
+    this.activeDrug = drug;
+  }
+
+
   getRithm(value: any) {
     this.activeRithm = value.name;
     this.lapTimes.push({
@@ -115,24 +125,27 @@ export class CprNotes {
     });
   }
 
-  // openConfirmDialog() {
-  //   const dialogRef = this.matDialog.open(ConfirmDialogComponent, { disableClose: true });
-  //   dialogRef.afterClosed().subscribe(result => {
-  //     if (result) {
-  //       const reportModel = {
-  //         reportList: this.lapTimes,
-  //         reportDate: moment().format('DD-MM-YYYY'),
-  //         totalTimer: this.formatTime(),
-  //         startTimer: this.initialTime,
-  //         endTimer: this.endTime,
-  //         user: 'padrão'
-  //       };
-  //       this.postProtocols(reportModel);
-  //     } else {
-  //       this.startStopwatch();
-  //     }
-  //   });
-  // }
+
+
+
+  openConfirmDialog() {
+    const dialogRef = this.matDialog.open(ConfirmDialogComponent, { disableClose: true });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        const reportModel = {
+          reportList: this.lapTimes,
+          reportDate: moment().format('DD-MM-YYYY'),
+          totalTimer: this.formatTime(),
+          startTimer: this.initialTime,
+          endTimer: this.endTime,
+          user: 'padrão'
+        };
+        this.postProtocols(reportModel);
+      } else {
+        this.startStopwatch();
+      }
+    });
+  }
 
   private postProtocols(model: any) {
     this.httpClient.post('http://localhost:3000/protocols', model).subscribe({

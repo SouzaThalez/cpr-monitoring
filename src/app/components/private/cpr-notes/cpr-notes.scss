@@ -25,6 +25,7 @@
       align-items: baseline;
       flex-wrap: wrap;
       gap: 1rem;
+      padding-top: 10px;
 
       .rithm-selection-container {
         display: flex;
@@ -189,6 +190,7 @@
 
   /* Ações: intervenções e drogas */
   .actions-section {
+
     display: flex;
     flex-direction: column;
     gap: 5px;
@@ -216,6 +218,7 @@
           border: 1px solid #ccc;
           border-radius: 6px;
           transition: all 0.2s ease;
+          width: 100%;
 
           &:hover {
             background: #e8e8e8;
