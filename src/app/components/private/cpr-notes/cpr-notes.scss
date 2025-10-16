@@ -12,85 +12,99 @@
     flex: 1;
     display: flex;
     flex-direction: column;
-    gap: 1.5rem;
+    gap: 1px;
     background-color: #F1EFEE;
     border-radius: 12px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-    padding: 1.5rem;
+    padding: 6px;
     overflow-y: auto;
 
     .cpr-header {
       display: flex;
       justify-content: space-between;
-      align-items: center;
+      align-items: baseline;
       flex-wrap: wrap;
       gap: 1rem;
 
-      
+      .rithm-selection-container {
+        display: flex;
+        flex-direction: row;
+        gap: 10px;
+
+        .rithm-selector {
+          max-width: 300px;
+
+          .full-width {
+            width: 100%;
+          }
+        }
+
+        .current-rithm {
+          display: flex;
+          flex-direction: column;
+          background: #fff;
+          padding: 0.8rem 1rem;
+          border-radius: 8px;
+          box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+          height: 34px;
+
+          .rithm-label {
+            // font-size: 0.9rem;
+            color: #666;
+          }
+
+          .rithm-value {
+            // font-size: 1.2rem;
+            font-weight: 600;
+            color: #222;
+          }
+
+        }
+
         button:disabled {
           background-color: #ccc;
           cursor: not-allowed;
         }
 
-        .start-button {
-          border: 1px solid;
-          width: 400px;
-          display: flex;
-          justify-content: center;
-          padding: 0.8rem 1rem;
-          border-radius: 2px;
-          transition: background 0.2s ease;
-          cursor: pointer;
+      }
 
-          &.red {
-            background-color: #c76060;
-            color: white;
-          }
-
-          &.green {
-            background-color: #569356;
-            color: white;
-          }
-        }
-
-          /* Botão reiniciar */
-        button[color='warn'] {
-          border-color: #b33a3a;
-          color: #b33a3a;
-          font-weight: 500;
-
-          &:hover {
-            background-color: rgba(179, 58, 58, 0.1);
-          }
-        }
-    
-    }
-
-    .cpr-subheader{
-      display: flex;
-      .current-rithm {
+      .start-button {
+        border: 1px solid;
+        width: 272px;
         display: flex;
-        flex-direction: column;
-        background: #fff;
+        justify-content: center;
         padding: 0.8rem 1rem;
-        border-radius: 8px;
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+        border-radius: 2px;
+        transition: background 0.2s ease;
+        cursor: pointer;
 
-        .rithm-label {
-          font-size: 0.9rem;
-          color: #666;
+        &.red {
+          background-color: #c76060;
+          color: white;
         }
 
-        .rithm-value {
-          font-size: 1.2rem;
-          font-weight: 600;
-          color: #222;
+        &.green {
+          background-color: #569356;
+          color: white;
         }
       }
+
+      /* Botão reiniciar */
+      button[color='warn'] {
+        border-color: #b33a3a;
+        color: #b33a3a;
+        font-weight: 500;
+
+        &:hover {
+          background-color: rgba(179, 58, 58, 0.1);
+        }
+      }
+
+
     }
 
-  }
 
+  }
 
   .right-panel {
     width: 35%;
@@ -162,111 +176,26 @@
     }
   }
 
-  /* Header e cronômetro */
-  .cpr-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 1rem;
-
-    .stopwatch {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-      width: 300px;
-
-      button:disabled {
-        background-color: #ccc;
-        cursor: not-allowed;
-      }
-
-      .start-button {
-        border: 1px solid;
-        width: 400px;
-        display: flex;
-        justify-content: center;
-        padding: 0.8rem 1rem;
-        border-radius: 2px;
-        transition: background 0.2s ease;
-        cursor: pointer;
-
-        &.red {
-          background-color: #c76060;
-          color: white;
-        }
-
-        &.green {
-          background-color: #569356;
-          color: white;
-        }
-      }
 
 
-      /* Botão reiniciar */
-      button[color='warn'] {
-        border-color: #b33a3a;
-        color: #b33a3a;
-        font-weight: 500;
-
-        &:hover {
-          background-color: rgba(179, 58, 58, 0.1);
-        }
-      }
-    }
-
-    .current-rithm {
-      display: flex;
-      flex-direction: column;
-      background: #fff;
-      padding: 0.8rem 1rem;
-      border-radius: 8px;
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
-
-      .rithm-label {
-        font-size: 0.9rem;
-        color: #666;
-      }
-
-      .rithm-value {
-        font-size: 1.2rem;
-        font-weight: 600;
-        color: #222;
-      }
-    }
-  }
-
-  /* Select de Ritmos */
-  .rithm-selector {
-    max-width: 300px;
-
-    .full-width {
-      width: 100%;
-    }
-
-    ::ng-deep .mat-mdc-form-field-outline {
-      color: #333;
-    }
-  }
 
   /* Ações: intervenções e drogas */
   .actions-section {
     display: flex;
     flex-direction: column;
-    gap: 1.5rem;
+    gap: 5px;
+    
 
     .section {
       h3 {
-        font-size: 1.1rem;
         color: #333;
-        margin-bottom: 0.5rem;
         font-weight: 600;
       }
 
       .action-grid {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 0.6rem;
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+        gap: 5px;
 
         button {
           flex: 1 1 45%;
@@ -287,12 +216,12 @@
 
         /* botão de intervenções */
         button[color='accent'] {
-          background-color: #569356 !important;
-          color: #fff !important;
+            border: 1px solid #939fab !important;
+          color: #1976d2 !important;
           border: none;
 
           &:hover {
-            background-color: #4a7f4a !important;
+            background-color: rgba(25, 118, 210, 0.1);
           }
         }
 
@@ -323,4 +252,5 @@
       max-height: none;
     }
   }
+
 }

@@ -10,39 +10,37 @@
         {{ running ? 'Interromper' : 'Iniciar' }}
       </button>
 
-      <button mat-stroked-button color="warn" (click)="restartApp()">Reiniciar tudo</button>
+      <div class="rithm-selection-container" *ngIf="running">
 
-    </div>
-
-    <div class="cpr-subheader" *ngIf="running">
-     
-
-      <div class="rithm-selector">
-        <mat-form-field appearance="outline" class="full-width">
+        <div class="rithm-selector">
+          <mat-form-field appearance="outline"
+            class="full-width">
           <mat-label>Check Rhythm</mat-label>
           <mat-select>
-            <mat-option *ngFor="let element of rithms" (click)="getRithm(element)">
-              {{ element.name }}
-            </mat-option>
+              <mat-option *ngFor="let element of rithms" (click)="getRithm(element)">
+                {{ element.name }}
+              </mat-option>
           </mat-select>
-        </mat-form-field>
-      </div>
-
-      <div class="current-rithm" *ngIf="activeRithm; else noRithm">
-        <span class="rithm-label">Ritmo atual:</span>
-        <span class="rithm-value">{{ activeRithm }}</span>
-      </div>
-
-      <ng-template #noRithm>
-        <div class="current-rithm">
-          <span class="rithm-label">Defina um ritmo</span>
-          <span class="rithm-value">Nenhum selecionado</span>
+          </mat-form-field>
         </div>
-      </ng-template>
+
+        <div class="current-rithm" *ngIf="activeRithm; else noRithm">
+          <span class="rithm-label">Ritmo atual:</span>
+          <span class="rithm-value">{{ activeRithm }}</span>
+        </div>
+
+        <ng-template #noRithm>
+          <div class="current-rithm">
+            <span class="rithm-label">Defina um ritmo</span>
+            <span class="rithm-value">Nenhum selecionado</span>
+          </div>
+        </ng-template>
+
+      </div>
+
+      <!-- <button mat-stroked-button color="warn" (click)="restartApp()">Reiniciar tudo</button> -->
 
     </div>
-
-
 
     <!-- Intervenções e Drogas -->
     <div class="actions-section" *ngIf="activeRithm">
