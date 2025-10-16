@@ -1,0 +1,326 @@
+.cpr-layout {
+  display: flex;
+  height: 100vh;
+  background-color: #6a6968;
+  /* fundo geral da página */
+  gap: 1rem;
+  padding: 1rem;
+  box-sizing: border-box;
+
+
+  .left-panel {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    background-color: #F1EFEE;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    padding: 1.5rem;
+    overflow-y: auto;
+
+    .cpr-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+
+      
+        button:disabled {
+          background-color: #ccc;
+          cursor: not-allowed;
+        }
+
+        .start-button {
+          border: 1px solid;
+          width: 400px;
+          display: flex;
+          justify-content: center;
+          padding: 0.8rem 1rem;
+          border-radius: 2px;
+          transition: background 0.2s ease;
+          cursor: pointer;
+
+          &.red {
+            background-color: #c76060;
+            color: white;
+          }
+
+          &.green {
+            background-color: #569356;
+            color: white;
+          }
+        }
+
+          /* Botão reiniciar */
+        button[color='warn'] {
+          border-color: #b33a3a;
+          color: #b33a3a;
+          font-weight: 500;
+
+          &:hover {
+            background-color: rgba(179, 58, 58, 0.1);
+          }
+        }
+    
+    }
+
+    .cpr-subheader{
+      display: flex;
+      .current-rithm {
+        display: flex;
+        flex-direction: column;
+        background: #fff;
+        padding: 0.8rem 1rem;
+        border-radius: 8px;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+
+        .rithm-label {
+          font-size: 0.9rem;
+          color: #666;
+        }
+
+        .rithm-value {
+          font-size: 1.2rem;
+          font-weight: 600;
+          color: #222;
+        }
+      }
+    }
+
+  }
+
+
+  .right-panel {
+    width: 35%;
+    background-color: #F1EFEE;
+    /* painel claro */
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    /* scroll independente */
+    max-height: calc(100vh - 2rem);
+
+
+    .time-display {
+      font-size: 2rem;
+      font-weight: bold;
+      color: #333;
+      min-width: 120px;
+      text-align: center;
+      background-color: #fff;
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+    }
+
+    h3 {
+      color: #333;
+      font-size: 1.1rem;
+      margin-bottom: 0.8rem;
+      font-weight: 600;
+    }
+
+    .log-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+
+      .log-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: #fff;
+        padding: 0.6rem 1rem;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+        transition: background 0.2s ease;
+
+        &:hover {
+          background: #f5f5f5;
+        }
+
+        .log-time {
+          font-weight: 600;
+          width: 70px;
+          color: #444;
+        }
+
+        .log-name {
+          flex: 1;
+          margin-left: 0.5rem;
+          color: #333;
+        }
+
+        button {
+          color: #b33a3a;
+        }
+      }
+    }
+  }
+
+  /* Header e cronômetro */
+  .cpr-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+
+    .stopwatch {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      width: 300px;
+
+      button:disabled {
+        background-color: #ccc;
+        cursor: not-allowed;
+      }
+
+      .start-button {
+        border: 1px solid;
+        width: 400px;
+        display: flex;
+        justify-content: center;
+        padding: 0.8rem 1rem;
+        border-radius: 2px;
+        transition: background 0.2s ease;
+        cursor: pointer;
+
+        &.red {
+          background-color: #c76060;
+          color: white;
+        }
+
+        &.green {
+          background-color: #569356;
+          color: white;
+        }
+      }
+
+
+      /* Botão reiniciar */
+      button[color='warn'] {
+        border-color: #b33a3a;
+        color: #b33a3a;
+        font-weight: 500;
+
+        &:hover {
+          background-color: rgba(179, 58, 58, 0.1);
+        }
+      }
+    }
+
+    .current-rithm {
+      display: flex;
+      flex-direction: column;
+      background: #fff;
+      padding: 0.8rem 1rem;
+      border-radius: 8px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+
+      .rithm-label {
+        font-size: 0.9rem;
+        color: #666;
+      }
+
+      .rithm-value {
+        font-size: 1.2rem;
+        font-weight: 600;
+        color: #222;
+      }
+    }
+  }
+
+  /* Select de Ritmos */
+  .rithm-selector {
+    max-width: 300px;
+
+    .full-width {
+      width: 100%;
+    }
+
+    ::ng-deep .mat-mdc-form-field-outline {
+      color: #333;
+    }
+  }
+
+  /* Ações: intervenções e drogas */
+  .actions-section {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+
+    .section {
+      h3 {
+        font-size: 1.1rem;
+        color: #333;
+        margin-bottom: 0.5rem;
+        font-weight: 600;
+      }
+
+      .action-grid {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.6rem;
+
+        button {
+          flex: 1 1 45%;
+          min-width: 120px;
+          padding: 0.8rem;
+          font-weight: 500;
+          text-transform: none;
+          background: #ffffff;
+          color: #333;
+          border: 1px solid #ccc;
+          border-radius: 6px;
+          transition: all 0.2s ease;
+
+          &:hover {
+            background: #e8e8e8;
+          }
+        }
+
+        /* botão de intervenções */
+        button[color='accent'] {
+          background-color: #569356 !important;
+          color: #fff !important;
+          border: none;
+
+          &:hover {
+            background-color: #4a7f4a !important;
+          }
+        }
+
+        /* botão de drogas */
+        button[color='primary'] {
+          border: 1px solid #1976d2;
+          color: #1976d2;
+
+          &:hover {
+            background-color: rgba(25, 118, 210, 0.1);
+          }
+        }
+      }
+    }
+  }
+
+  /* Responsividade */
+  @media (max-width: 992px) {
+    flex-direction: column;
+    height: auto;
+
+    .right-panel {
+      width: 100%;
+      max-height: 300px;
+    }
+
+    .left-panel {
+      max-height: none;
+    }
+  }
+}
