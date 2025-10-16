@@ -17,7 +17,10 @@
             class="full-width">
           <mat-label>Check Rhythm</mat-label>
           <mat-select>
-              <mat-option *ngFor="let element of rithms" (click)="getRithm(element)">
+              <mat-option 
+                *ngFor="let element of rithms" 
+                (click)="getRithm(element)"
+                [value] = element.name>
                 {{ element.name }}
               </mat-option>
           </mat-select>
@@ -38,7 +41,7 @@
 
       </div>
 
-      <!-- <button mat-stroked-button color="warn" (click)="restartApp()">Reiniciar tudo</button> -->
+      
 
     </div>
 
@@ -68,7 +71,11 @@
 
   <div class="right-panel">
     <span class="time-display">{{ formatTime() }}</span>
-    <h3>Registro de Intervenções</h3>
+    <div class="right-panel-subheader">
+        <h3>Registro de Intervenções</h3>
+        <button mat-stroked-button color="warn" (click)="restartApp()">Reiniciar tudo</button>
+    </div>
+
     <div class="log-list">
       <div class="log-item" *ngFor="let lap of lapTimes; let i = index">
         <span class="log-time">{{ lap.timer }}</span>
