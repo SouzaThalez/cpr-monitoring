@@ -1,3 +1,4 @@
+@use "variables";
 
 html, body {
     height: 100%;
@@ -8,5 +9,4 @@ html, body {
     color: var(--mat-sys-on-surface);
     font: var(--mat-sys-body-medium);
     
-
 }

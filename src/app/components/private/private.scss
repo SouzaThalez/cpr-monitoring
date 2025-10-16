@@ -19,9 +19,8 @@ app-topnavigation {
   display: flex;
   align-items: stretch;
   justify-content: center;
-  padding: 1.5rem;
   overflow: hidden; /* No scroll here either */
-  background-color: #6a6968;
+  background-color: var(--app-background-color);
 }
 
 .page-surface {

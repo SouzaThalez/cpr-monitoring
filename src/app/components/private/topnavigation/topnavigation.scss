@@ -2,9 +2,10 @@
 
 .card-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 1.5rem;
-  padding: 1.5rem;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 15px;
+  padding: 5px;
+  background-color: var(--app-background-color);
 }
 .card-icon {
   display: flex;
@@ -12,12 +13,12 @@
   justify-content: center;
   background: #e3f2fd;
   border-radius: 10px;
-  width: 48px;
-  height: 48px;
+  width: 30px;
+  height: 30px;
 }
 
 .material-symbols-outlined {
-  font-size: 28px;
+  font-size: 20px;
   color: #1976d2;
 }
 
@@ -43,7 +44,7 @@
 }
 
 .card-body {
-  padding: 1.2rem;
+  padding: 2px;
   display: flex;
   flex-direction: column;
   height: 100%;
@@ -53,25 +54,25 @@
   display: flex;
   align-items: center;
   gap: 0.8rem;
-  margin-bottom: 0.6rem;
+  padding-left: 6px;
 }
 
 .card-icon img {
-  width: 40px;
-  height: 40px;
+  width: 30px;
+  height: 30px;
 }
 
 .card-title {
   font-weight: 600;
-  font-size: 1.05rem;
+  font-size: 12px;
   color: #2c3e50;
 }
 
 .card-content {
   flex: 1;
   color: #555;
-  font-size: 0.95rem;
-  margin-top: 0.4rem;
+  font-size: 11px;
+  padding-left: 10px;
 }
 
 .card-footer {
