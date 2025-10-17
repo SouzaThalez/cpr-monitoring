@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import moment from 'moment';
 import 'moment/locale/pt-br';
 import { posPcrData } from '../../../data/posPcrData';
+import { MatDialog } from '@angular/material/dialog';
+import { SaveDialog } from './save-dialog/save-dialog';
 
 type LogKind = 'action' | 'finalize';
 
@@ -44,7 +46,10 @@ export class PostCpr {
   logList: LogEntry[] = [];
   finalized = false;
 
-  constructor() {
+  constructor(
+    private matDialog: MatDialog,
+  ){
+    
     moment.locale('pt-br');
 
     // 1) Dedup mantendo ordem original
@@ -203,6 +208,7 @@ export class PostCpr {
   }
 
   finalizar() {
+
     if (this.finalized) return;
 
     const escolhidas = this.grouped
@@ -216,7 +222,7 @@ export class PostCpr {
       time: this.now(),
       kind: 'finalize'
     });
-
+    this.openSaveDialog(escolhidas);
     this.finalized = true;
   }
 
@@ -225,4 +231,26 @@ export class PostCpr {
     this.logList = [];
     this.finalized = false;
   }
+
+    openSaveDialog(data: String) {
+      
+      const dialogRef = this.matDialog.open(SaveDialog, { disableClose: true });
+      
+      dialogRef.afterClosed().subscribe(result => {
+        if (result) {
+          debugger
+          const savedModel = data
+          //this.saveReportToLocalStorage(reportModel);
+        } else {
+         
+        }
+      });
+    }
+  
+
+
+
+
+
+
 }

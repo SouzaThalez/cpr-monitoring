@@ -16,6 +16,7 @@ import {provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatDialogModule } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from './cpr-notes/confirm-dialog/confirm-dialog.component';
+import { SaveDialog } from './post-cpr/save-dialog/save-dialog';
 
 
 @NgModule({
@@ -26,6 +27,7 @@ import { ConfirmDialogComponent } from './cpr-notes/confirm-dialog/confirm-dialo
     PostCpr,
     CprReview,
     ConfirmDialogComponent,
+    SaveDialog,
   ],
   imports: [
     CommonModule,
