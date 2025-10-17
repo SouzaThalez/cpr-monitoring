@@ -232,14 +232,16 @@ export class PostCpr {
     this.finalized = false;
   }
 
-    openSaveDialog(data: String) {
+    openSaveDialog(content: String) {
 
-      const dialogRef = this.matDialog.open(SaveDialog, { disableClose: true });
+      const dialogRef = this.matDialog.open(SaveDialog,{ 
+        disableClose: true,
+        data: content
+      });
       
       dialogRef.afterClosed().subscribe(result => {
         if (result) {
      
-          const savedModel = data
           //this.saveReportToLocalStorage(reportModel);
         } else {
          
