@@ -1,15 +1,1 @@
 @use "variables";
-
-html,
-body {
-    
-    height: 100%;
-    margin: 0;
-    font-family: Roboto, "Helvetica Neue", sans-serif;
-    color-scheme: light;
-    background-color: var(--mat-sys-surface);
-    color: var(--mat-sys-on-surface);
-    font: var(--mat-sys-body-medium);
-
-
-}
