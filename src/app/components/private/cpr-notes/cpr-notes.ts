@@ -61,7 +61,7 @@ export class CprNotes {
     this.running = false;
     this.activeRithm = '';
     clearInterval(this.timer);
-    // this.openConfirmDialog();
+    this.openConfirmDialog();
   }
 
   restartApp() {
@@ -130,6 +130,7 @@ export class CprNotes {
 
   openConfirmDialog() {
     const dialogRef = this.matDialog.open(ConfirmDialogComponent, { disableClose: true });
+    
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         const reportModel = {
@@ -140,18 +141,20 @@ export class CprNotes {
           endTimer: this.endTime,
           user: 'padrão'
         };
-        this.postProtocols(reportModel);
+        this.saveReportToLocalStorage(reportModel);
       } else {
         this.startStopwatch();
       }
     });
   }
 
-  private postProtocols(model: any) {
-    this.httpClient.post('http://localhost:3000/protocols', model).subscribe({
-      next: () => this.router.navigateByUrl('/private/protocolos/first-protocol'),
-      error: (erro) => console.error('Request failed', erro)
-    });
-  }
+ private saveReportToLocalStorage(model: any) {
+  const existingReports = JSON.parse(localStorage.getItem('reports') || '[]');
+  existingReports.push(model);
+  localStorage.setItem('reports', JSON.stringify(existingReports));
+
+  // redireciona para outra rota se desejar
+  this.router.navigateByUrl('/private/cuidados-pos');
+}
 
 }

@@ -1,0 +1,184 @@
+.post-cpr-layout.simple {
+  /* empilha tudo em coluna */
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1rem;
+  box-sizing: border-box;
+  min-height: 100vh;
+  max-width: 1200px;
+  margin: 0 auto;
+
+  /* Painel superior (ações) */
+  .left-panel {
+    background: #ffffff;
+    border-radius: 10px;
+    padding: 0.75rem;
+    box-shadow: 0 0 0 1px #eee;
+
+    .controls-bar {
+      display: flex;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+
+      .right-controls {
+        display: flex;
+        gap: 10px;
+      }
+
+      .save-button {
+        background-color: var(--app-green-color);
+      }
+
+    }
+
+    // container de categorias em 2 colunas
+    .categories-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 1rem;
+      /* espaço entre as categorias */
+      align-items: start;
+    }
+
+    // botões dentro de cada categoria: também 2 colunas
+    .category {
+      .quick-buttons {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 0.6rem;
+      }
+    }
+
+    // estado "fill" já existente
+    .action-btn.filled {
+      background: var(--mat-primary, #1976d2);
+      color: #fff !important;
+      border-color: transparent !important;
+    }
+
+    /* estado “fill” quando selecionado */
+    .action-btn.filled {
+      background: var(--mat-primary, #1976d2);
+      color: #fff !important;
+      border-color: transparent !important;
+    }
+
+
+  }
+
+
+  /* Painel inferior (log) */
+  .right-panel {
+    display: flex;
+    flex-direction: column;
+    background: #f7f7f7;
+    border-radius: 10px;
+    padding: 0.75rem;
+    height: 240px;
+    box-shadow: 0 0 0 1px #eee;
+
+
+    /* Para impedir que o log ultrapasse a tela:
+       ocupa até ~55vh (ajustável), rolando internamente se passar disso */
+    max-height: 55vh;
+    overflow: hidden;
+    /* esconde overflow do container; a lista interna vai rolar */
+
+    .panel-header {
+      flex: 0 0 auto;
+
+      h3 {
+        margin: 0 0 0.5rem 0;
+      }
+    }
+
+    /* área rolável do log */
+    .log-list {
+      flex: 1 1 auto;
+      overflow-y: auto;
+      min-height: 0;
+      /* necessário para o flex permitir scroll */
+      padding-right: 0.25rem;
+      /* espaço para a barra de rolagem */
+    }
+
+    .log-item {
+      display: grid;
+      grid-template-columns: 28px 1fr auto;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.45rem 0;
+      border-bottom: 1px solid #e5e5e5;
+      background: transparent;
+
+      .icon .material-symbols-outlined {
+        font-variation-settings: 'FILL' 0, 'wght' 500, 'GRAD' 0, 'opsz' 24;
+        color: #1976d2;
+      }
+
+      .content {
+        .line {
+          white-space: pre-line;
+        }
+
+        .meta {
+          font-size: 12px;
+          color: #6b7280;
+        }
+      }
+    }
+
+    .empty {
+      color: #6b7280;
+      font-size: 0.95rem;
+    }
+  }
+
+
+
+  /* Responsivo: abaixo de 900px, vira 1 coluna */
+  @media (max-width: 900px) {
+    .left-panel {
+      .categories-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .category .quick-buttons {
+        grid-template-columns: 1fr;
+        /* botões 1 por linha */
+      }
+    }
+  }
+
+  @media (max-width: 480px) {
+    justify-content: stretch;
+
+    button[mat-flat-button],
+    button[mat-stroked-button] {
+      width: 100%;
+    }
+  }
+
+  /* Ajustes de responsividade geral */
+  @media (max-width: 768px) {
+    .left-panel .category .quick-buttons {
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    }
+
+    .right-panel {
+      max-height: 60vh;
+      /* dá um pouco mais de espaço p/ log em telas menores */
+    }
+  }
+
+  @media (max-width: 420px) {
+    .left-panel .category .quick-buttons {
+      grid-template-columns: 1fr;
+      /* 1 por linha para telas muito estreitas */
+    }
+
+  }
+}

@@ -21,3 +21,5 @@ describe('ConfirmDialogComponent', () => {
     expect(component).toBeTruthy();
   });
 });
+
+export { ConfirmDialogComponent };

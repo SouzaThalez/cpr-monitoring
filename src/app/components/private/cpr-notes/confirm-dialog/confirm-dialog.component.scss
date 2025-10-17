@@ -1,29 +1,70 @@
-.print-title{
-    text-align: center;
-}
-.print-text{
-    font-size: 17px;
+.print-title {
+  text-align: center;
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 0.5rem;
 }
 
-.print-btns{
-    justify-content: center;
-    gap: 61px;
-    .button{
-        border-radius: 4px;
-        padding: 10px;
-        width: 85px;
-        text-align: center;
-        &.cancel-button{
-            background-color: #efa5a5;
-            color: white;
-        }
-        &.save-button{
-            background-color: #5fa45f;
-            color: white;
-        }
-        &:hover{
-            cursor: pointer;
-            color: black;
-        }
+.print-text {
+  font-size: 1rem;
+  line-height: 1.5;
+  text-align: center;
+  color: #444;
+  padding: 0 1rem;
+
+  b {
+    color: #000;
+  }
+}
+
+.print-btns {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 2.5rem;
+  margin-top: 1.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid #e0e0e0;
+
+  .button {
+    border-radius: 6px;
+    padding: 10px 16px;
+    min-width: 100px;
+    text-align: center;
+    font-weight: 500;
+    font-size: 0.95rem;
+    letter-spacing: 0.3px;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+
+    &.cancel-button {
+      background-color: #efa5a5;
+      color: white;
+
+      &:hover {
+        background-color: darken(#efa5a5, 5%);
+        transform: translateY(-1px);
+      }
     }
+
+    &.save-button {
+      background-color: #5fa45f;
+      color: white;
+
+      &:hover {
+        background-color: darken(#5fa45f, 5%);
+        transform: translateY(-1px);
+      }
+    }
+
+    &:hover {
+      cursor: pointer;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+    }
+
+    &:active {
+      transform: scale(0.97);
+    }
+  }
 }

@@ -1,1 +1,66 @@
-<p>post-cpr works!</p>
+<div class="post-cpr-layout simple">
+
+  <!-- Painel superior: ações rápidas -->
+  <section class="left-panel">
+    <!-- Barra de controles entre ações e log -->
+    <div class="controls-bar">
+      <h3>Cuidados pós-PCR</h3>
+      <div class="right-controls">
+        <button mat-flat-button class="save-button" (click)="finalizar()" [disabled]="finalized">
+          Finalizar e salvar no log
+        </button>
+        <button mat-stroked-button color="warn" (click)="limpar()" [disabled]="!logList.length && !hasAnySelected()">
+          Limpar
+        </button>
+      </div>
+    </div>
+
+    <!-- Grupos na ordem do protocolo -->
+    <section class="category" *ngFor="let group of grouped">
+      <h4>{{ group.category }}</h4>
+
+      <div class="quick-buttons">
+        <button *ngFor="let a of group.items; trackBy: trackByName" class="action-btn" mat-stroked-button
+          [disabled]="finalized" [ngClass]="{ filled: a.selected }" color="primary" (click)="toggleAction(a)">
+          {{ a.name }}
+        </button>
+      </div>
+    </section>
+  </section>
+
+  <!-- Painel inferior: log -->
+  <section class="right-panel">
+    <div class="panel-header">
+      <h3>Log de ações</h3>
+    </div>
+
+    <!-- Lista rolável -->
+    <div class="log-list" *ngIf="logList.length; else empty">
+      <div *ngFor="let entry of logList; let i = index" class="log-item">
+        <div class="icon">
+          <span class="material-symbols-outlined">
+            {{ entry.kind === 'finalize' ? 'task_alt' : 'emergency' }}
+          </span>
+        </div>
+
+        <div class="content">
+          <div class="line">
+            <strong>{{ i + 1 }}.</strong> {{ entry.text }}
+          </div>
+          <div class="meta">{{ entry.time }}</div>
+        </div>
+
+        <div class="actions">
+          <button mat-icon-button color="warn" (click)="removeLog(i)" matTooltip="Remover do log">
+            <span class="material-symbols-outlined">close</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <ng-template #empty>
+      <div class="empty">Sem registros ainda.</div>
+    </ng-template>
+  </section>
+
+</div>

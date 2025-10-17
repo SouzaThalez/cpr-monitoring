@@ -5,16 +5,17 @@ import { PrivateRoutingModule } from './private-routing-module';
 import { Private } from './private';
 import { Topnavigation } from './topnavigation/topnavigation';
 import { CprNotes } from './cpr-notes/cpr-notes';
-import { PostCpr } from './post-cpr/post-cpr';
+import { PostCpr, } from './post-cpr/post-cpr';
 import { CprReview } from './cpr-review/cpr-review';
 import { FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
-import { HttpClientModule } from '@angular/common/http';
+import {provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatDialogModule } from '@angular/material/dialog';
+import { ConfirmDialogComponent } from './cpr-notes/confirm-dialog/confirm-dialog.component';
 
 
 @NgModule({
@@ -23,7 +24,8 @@ import { MatDialogModule } from '@angular/material/dialog';
     Topnavigation,
     CprNotes,
     PostCpr,
-    CprReview
+    CprReview,
+    ConfirmDialogComponent,
   ],
   imports: [
     CommonModule,
@@ -36,6 +38,9 @@ import { MatDialogModule } from '@angular/material/dialog';
     MatMenuModule,
     MatDialogModule,
   
+  ],
+  providers:[
+    provideHttpClient(withInterceptorsFromDi())
   ]
 })
 export class PrivateModule { }
