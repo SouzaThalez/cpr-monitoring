@@ -5,7 +5,6 @@ import { ReportCard } from '../../models/reportCard';
 import { ReportModel } from '../../models/report';
 import { Intervention } from '../../models/intervention';
 
-
 @Component({
   selector: 'app-cpr-review',
   standalone: false,
@@ -46,19 +45,24 @@ export class CprReview implements OnInit {
 
       const subtitle = `${entries.length} intervenç${entries.length === 1 ? 'ão' : 'ões'}`;
 
-      const metaLine = this.makeMetaLine(rep);
+      // 🔎 Decide a “origem” para o footer:
+      // - se veio via rep.reportList -> cuidados pós-PCR
+      // - caso contrário (rep.entries) -> RCP
+      const footerLabel = rep.reportList && rep.reportList.length
+        ? 'relatório dos cuidados pos pcr'
+        : 'relatório da rcp';
 
       cards.push({
         id: `report-${idx}-${when.valueOf()}`,
         whenLabel,
         subtitle,
-        metaLine,
         entries,
+        footerLabel,
         raw: rep
       });
     });
 
-    // 2) Rascunho atual em "ReportInterventionList" (opcional)
+    // 2) Rascunho atual em "ReportInterventionList" (opcional) -> cuidados pós-PCR
     if (draftEntries && Array.isArray(draftEntries) && draftEntries.length) {
       const when = moment();
       cards.unshift({
@@ -66,7 +70,9 @@ export class CprReview implements OnInit {
         whenLabel: 'Em andamento',
         subtitle: `${draftEntries.length} intervenç${draftEntries.length === 1 ? 'ão' : 'ões'}`,
         entries: draftEntries,
+        footerLabel: 'relatório dos cuidados pos pcr',
         raw: {
+          // mantém a forma completa para evitar TS errors
           entries: draftEntries,
           reportList: draftEntries,
           reportDate: '',
@@ -95,8 +101,8 @@ export class CprReview implements OnInit {
 
   /** Normaliza o array de intervenções, seja 'entries' ou 'reportList' */
   private pickEntries(rep: ReportModel): Intervention[] {
+    if (Array.isArray(rep.reportList) && rep.reportList.length) return rep.reportList;
     if (Array.isArray(rep.entries)) return rep.entries;
-    if (Array.isArray(rep.reportList)) return rep.reportList;
     return [];
   }
 
@@ -110,16 +116,6 @@ export class CprReview implements OnInit {
       if (m.isValid()) return m.toDate().toISOString();
     }
     return undefined;
-  }
-
-  /** Monta uma linha meta (opcional), se o modelo vier mais completo */
-  private makeMetaLine(rep: ReportModel): string | undefined {
-    const parts: string[] = [];
-    if (rep.totalTimer) parts.push(`Total: ${rep.totalTimer}`);
-    if (rep.startTimer) parts.push(`Início: ${rep.startTimer}`);
-    if (rep.endTimer) parts.push(`Fim: ${rep.endTimer}`);
-    if (rep.user) parts.push(`Usuário: ${rep.user}`);
-    return parts.length ? parts.join(' • ') : undefined;
   }
 
   selectReport(card: ReportCard) {

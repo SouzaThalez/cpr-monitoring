@@ -10,9 +10,6 @@ import { MatDialog } from '@angular/material/dialog';
 import { jsPDF } from "jspdf";
 import { ReportModel } from '../../models/report';
 
-
-// import { ConfirmDialogComponent } from '../shared/confirm-dialog/confirm-dialog.component';
-
 @Component({
   selector: 'app-cpr-notes',
   standalone: false,
@@ -28,10 +25,6 @@ export class CprNotes {
   activeRithm: string = '';
   lapTimes: Drug[] = [];
 
-  
-  
-  
-  
   running: boolean = false;
   time: number = 0;
   milliseconds: number = 0;
@@ -46,7 +39,7 @@ export class CprNotes {
   ) { }
 
   ngOnInit(): void { 
-    this.restartApp();
+    this.restartApp()
   }
 
   startStopwatch() {
@@ -167,7 +160,6 @@ export class CprNotes {
   this.router.navigateByUrl('/private/cuidados-pos');
   }
 
-
   generatePDF(model: ReportModel){
 
     const doc = new jsPDF();
@@ -221,7 +213,7 @@ export class CprNotes {
   
     let currentY = startY; // Track the current Y position
   
-    model.reportList.forEach((item: any) => {
+    model.reportList?.forEach((item: any) => {
       // If the row would overflow the page
       if (currentY + rowHeight > pageHeight - bottomMargin) {
         doc.addPage(); // Add a new page
@@ -263,17 +255,5 @@ export class CprNotes {
     doc.save("Relatorio.pdf");
   
   }
-
-
-
-
-
-
-
-
-
-
-
-
 
 }

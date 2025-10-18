@@ -1,12 +1,12 @@
 import { Intervention } from "./intervention";
 
 export interface ReportModel {
-  timestamp?: string;        
-  entries?: Intervention[];
-  reportList: Intervention[];
-  reportDate: string;
-  totalTimer: string;
-  startTimer: string;
-  endTimer: string;
-  user: string;
+  timestamp?: string;           // ISO
+  entries?: Intervention[];     // usado pela RCP
+  reportList?: Intervention[];  // usado pelos cuidados pós-PCR
+  reportDate?: string;          // 'DD-MM-YYYY'
+  totalTimer?: string;
+  startTimer?: string;
+  endTimer?: string;
+  user?: string;
 }
