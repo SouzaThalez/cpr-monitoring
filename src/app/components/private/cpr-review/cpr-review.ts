@@ -4,8 +4,8 @@ import 'moment/locale/pt-br';
 
 import { ReportCard } from '../../models/reportCard';
 import { ReportModel } from '../../models/report';
-import { Intervention } from '../../models/intervention';
-
+import { InterventionReportModel } from '../../models/interventionReport';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-cpr-review',
@@ -18,29 +18,31 @@ export class CprReview implements OnInit {
   reports: ReportCard[] = [];
   selected?: ReportCard;
 
+  constructor(
+    private snackBar: MatSnackBar
+  ) { }
+
   ngOnInit(): void {
     moment.locale('pt-br');
     this.loadFromLocalStorage();
   }
 
-  /** Carrega e normaliza dados de localStorage (reports + interventionReports/ReportInterventionList) */
+  /** Carrega e normaliza dados de localStorage (reports + interventionReports) */
   private loadFromLocalStorage() {
-    
+    // 1) Registros gerados pelo cpr-notes
     const parsedReports: ReportModel[] =
       this.safeParse<ReportModel[]>(localStorage.getItem('reports')) || [];
 
-    // rascunho atual: nova key 'interventionReports' (fallback antigo 'ReportInterventionList')
-    const draftEntries: Intervention[] =
-      this.safeParse<Intervention[]>(localStorage.getItem('interventionReports'))
-        ?? this.safeParse<Intervention[]>(localStorage.getItem('ReportInterventionList'))
-        ?? [];
+    // 2) Registros gerados pelo post-cpr
+    const interventionReports: InterventionReportModel[] =
+      this.safeParse<InterventionReportModel[]>(localStorage.getItem('interventionReports')) || [];
 
     const cards: ReportCard[] = [];
 
-    // 1) Histórico salvo em "reports"
-    parsedReports.forEach((rep, idx) => {
-      const entries = this.pickEntries(rep);
-      const t = this.pickTimestamp(rep) ?? new Date().toISOString();
+    // Mapear interventionReports -> ReportCard (footer: cuidados pós-PCR)
+    interventionReports.forEach((rep, idx) => {
+      const entries = Array.isArray(rep.interventionList) ? rep.interventionList : [];
+      const t = this.pickTimestampFromIntervention(rep) ?? new Date().toISOString();
       const when = moment(t).isValid() ? moment(t) : moment();
 
       const whenLabel = when.calendar(undefined, {
@@ -54,47 +56,53 @@ export class CprReview implements OnInit {
 
       const subtitle = `${entries.length} intervenç${entries.length === 1 ? 'ão' : 'ões'}`;
 
-      // Origem para o footer:
-      const footerLabel =
-        Array.isArray(rep.reportList) && rep.reportList.length
-          ? 'relatório dos cuidados pos pcr'
-          : 'relatório da rcp';
-
       cards.push({
-        id: `report-${idx}-${when.valueOf()}`,
+        id: `postcpr-${idx}-${when.valueOf()}`,
         whenLabel,
         subtitle,
         entries,
-        footerLabel,
+        footerLabel: 'relatório dos cuidados pos pcr',
         raw: rep
       });
     });
 
-    // 2) Rascunho atual (opcional) -> cuidados pós-PCR
-    if (Array.isArray(draftEntries) && draftEntries.length) {
-      const when = moment();
-      cards.unshift({
-        id: `draft-${when.valueOf()}`,
-        whenLabel: 'Em andamento',
-        subtitle: `${draftEntries.length} intervenç${draftEntries.length === 1 ? 'ão' : 'ões'}`,
-        entries: draftEntries,
-        footerLabel: 'relatório dos cuidados pos pcr',
-        raw: {
-          // Mantemos forma compatível para não quebrar nenhum código que leia raw:
-          reportList: draftEntries,
-          reportDate: '',
-          totalTimer: '',
-          startTimer: '',
-          endTimer: '',
-          user: '',
-          timestamp: new Date().toISOString()
-        },
-        isDraft: true
+    // Mapear reports -> ReportCard (footer: RCP)
+    parsedReports.forEach((rep, idx) => {
+      const entries = Array.isArray(rep.reportList) ? rep.reportList : [];
+      const t = this.pickTimestampFromReport(rep) ?? new Date().toISOString();
+      const when = moment(t).isValid() ? moment(t) : moment();
+
+      const whenLabel = when.calendar(undefined, {
+        sameDay: '[Hoje] HH:mm',
+        lastDay: '[Ontem] HH:mm',
+        nextDay: '[Amanhã] HH:mm',
+        lastWeek: 'DD/MM/YYYY HH:mm',
+        nextWeek: 'DD/MM/YYYY HH:mm',
+        sameElse: 'DD/MM/YYYY HH:mm'
       });
-    }
+
+      const subtitle = `${entries.length} intervenç${entries.length === 1 ? 'ão' : 'ões'}`;
+
+      cards.push({
+        id: `rcp-${idx}-${when.valueOf()}`,
+        whenLabel,
+        subtitle,
+        entries,
+        footerLabel: 'relatório da rcp',
+        raw: rep
+      });
+    });
+
+    // (Opcional) Ordenar do mais recente para o mais antigo
+    cards.sort((a, b) => {
+      // tentar obter timestamp dos "raw"
+      const ta = this.tryToMoment(a.raw).valueOf();
+      const tb = this.tryToMoment(b.raw).valueOf();
+      return tb - ta;
+    });
 
     this.reports = cards;
-    this.selected = this.reports[0]; // seleciona o primeiro por padrão (rascunho se existir)
+    this.selected = this.reports[0]; // seleciona o primeiro por padrão (se existir)
   }
 
   /** Utilitário: parse seguro */
@@ -107,27 +115,38 @@ export class CprReview implements OnInit {
     }
   }
 
-  /** Normaliza o array de intervenções, preferindo 'reportList'. Mantém compatibilidade com 'entries'. */
-  private pickEntries(rep: ReportModel): Intervention[] {
-    if (Array.isArray(rep.reportList) && rep.reportList.length) return rep.reportList;
-
-    // compatibilidade com registros antigos (se existirem):
-    // @ts-expect-error – alguns registros antigos podem ter 'entries' com shape compatível
-    if (Array.isArray(rep.entries) && rep.entries.length) return rep.entries as InterventionReportEntry[];
-
-    return [];
-  }
-
-  /** Decide qual timestamp usar para label */
-  private pickTimestamp(rep: ReportModel): string | undefined {
+  /** Tenta extrair um momento válido de ReportModel */
+  private pickTimestampFromReport(rep: ReportModel): string | undefined {
     if (rep.timestamp) return rep.timestamp;
-
     if (rep.reportDate) {
-      // se vier 'DD-MM-YYYY', tenta converter para ISO com 12:00 local
       const m = moment(rep.reportDate, 'DD-MM-YYYY', true);
       if (m.isValid()) return m.toDate().toISOString();
     }
     return undefined;
+  }
+
+  /** Tenta extrair um momento válido de InterventionReportModel */
+  private pickTimestampFromIntervention(rep: InterventionReportModel): string | undefined {
+    if (rep.timestamp) return rep.timestamp;
+    if (rep.interventionDate) {
+      const m = moment(rep.interventionDate, 'DD-MM-YYYY', true);
+      if (m.isValid()) return m.toDate().toISOString();
+    }
+    return undefined;
+  }
+
+  /** Converte raw em moment() para fins de sort seguro */
+  private tryToMoment(raw: ReportModel | InterventionReportModel): moment.Moment {
+    const t1 = (raw as ReportModel).timestamp ?? (raw as InterventionReportModel).timestamp;
+    if (t1 && moment(t1).isValid()) return moment(t1);
+
+    const d1 = (raw as ReportModel).reportDate;
+    if (d1 && moment(d1, 'DD-MM-YYYY', true).isValid()) return moment(d1, 'DD-MM-YYYY');
+
+    const d2 = (raw as InterventionReportModel).interventionDate;
+    if (d2 && moment(d2, 'DD-MM-YYYY', true).isValid()) return moment(d2, 'DD-MM-YYYY');
+
+    return moment.invalid();
   }
 
   selectReport(card: ReportCard) {
@@ -138,4 +157,34 @@ export class CprReview implements OnInit {
   idx(i: number): number {
     return i + 1;
   }
+
+  clearAllRegisters(confirmUser: boolean = true): void {
+    
+    if (confirmUser && !window.confirm('Tem certeza que deseja limpar todos os registros? Essa ação não pode ser desfeita.')) {
+      this.snackBar.open('Operação cancelada.', 'Fechar', { duration: 2500 });
+      return;
+    }
+
+    try {
+      localStorage.removeItem('reports');
+      localStorage.removeItem('interventionReports');
+      localStorage.removeItem('ReportInterventionList'); // legado
+
+      this.reports = [];
+      this.selected = undefined;
+
+      this.snackBar.open('Registros apagados com sucesso.', 'Fechar', {
+        duration: 3000,
+        panelClass: ['success-snackbar']
+      });
+    } catch (e) {
+      this.snackBar.open('Falha ao limpar registros.', 'Fechar', {
+        duration: 3000,
+        panelClass: ['warn-snackbar']
+      });
+    }
+  }
+
+
+
 }

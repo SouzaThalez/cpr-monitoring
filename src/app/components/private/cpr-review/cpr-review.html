@@ -1,4 +1,3 @@
-
 <div class="page">
 
   <!-- Painel esquerdo: lista de relatórios -->
@@ -8,10 +7,10 @@
 
       <div class="actions-section">
         <div class="section">
-          
+
           <div class="left-panel-subheader">
             <h3>Acompanhe todos os registros</h3>
-               <button mat-stroked-button color="warn">Limpar todos os registros</button>
+            <button mat-stroked-button color="warn" (click)="clearAllRegisters()">Limpar todos os registros</button>
           </div>
 
           <div class="action-grid">
@@ -27,7 +26,7 @@
                   <div class="count">{{ card.subtitle }}</div>
                 </div>
 
-                <!-- ⬇️ Footer agora mostra apenas o tipo -->
+                <!-- Footer com o tipo -->
                 <div class="drug-footer">
                   {{ card.footerLabel }}
                 </div>
