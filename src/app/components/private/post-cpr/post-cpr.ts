@@ -7,8 +7,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { posPcrData } from '../../../data/posPcrData';
 import { SaveDialog } from './save-dialog/save-dialog';
-// modelo do relatório salvo na key 'reports'
-import { ReportModel } from '../../models/report';
+
 import { Intervention } from '../../models/intervention';
 import { InterventionReportModel } from '../../models/interventionReport';
 
@@ -20,13 +19,9 @@ import { InterventionReportModel } from '../../models/interventionReport';
 })
 export class PostCpr {
 
-  // botões de ações rápidas
   interventions = posPcrData.firstIntervention;
-
-  // log atual em memória antes de persistir
   lapTimes: Intervention[] = [];
 
-  // cronômetro básico (se quiser alimentar totalTimer depois)
   time: number = 0;
   milliseconds: number = 0;
 
@@ -38,15 +33,12 @@ export class PostCpr {
     moment.locale('pt-br');
   }
 
-  
-  ngOnInit(): void { 
-    this.restartApp()
+  ngOnInit(): void {
+    this.restartApp();
   }
-
 
   /** Clicar em um card registra a intervenção uma única vez */
   captureTime(item: any) {
-    // impede registro duplicado
     const already = this.lapTimes.some(l => l.name === item.name);
     if (already) {
       this.snackBar.open('Você já registrou esta intervenção.', 'Fechar', {
@@ -62,29 +54,23 @@ export class PostCpr {
       timer: this.formatTime(),
       name: item.name,
       label: item.label || 'Intervenção',
-      type: 'tipo da intervencao'
-    };
+    } as Intervention;
 
     this.lapTimes.push(entry);
   }
 
-  /** Remove item do log atual e atualiza storage */
   removeLapItem(index: number, item: Intervention) {
     this.lapTimes.splice(index, 1);
     const found = this.interventions.find(d => d.name === item.name);
     if (found && found.cliked > 0) {
       found.cliked--;
     }
-
-    // this.saveToLocalStorage();
   }
 
-  /** Dialog antes de salvar em reports[] */
   openSaveDialog() {
     const dialogRef = this.matDialog.open(SaveDialog, { disableClose: true });
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-
         const model: InterventionReportModel = {
           timestamp: new Date().toISOString(),
           interventionList: this.lapTimes,
@@ -94,40 +80,49 @@ export class PostCpr {
         };
 
         this.saveToLocalStorage(model);
-        this.submitReport(model);
+        this.submitReport();
       }
     });
   }
 
-  /** Salva o log atual em localStorage.interventionReports */
+  /** Persiste no array interventionReports */
   private saveToLocalStorage(model: InterventionReportModel) {
-    const existingReports = JSON.parse(localStorage.getItem('interventionReports') || '[]');
-    existingReports.push(model);
-    localStorage.setItem('interventionReports', JSON.stringify(existingReports));
+    const existing: InterventionReportModel[] = JSON.parse(localStorage.getItem('interventionReports') || '[]');
+    existing.push(model);
+    localStorage.setItem('interventionReports', JSON.stringify(existing));
   }
 
-  submitReport(model: any) {
+  /** Lê interventionReports e exporta CSV do registro mais recente (ou do conjunto) */
+  submitReport() {
+    const stored: InterventionReportModel[] = JSON.parse(localStorage.getItem('interventionReports') || '[]');
 
-    // 1) lê o que foi acumulado em interventionReports
-    const raw = localStorage.getItem('interventionReports');
-    const reportList: Intervention[] = raw ? JSON.parse(raw) : [];
-
-    if (!reportList.length) {
+    if (!stored.length) {
       this.snackBar.open('Não há intervenções para salvar.', 'Fechar', { duration: 2500 });
       return;
     }
 
-    // (opcional) exportação CSV do log atual
-    this.exportCsvReport(reportList);
+    // passa a lista como veio do storage; o exportCsvReport normaliza
+    this.exportCsvReport(stored);
 
-    // 4) redireciona para a tela de review
     this.router.navigateByUrl('/private/pcr-review');
   }
 
-  /** Exporta o CSV do log atual (opcional) */
-  private exportCsvReport(list: Intervention[]) {
+  /**
+   * Aceita tanto:
+   *  - Intervention[] (quando você passar só a lista)
+   *  - InterventionReportModel[] (como vem do localStorage)
+   * Normaliza para Intervention[] antes de montar o CSV.
+   */
+  private exportCsvReport(listOrModels: Intervention[] | InterventionReportModel[]) {
+    const rowsSource = this.normalizeCsvSource(listOrModels);
+
+    if (!rowsSource.length) {
+      this.snackBar.open('Nenhum dado para exportar.', 'Fechar', { duration: 2500 });
+      return;
+    }
+
     const headers = ['#', 'Timer', 'Rótulo', 'Intervenção'];
-    const rows = list.map((x, i) => [
+    const rows = rowsSource.map((x, i) => [
       String(i + 1),
       x.timer ?? '',
       x.label ?? '',
@@ -139,7 +134,25 @@ export class PostCpr {
     this.downloadFile(csv, filename, 'text/csv;charset=utf-8');
   }
 
-  /** CSV helper */
+  /** Converte qualquer fonte para uma lista de Intervention */
+  private normalizeCsvSource(input: Intervention[] | InterventionReportModel[]): Intervention[] {
+    if (!Array.isArray(input) || input.length === 0) return [];
+
+    // Caso seja diretamente Intervention[]
+    const looksLikeIntervention =
+      'timer' in (input[0] as any) && 'name' in (input[0] as any) && 'label' in (input[0] as any);
+    if (looksLikeIntervention) {
+      return input as Intervention[];
+    }
+
+    // Caso seja InterventionReportModel[]
+    const models = input as InterventionReportModel[];
+    // Exporta o último relatório salvo (mais recente)
+    const last = models[models.length - 1];
+    return Array.isArray(last?.interventionList) ? last!.interventionList! : [];
+  }
+
+  /** CSV helpers */
   private buildCsv(table: (string | number | null | undefined)[][]): string {
     const escape = (val: any) => {
       const s = (val ?? '').toString();
@@ -149,7 +162,7 @@ export class PostCpr {
       return s;
     };
     const body = table.map(row => row.map(escape).join(',')).join('\r\n');
-    const BOM = '\uFEFF'; // Excel-friendly
+    const BOM = '\uFEFF';
     return BOM + body;
   }
 
@@ -171,7 +184,6 @@ export class PostCpr {
     return num.toString().padStart(length, '0');
   }
 
-  /** Limpa tudo deste componente */
   restartApp() {
     this.lapTimes = [];
     this.interventions.forEach(i => (i.cliked = 0));
