@@ -1,89 +1,157 @@
 .page {
   height: 100%;
   display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+   padding: 8px 8px 8px 8px;
+  box-sizing: border-box;
+  background: #fafafa;
 
   .panels {
-    width: 100%;
+    flex: 1;
     display: flex;
     flex-direction: column;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 
     .p-content {
-      height: 100%;
-      padding-left: 10px;
-      padding-right: 10px;
+      flex: 1;
+      padding: 1rem;
       display: flex;
       flex-direction: column;
+      overflow: hidden;
 
+      .p-title {
+        font-weight: 600;
+        font-size: 0.95rem;
+        color: #6b7280;
+        margin-bottom: 0.5rem;
+      }
+
+      h3 {
+        margin: 0;
+        color: #374151;
+      }
+
+      .right-panel-subheader {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 0.75rem;
+
+        button {
+          white-space: nowrap;
+        }
+      }
     }
 
     &.left-p {
-      border-top: 2px solid #b0acad;
-      border-left: 2px solid #b0acad;
-      border-right: 2px solid #b0acad;
-    }
+      flex: 1.2;
+      border: 2px solid #b0acad;
 
-    &.right-p {
-      border-top: 1px dotted blue;
-      border-left: 1px dotted blue;
-      border-right: 1px dotted blue;
-    }
+      .actions-section {
+        flex: 1;
+        overflow-y: auto;
+      }
 
-    .actions-section {
-      display: flex;
-      flex-direction: column;
-      gap: 5px;
+      .action-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 10px;
+        padding-bottom: 1rem;
+      }
 
-      .section {
+      .drug-container {
+        background: #f9fafb;
+        border-radius: 8px;
+        border: 1px solid #e5e7eb;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+        cursor: pointer;
+        transition: transform 0.15s ease, box-shadow 0.15s ease;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        text-align: center;
 
-        .section-title {
-          font-weight: bold;
-          font-size: 15px;
-          padding-bottom: 10px;
+        &:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
 
-        .action-grid {
-          display: grid;
-          grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-          justify-items: center;
-          gap: 5px;
+        .drug-container-body {
+          padding: 12px;
+          min-height: 80px;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+          gap: 4px;
 
-          .drug-container {
-            display: flex;
-            flex-direction: column;
-            width: 170px;
-            margin-bottom: 5px;
-
-            .drug-container-body {
-              padding: 10px;
-              border-radius: 5px;
-              display: flex;
-              justify-content: center;
-              background-color: white;
-              box-shadow: 0px 10px 15px -3px rgba(0, 0, 0, 0.1);
-              cursor: pointer;
-
-              &:hover {
-                background-color: #96b2ef;
-              }
-            }
-
+          .name {
+            font-weight: 600;
+            font-size: 14px;
+            color: #1e293b;
+            word-break: break-word;
+            line-height: 1.2;
           }
 
+          .count {
+            font-size: 12px;
+            color: #2563eb;
+            font-weight: 500;
+          }
+        }
+
+        .drug-footer {
+          background: #e2e8f0;
+          color: #475569;
+          font-size: 12px;
+          padding: 4px 6px;
+          border-top: 1px solid #cbd5e1;
+          border-radius: 0 0 8px 8px;
+          line-height: 1.2;
         }
       }
 
+      .save-button {
+        border: 1px solid;
+        width: 272px;
+        display: flex;
+        justify-content: center;
+        padding: 0.8rem 1rem;
+        border-radius: 4px;
+        cursor: pointer;
+        font-weight: 500;
+        transition: background 0.2s ease;
+
+        &.green {
+          background-color: #4caf50;
+          color: white;
+          border-color: #4caf50;
+
+          &:hover {
+            background-color: #3c8f41;
+          }
+        }
+      }
     }
 
+    &.right-p {
+      
+      flex: 1;
+      border: 1px dotted #2563eb;
+      background: #f3f4f6;
 
-    .log-list {
-      height: 100%;
-      margin-top: 10px;
-      display: flex;
-      flex-direction: column-reverse;
-      gap: 10px;
-      padding-bottom: 10px;
-
-      overflow-y: auto;
+      .log-list {
+        flex: 1;
+        overflow-y: auto;
+        padding-right: 0.5rem;
+        display: flex;
+        flex-direction: column-reverse;
+        gap: 10px;
+      }
 
       .log-item {
         display: flex;
@@ -102,7 +170,7 @@
         .log-time {
           font-weight: 600;
           width: 70px;
-          color: #444;
+          color: #2563eb;
         }
 
         .log-name {
@@ -116,226 +184,25 @@
         }
       }
     }
-
-    .right-panel-subheader {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-
-    }
-
-    .save-button {
-      border: 1px solid;
-      width: 272px;
-      display: flex;
-      justify-content: center;
-      padding: 0.8rem 1rem;
-      border-radius: 2px;
-      transition: background 0.2s ease;
-      cursor: pointer;
-
-      &.red {
-        background-color: #c76060;
-        color: white;
-      }
-
-      &.green {
-        background-color: #569356;
-        color: white;
-      }
-    }
-
   }
 
-}
-
-
-
-
-
-
-
-.post-cpr-layout.simple {
-  /* empilha tudo em coluna */
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  padding: 1rem;
-  box-sizing: border-box;
-  min-height: 100vh;
-  max-width: 1200px;
-  margin: 0 auto;
-
-  /* Painel superior (ações) */
-  .left-panel {
-    background: #ffffff;
-    border-radius: 10px;
-    padding: 0.75rem;
-    box-shadow: 0 0 0 1px #eee;
-
-    .controls-bar {
-      display: flex;
-      gap: 0.75rem;
-      flex-wrap: wrap;
-      justify-content: space-between;
-      align-items: center;
-
-      .right-controls {
-        display: flex;
-        gap: 10px;
-      }
-
-      .save-button {
-        background-color: var(--app-green-color);
-      }
-
-    }
-
-    // container de categorias em 2 colunas
-    .categories-grid {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 1rem;
-      /* espaço entre as categorias */
-      align-items: start;
-    }
-
-    // botões dentro de cada categoria: também 2 colunas
-    .category {
-      .quick-buttons {
-        display: grid;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 0.6rem;
-      }
-    }
-
-    // estado "fill" já existente
-    .action-btn.filled {
-      background: var(--mat-primary, #1976d2);
-      color: #fff !important;
-      border-color: transparent !important;
-    }
-
-    /* estado “fill” quando selecionado */
-    .action-btn.filled {
-      background: var(--mat-primary, #1976d2);
-      color: #fff !important;
-      border-color: transparent !important;
-    }
-
-
-  }
-
-
-  /* Painel inferior (log) */
-  .right-panel {
-    display: flex;
-    flex-direction: column;
-    background: #f7f7f7;
-    border-radius: 10px;
-    padding: 0.75rem;
-    height: 240px;
-    box-shadow: 0 0 0 1px #eee;
-
-
-    /* Para impedir que o log ultrapasse a tela:
-       ocupa até ~55vh (ajustável), rolando internamente se passar disso */
-    max-height: 55vh;
-    overflow: hidden;
-    /* esconde overflow do container; a lista interna vai rolar */
-
-    .panel-header {
-      flex: 0 0 auto;
-
-      h3 {
-        margin: 0 0 0.5rem 0;
-      }
-    }
-
-    /* área rolável do log */
-    .log-list {
-      flex: 1 1 auto;
-      overflow-y: auto;
-      min-height: 0;
-      /* necessário para o flex permitir scroll */
-      padding-right: 0.25rem;
-      /* espaço para a barra de rolagem */
-    }
-
-    .log-item {
-      display: grid;
-      grid-template-columns: 28px 1fr auto;
-      align-items: center;
-      gap: 0.5rem;
-      padding: 0.45rem 0;
-      border-bottom: 1px solid #e5e5e5;
-      background: transparent;
-
-      .icon .material-symbols-outlined {
-        font-variation-settings: 'FILL' 0, 'wght' 500, 'GRAD' 0, 'opsz' 24;
-        color: #1976d2;
-      }
-
-      .content {
-        .line {
-          white-space: pre-line;
-        }
-
-        .meta {
-          font-size: 12px;
-          color: #6b7280;
-        }
-      }
-    }
-
-    .empty {
-      color: #6b7280;
-      font-size: 0.95rem;
-    }
-  }
-
-
-
-  /* Responsivo: abaixo de 900px, vira 1 coluna */
+  /* Responsivo */
   @media (max-width: 900px) {
-    .left-panel {
-      .categories-grid {
-        grid-template-columns: 1fr;
-      }
+    flex-direction: column;
 
-      .category .quick-buttons {
-        grid-template-columns: 1fr;
-        /* botões 1 por linha */
-      }
-    }
-  }
-
-  @media (max-width: 480px) {
-    justify-content: stretch;
-
-    button[mat-flat-button],
-    button[mat-stroked-button] {
+    .panels {
       width: 100%;
-    }
-  }
-
-  /* Ajustes de responsividade geral */
-  @media (max-width: 768px) {
-    .left-panel .category .quick-buttons {
-      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      flex: none;
     }
 
-    .right-panel {
-      max-height: 60vh;
-      /* dá um pouco mais de espaço p/ log em telas menores */
-    }
-  }
-
-  @media (max-width: 420px) {
-    .left-panel .category .quick-buttons {
-      grid-template-columns: 1fr;
-      /* 1 por linha para telas muito estreitas */
+    .left-p .action-grid {
+      grid-template-columns: 1fr 1fr;
     }
 
+    @media (max-width: 600px) {
+      .left-p .action-grid {
+        grid-template-columns: 1fr;
+      }
+    }
   }
 }

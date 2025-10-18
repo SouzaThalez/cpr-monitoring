@@ -3,7 +3,6 @@
 
   <div class="panels left-p">
     <div class="p-content">
-      <span class="p-title">Left-panel</span>
 
       <div class="cpr-header">
 
@@ -13,17 +12,14 @@
         </button>
 
         <div class="rithm-selection-container" *ngIf="running">
-
-          <div class="rithm-selector">
-            <mat-form-field appearance="outline" class="full-width">
-              <mat-label>Check Rhythm</mat-label>
-              <mat-select>
-                <mat-option *ngFor="let element of rithms" (click)="getRithm(element)" [value]=element.name>
-                  {{ element.name }}
-                </mat-option>
-              </mat-select>
-            </mat-form-field>
-          </div>
+          <mat-form-field appearance="outline" class="rithm-select">
+            <mat-label>Check Rhythm</mat-label>
+            <mat-select>
+              <mat-option *ngFor="let element of rithms" (click)="getRithm(element)" [value]="element.name">
+                {{ element.name }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
 
           <div class="current-rithm" *ngIf="activeRithm; else noRithm">
             <span class="rithm-label">Ritmo atual:</span>
@@ -36,7 +32,6 @@
               <span class="rithm-value">Nenhum selecionado</span>
             </div>
           </ng-template>
-
         </div>
 
       </div>
@@ -77,7 +72,7 @@
             </ng-container>
 
           </div>
-          
+
         </div>
 
         <div class="section">
@@ -99,13 +94,18 @@
 
   <div class="panels right-p">
     <div class="p-content">
-      <span class="p-title">Right-panel</span>
 
-      <span class="time-display">{{ formatTime() }}</span>
+      <div class="right-p-header">
+        <div class="timer">
+          <span class="p-title">Contador</span>
 
-      <div class="right-panel-subheader">
-        <h3>Registro de Intervenções</h3>
-        <button mat-stroked-button color="warn" (click)="restartApp()">Reiniciar tudo</button>
+          <span class="time-display">{{ formatTime() }}</span>
+        </div>
+
+        <div class="right-p-menu">
+          <h3>Registro de Intervenções</h3>
+          <button mat-stroked-button color="warn" (click)="restartApp()">Reiniciar tudo</button>
+        </div>
       </div>
 
       <div class="log-list">
@@ -120,109 +120,6 @@
 
     </div>
   </div>
-
-  <!-- <div class="left-panel">
-
-    <div class="cpr-header">
-
-      <button class="start-button" (click)="running ? stopStopwatch() : startStopwatch()"
-        [ngClass]="running ? 'red' : 'green'">
-        {{ running ? 'Interromper' : 'Iniciar' }}
-      </button>
-
-      <div class="rithm-selection-container" *ngIf="running">
-
-        <div class="rithm-selector">
-          <mat-form-field appearance="outline" class="full-width">
-            <mat-label>Check Rhythm</mat-label>
-            <mat-select>
-              <mat-option *ngFor="let element of rithms" (click)="getRithm(element)" [value]=element.name>
-                {{ element.name }}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
-        </div>
-
-        <div class="current-rithm" *ngIf="activeRithm; else noRithm">
-          <span class="rithm-label">Ritmo atual:</span>
-          <span class="rithm-value">{{ activeRithm }}</span>
-        </div>
-
-        <ng-template #noRithm>
-          <div class="current-rithm">
-            <span class="rithm-label">Defina um ritmo</span>
-            <span class="rithm-value">Nenhum selecionado</span>
-          </div>
-        </ng-template>
-
-      </div>
-
-    </div>
-
-
-    <div class="actions-section" *ngIf="activeRithm">
-
-      <div class="section">
-        <h3>Intervenções</h3>
-        <div class="action-grid">
-
-          <ng-container *ngFor="let drug of drugs.interventions">
-
-      
-            <div *ngIf="!drug.hasMenu" class="drug-container">
-              <button mat-raised-button color="accent" (click)="captureTime(drug)">
-                {{ drug.name }}
-                <span *ngIf="drug.cliked">({{ drug.cliked }})</span>
-              </button>
-            </div>
-
-            <div *ngIf="drug.hasMenu" class="drug-container">
-              <button mat-raised-button color="accent" [matMenuTriggerFor]="menu" (click)="setActiveDrug(drug)">
-                {{ drug.name }}
-                <span *ngIf="drug.cliked">({{ drug.cliked }})</span>
-              </button>
-            </div>
-
-            <mat-menu #menu="matMenu" yPosition="above">
-              <button mat-menu-item *ngFor="let item of drug.detail" (click)="captureTime(item)">
-                {{ item.name }}
-              </button>
-            </mat-menu>
-
-          </ng-container>
-
-        </div>
-      </div>
-
-      <div class="section">
-        <h3>Drogas</h3>
-        <div class="action-grid">
-          <button mat-stroked-button color="primary" *ngFor="let drug of drugs.rcpDrugs" (click)="captureTime(drug)">
-            {{ drug.name }} <span *ngIf="drug.cliked">({{ drug.cliked }})</span>
-          </button>
-        </div>
-      </div>
-    </div>
-
-  </div>
-
-  <div class="right-panel">
-    <span class="time-display">{{ formatTime() }}</span>
-    <div class="right-panel-subheader">
-      <h3>Registro de Intervenções</h3>
-      <button mat-stroked-button color="warn" (click)="restartApp()">Reiniciar tudo</button>
-    </div>
-
-    <div class="log-list">
-      <div class="log-item" *ngFor="let lap of lapTimes; let i = index">
-        <span class="log-time">{{ lap.timer }}</span>
-        <span class="log-name">{{ i + 1 }}° {{lap.label}} - {{ lap.name }}</span>
-        <button mat-icon-button color="warn" (click)="removeLapItem(i, lap)">
-          <span class="material-symbols-outlined">close</span>
-        </button>
-      </div>
-    </div>
-  </div>  -->
 
 
 </div>

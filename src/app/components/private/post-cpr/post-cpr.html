@@ -1,114 +1,61 @@
 <div class="page">
 
+  <!-- Painel esquerdo -->
   <div class="panels left-p">
     <div class="p-content">
-      <span class="p-title">Left-panel</span>
+      <span class="p-title">Protocolo Pós-PCR</span>
+
       <div class="actions-section">
         <div class="section">
-            <div class="right-panel-subheader">
-          <h3>Registro de Intervenções</h3>
-          <button class="save-button" (click)="restartApp()">Salvar e imprimir</button>
-        </div>
+
+          <div class="right-panel-subheader">
+            <h3>Registro de Intervenções</h3>
+            <button class="save-button green" (click)="openSaveDialog()">Salvar e imprimir</button>
+          </div>
+
           <div class="action-grid">
             <ng-container *ngFor="let intervention of interventions">
-              <div class="drug-container">
-                <div class="drug-container-body" (click)="captureTime(intervention)">
-                  {{ intervention.name }}
-                  <span *ngIf="intervention.cliked">({{ intervention.cliked }})</span>
+              <div class="drug-container" (click)="captureTime(intervention)">
+                <div class="drug-container-body">
+                  <div class="name">{{ intervention.name }}</div>
+                  <div class="count" *ngIf="intervention.cliked">
+                    ({{ intervention.cliked }})
+                  </div>
+                </div>
+                <div class="drug-footer" *ngIf="intervention.description">
+                  {{ intervention.description }}
                 </div>
               </div>
-
             </ng-container>
           </div>
+
         </div>
       </div>
     </div>
   </div>
 
+  <!-- Painel direito -->
   <div class="panels right-p">
     <div class="p-content">
-      <span class="p-title">Right-panel</span>
+      <span class="p-title">Log de Intervenções</span>
+
       <div class="section">
         <div class="right-panel-subheader">
-          <h3>Registro de Intervenções</h3>
+          <h3>Intervenções Realizadas</h3>
           <button mat-stroked-button color="warn" (click)="restartApp()">Reiniciar tudo</button>
         </div>
+
         <div class="log-list">
           <div class="log-item" *ngFor="let lap of lapTimes; let i = index">
             <span class="log-time">{{ lap.timer }}</span>
-            <span class="log-name">{{ i + 1 }}° {{lap.label}} - {{ lap.name }}</span>
+            <span class="log-name">{{ i + 1 }}° {{ lap.label }} - {{ lap.name }}</span>
             <button mat-icon-button color="warn" (click)="removeLapItem(i, lap)">
               <span class="material-symbols-outlined">close</span>
             </button>
           </div>
         </div>
       </div>
-
-
-
     </div>
   </div>
-
-  <!-- <section class="left-panel">
- 
-    <div class="controls-bar">
-      <h3>Cuidados pós-PCR</h3>
-      <div class="right-controls">
-        <button mat-flat-button class="save-button" (click)="finalizar()" [disabled]="finalized">
-          Finalizar e salvar no log
-        </button>
-        <button mat-stroked-button color="warn" (click)="limpar()" [disabled]="!logList.length && !hasAnySelected()">
-          Limpar
-        </button>
-      </div>
-    </div>
-
-
-    <section class="category" *ngFor="let group of grouped">
-      <h4>{{ group.category }}</h4>
-
-      <div class="quick-buttons">
-        <button *ngFor="let a of group.items; trackBy: trackByName" class="action-btn" mat-stroked-button
-          [disabled]="finalized" [ngClass]="{ filled: a.selected }" color="primary" (click)="toggleAction(a)">
-          {{ a.name }}
-        </button>
-      </div>
-    </section>
-  </section>
-
-
-  <section class="right-panel">
-    <div class="panel-header">
-      <h3>Log de ações</h3>
-    </div>
-
- 
-    <div class="log-list" *ngIf="logList.length; else empty">
-      <div *ngFor="let entry of logList; let i = index" class="log-item">
-        <div class="icon">
-          <span class="material-symbols-outlined">
-            {{ entry.kind === 'finalize' ? 'task_alt' : 'emergency' }}
-          </span>
-        </div>
-
-        <div class="content">
-          <div class="line">
-            <strong>{{ i + 1 }}.</strong> {{ entry.text }}
-          </div>
-          <div class="meta">{{ entry.time }}</div>
-        </div>
-
-        <div class="actions">
-          <button mat-icon-button color="warn" (click)="removeLog(i)" matTooltip="Remover do log">
-            <span class="material-symbols-outlined">close</span>
-          </button>
-        </div>
-      </div>
-    </div>
-
-    <ng-template #empty>
-      <div class="empty">Sem registros ainda.</div>
-    </ng-template>
-  </section> -->
 
 </div>

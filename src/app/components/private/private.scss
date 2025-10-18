@@ -4,12 +4,9 @@
     display: flex;
     flex-direction: column;
     .main-content{
-        background-color: #F1EFEE;
+        height: calc(100% - 100px);
         width: 100%;
-        height: 100%;
-        margin: auto;
-        // margin-top: 10px;
-        margin-bottom: 10px;
+        background-color: #F1EFEE;
         border-radius: 10px;
 
     }
