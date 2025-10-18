@@ -1,51 +1,54 @@
 <div class="card-grid">
-
-  <div
-    class="card-container"
-    [routerLink]="['/private/pcr-anotacoes']"
-    routerLinkActive="active">
-    <div class="card-body">
-      <div class="card-header">
-        <div class="card-icon">
-          <span class="material-symbols-outlined">favorite</span>
+  <div class="main-cards">
+    <div class="card-container" [routerLink]="['/private/pcr-anotacoes']" routerLinkActive="active">
+      <div class="card-body">
+        <div class="card-header">
+          <div class="card-icon">
+            <span class="material-symbols-outlined">favorite</span>
+          </div>
+          <span class="card-title">RCP - Anotador</span>
         </div>
-        <span class="card-title">RCP - Anotador</span>
+        <div class="card-content">Registre todas as intervenções</div>
+        <div class="card-footer">Atualização: 05/08/2024</div>
       </div>
-      <div class="card-content">Registre todas as intervenções</div>
-      <div class="card-footer">Atualização: 05/08/2024</div>
+    </div>
+
+    <div class="card-container" [routerLink]="['/private/cuidados-pos']" routerLinkActive="active">
+      <div class="card-body">
+        <div class="card-header">
+          <div class="card-icon">
+            <span class="material-symbols-outlined">medical_services</span>
+          </div>
+          <span class="card-title">Cuidados pós PCR</span>
+        </div>
+        <div class="card-content">Registre os cuidados</div>
+        <div class="card-footer">Atualização: 05/08/2024</div>
+      </div>
+    </div>
+
+    <div class="card-container" [routerLink]="['/private/pcr-review']" routerLinkActive="active">
+      <div class="card-body">
+        <div class="card-header">
+          <div class="card-icon">
+            <span class="material-symbols-outlined">description</span>
+          </div>
+          <span class="card-title">Revisão do cenário</span>
+        </div>
+        <div class="card-content">Download e revisão</div>
+        <div class="card-footer">Atualização: 05/08/2024</div>
+      </div>
     </div>
   </div>
 
-  <div
-    class="card-container"
-    [routerLink]="['/private/cuidados-pos']"
-    routerLinkActive="active">
+  <div class="exit-card" [routerLink]="['/setup']" routerLinkActive="active">
     <div class="card-body">
       <div class="card-header">
         <div class="card-icon">
-          <span class="material-symbols-outlined">medical_services</span>
+          <span class="material-symbols-outlined">logout</span>
         </div>
-        <span class="card-title">Cuidados pós PCR</span>
+        <span class="card-title">Sair da aplicação</span>
       </div>
-      <div class="card-content">Registre os cuidados</div>
-      <div class="card-footer">Atualização: 05/08/2024</div>
+      <div class="card-content">Voltar para setup</div>
     </div>
   </div>
-
-  <div
-    class="card-container"
-    [routerLink]="['/private/pcr-review']"
-    routerLinkActive="active">
-    <div class="card-body">
-      <div class="card-header">
-        <div class="card-icon">
-          <span class="material-symbols-outlined">cloud_download</span>
-        </div>
-        <span class="card-title">Revisão do cenário</span>
-      </div>
-      <div class="card-content">Download e revisão</div>
-      <div class="card-footer">Atualização: 05/08/2024</div>
-    </div>
-  </div>
-
 </div>

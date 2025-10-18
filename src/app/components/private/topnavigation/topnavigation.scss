@@ -1,12 +1,54 @@
 .card-grid {
-  height: 100px;
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-  align-items: center;
-  padding-left: 10px;
-  gap: 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 10px;
   background-color: var(--app-background-color);
 }
+
+/* cards principais à esquerda */
+.main-cards {
+display: flex;
+  gap: 15px;
+}
+
+/* card de saída no canto direito */
+.exit-card {
+  align-self: start;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  padding: 1rem;
+  width: 200px;
+  text-align: center;
+  cursor: pointer;
+  // transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+// .exit-card:hover {
+//   transform: translateY(-4px);
+//   box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+//   cursor: pointer;
+// }
+
+.exit-card .card-icon {
+  color: #ef4444; /* vermelho para saída */
+}
+
+.exit-card .card-title {
+  color: #1e293b;
+  font-weight: 600;
+}
+
+.exit-card .card-content {
+  color: #ef4444;
+  font-size: 0.9rem;
+}
+
+
+
+
+
 .card-icon {
   display: flex;
   align-items: center;
@@ -23,6 +65,7 @@
 }
 
 .card-container {
+  width: 178px;
   height: 85px;
   background: #ffffff;
   border-radius: 16px;

@@ -1,0 +1,20 @@
+<div class="page">
+    <div class="page-container">
+        <div class="container-header">
+            <span class="app-title">CPR Monitoring</span>
+            <div class="setup-wrapper">
+                <div class="setup-box" (click)="goToClassMode()">
+                    <h2>Modo Aula</h2>
+                    <p>Ideal para exibir conteúdos, revisar e demonstrar práticas.</p>
+                    <button matButton="outlined" (click)="goToClassMode()">Entrar</button>
+                </div>
+
+                <div class="setup-box" (click)="goToExamMode()">
+                    <h2>Modo Avaliação</h2>
+                    <p>Usado para aplicar testes e registrar respostas dos alunos.</p>
+                    <button matButton="outlined" (click)="goToExamMode()">Entrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
