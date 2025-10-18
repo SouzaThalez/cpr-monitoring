@@ -9,6 +9,7 @@ import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.componen
 import { MatDialog } from '@angular/material/dialog';
 import { jsPDF } from "jspdf";
 import { ReportModel } from '../../models/report';
+import { Intervention } from '../../models/intervention';
 
 @Component({
   selector: 'app-cpr-notes',
@@ -23,7 +24,7 @@ export class CprNotes {
 
 
   activeRithm: string = '';
-  lapTimes: Drug[] = [];
+  lapTimes: Intervention[] = [];
 
   running: boolean = false;
   time: number = 0;

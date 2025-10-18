@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import moment from 'moment';
 import 'moment/locale/pt-br';
+
 import { ReportCard } from '../../models/reportCard';
 import { ReportModel } from '../../models/report';
 import { Intervention } from '../../models/intervention';
+
 
 @Component({
   selector: 'app-cpr-review',
@@ -21,10 +23,17 @@ export class CprReview implements OnInit {
     this.loadFromLocalStorage();
   }
 
-  /** Carrega e normaliza dados de localStorage (reports + ReportInterventionList) */
+  /** Carrega e normaliza dados de localStorage (reports + interventionReports/ReportInterventionList) */
   private loadFromLocalStorage() {
-    const parsedReports: ReportModel[] = this.safeParse<ReportModel[]>(localStorage.getItem('reports')) || [];
-    const draftEntries = this.safeParse<Intervention[]>(localStorage.getItem('ReportInterventionList'));
+    
+    const parsedReports: ReportModel[] =
+      this.safeParse<ReportModel[]>(localStorage.getItem('reports')) || [];
+
+    // rascunho atual: nova key 'interventionReports' (fallback antigo 'ReportInterventionList')
+    const draftEntries: Intervention[] =
+      this.safeParse<Intervention[]>(localStorage.getItem('interventionReports'))
+        ?? this.safeParse<Intervention[]>(localStorage.getItem('ReportInterventionList'))
+        ?? [];
 
     const cards: ReportCard[] = [];
 
@@ -45,12 +54,11 @@ export class CprReview implements OnInit {
 
       const subtitle = `${entries.length} intervenç${entries.length === 1 ? 'ão' : 'ões'}`;
 
-      // 🔎 Decide a “origem” para o footer:
-      // - se veio via rep.reportList -> cuidados pós-PCR
-      // - caso contrário (rep.entries) -> RCP
-      const footerLabel = rep.reportList && rep.reportList.length
-        ? 'relatório dos cuidados pos pcr'
-        : 'relatório da rcp';
+      // Origem para o footer:
+      const footerLabel =
+        Array.isArray(rep.reportList) && rep.reportList.length
+          ? 'relatório dos cuidados pos pcr'
+          : 'relatório da rcp';
 
       cards.push({
         id: `report-${idx}-${when.valueOf()}`,
@@ -62,8 +70,8 @@ export class CprReview implements OnInit {
       });
     });
 
-    // 2) Rascunho atual em "ReportInterventionList" (opcional) -> cuidados pós-PCR
-    if (draftEntries && Array.isArray(draftEntries) && draftEntries.length) {
+    // 2) Rascunho atual (opcional) -> cuidados pós-PCR
+    if (Array.isArray(draftEntries) && draftEntries.length) {
       const when = moment();
       cards.unshift({
         id: `draft-${when.valueOf()}`,
@@ -72,14 +80,14 @@ export class CprReview implements OnInit {
         entries: draftEntries,
         footerLabel: 'relatório dos cuidados pos pcr',
         raw: {
-          // mantém a forma completa para evitar TS errors
-          entries: draftEntries,
+          // Mantemos forma compatível para não quebrar nenhum código que leia raw:
           reportList: draftEntries,
           reportDate: '',
           totalTimer: '',
           startTimer: '',
           endTimer: '',
-          user: ''
+          user: '',
+          timestamp: new Date().toISOString()
         },
         isDraft: true
       });
@@ -99,10 +107,14 @@ export class CprReview implements OnInit {
     }
   }
 
-  /** Normaliza o array de intervenções, seja 'entries' ou 'reportList' */
+  /** Normaliza o array de intervenções, preferindo 'reportList'. Mantém compatibilidade com 'entries'. */
   private pickEntries(rep: ReportModel): Intervention[] {
     if (Array.isArray(rep.reportList) && rep.reportList.length) return rep.reportList;
-    if (Array.isArray(rep.entries)) return rep.entries;
+
+    // compatibilidade com registros antigos (se existirem):
+    // @ts-expect-error – alguns registros antigos podem ter 'entries' com shape compatível
+    if (Array.isArray(rep.entries) && rep.entries.length) return rep.entries as InterventionReportEntry[];
+
     return [];
   }
 
