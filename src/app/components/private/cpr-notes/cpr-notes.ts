@@ -20,6 +20,8 @@ export class CprNotes {
 
   drugs = drugsPcrData;
   rithms = pcrRithmsData;
+
+
   activeRithm: string = '';
   lapTimes: Drug[] = [];
 
@@ -33,7 +35,6 @@ export class CprNotes {
 
   constructor(
     private matDialog: MatDialog,
-    private httpClient: HttpClient,
     private router: Router
   ) { }
 
@@ -125,9 +126,6 @@ export class CprNotes {
     });
   }
 
-
-
-
   openConfirmDialog() {
     const dialogRef = this.matDialog.open(ConfirmDialogComponent, { disableClose: true });
     
@@ -148,13 +146,13 @@ export class CprNotes {
     });
   }
 
- private saveReportToLocalStorage(model: any) {
+  private saveReportToLocalStorage(model: any) {
   const existingReports = JSON.parse(localStorage.getItem('reports') || '[]');
   existingReports.push(model);
   localStorage.setItem('reports', JSON.stringify(existingReports));
 
   // redireciona para outra rota se desejar
   this.router.navigateByUrl('/private/cuidados-pos');
-}
+  }
 
 }

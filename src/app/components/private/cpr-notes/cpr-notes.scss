@@ -224,68 +224,6 @@
   }
 
 
-  /* Ações: intervenções e drogas */
-  .actions-section {
-
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-
-
-    .section {
-      h3 {
-        color: #333;
-        font-weight: 600;
-      }
-
-      .action-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-        gap: 5px;
-
-        button {
-          flex: 1 1 45%;
-          min-width: 120px;
-          padding: 0.8rem;
-          font-weight: 500;
-          text-transform: none;
-          background: #ffffff;
-          color: #333;
-          border: 1px solid #ccc;
-          border-radius: 6px;
-          transition: all 0.2s ease;
-          width: 100%;
-
-          &:hover {
-            background: #e8e8e8;
-          }
-        }
-
-        /* botão de intervenções */
-        button[color='accent'] {
-          border: 1px solid #939fab !important;
-          color: #1976d2 !important;
-          border: none;
-
-          &:hover {
-            background-color: rgba(25, 118, 210, 0.1);
-          }
-        }
-
-        /* botão de drogas */
-        button[color='primary'] {
-          border: 1px solid #1976d2;
-          color: #1976d2;
-
-          &:hover {
-            background-color: rgba(25, 118, 210, 0.1);
-          }
-        }
-      }
-    }
-
-  }
-
   /* Responsividade */
   @media (max-width: 992px) {
     flex-direction: column;

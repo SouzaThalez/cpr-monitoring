@@ -1,3 +1,160 @@
+.page {
+  height: 100%;
+  display: flex;
+
+  .panels {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+
+    .p-content {
+      height: 100%;
+      padding-left: 10px;
+      padding-right: 10px;
+      display: flex;
+      flex-direction: column;
+
+    }
+
+    &.left-p {
+      border-top: 2px solid #b0acad;
+      border-left: 2px solid #b0acad;
+      border-right: 2px solid #b0acad;
+    }
+
+    &.right-p {
+      border-top: 1px dotted blue;
+      border-left: 1px dotted blue;
+      border-right: 1px dotted blue;
+    }
+
+    .actions-section {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+
+      .section {
+
+        .section-title {
+          font-weight: bold;
+          font-size: 15px;
+          padding-bottom: 10px;
+        }
+
+        .action-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+          justify-items: center;
+          gap: 5px;
+
+          .drug-container {
+            display: flex;
+            flex-direction: column;
+            width: 170px;
+            margin-bottom: 5px;
+
+            .drug-container-body {
+              padding: 10px;
+              border-radius: 5px;
+              display: flex;
+              justify-content: center;
+              background-color: white;
+              box-shadow: 0px 10px 15px -3px rgba(0, 0, 0, 0.1);
+              cursor: pointer;
+
+              &:hover {
+                background-color: #96b2ef;
+              }
+            }
+
+          }
+
+        }
+      }
+
+    }
+
+
+    .log-list {
+      height: 100%;
+      margin-top: 10px;
+      display: flex;
+      flex-direction: column-reverse;
+      gap: 10px;
+      padding-bottom: 10px;
+
+      overflow-y: auto;
+
+      .log-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: #fff;
+        padding: 0.6rem 1rem;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+        transition: background 0.2s ease;
+
+        &:hover {
+          background: #f5f5f5;
+        }
+
+        .log-time {
+          font-weight: 600;
+          width: 70px;
+          color: #444;
+        }
+
+        .log-name {
+          flex: 1;
+          margin-left: 0.5rem;
+          color: #333;
+        }
+
+        button {
+          color: #b33a3a;
+        }
+      }
+    }
+
+    .right-panel-subheader {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+    }
+
+    .save-button {
+      border: 1px solid;
+      width: 272px;
+      display: flex;
+      justify-content: center;
+      padding: 0.8rem 1rem;
+      border-radius: 2px;
+      transition: background 0.2s ease;
+      cursor: pointer;
+
+      &.red {
+        background-color: #c76060;
+        color: white;
+      }
+
+      &.green {
+        background-color: #569356;
+        color: white;
+      }
+    }
+
+  }
+
+}
+
+
+
+
+
+
+
 .post-cpr-layout.simple {
   /* empilha tudo em coluna */
   display: flex;

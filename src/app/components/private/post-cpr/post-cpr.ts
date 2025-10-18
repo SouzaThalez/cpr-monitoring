@@ -1,28 +1,11 @@
 import { Component } from '@angular/core';
 import moment from 'moment';
 import 'moment/locale/pt-br';
-import { posPcrData } from '../../../data/posPcrData';
 import { MatDialog } from '@angular/material/dialog';
-import { SaveDialog } from './save-dialog/save-dialog';
+import { posPcrData } from '../../../data/posPcrData';
+import { Intervention } from '../../models/intervention';
 
-type LogKind = 'action' | 'finalize';
 
-interface ActionItem {
-  name: string;
-  selected: boolean;
-}
-
-interface LogEntry {
-  text: string;
-  time: string;
-  kind: LogKind;
-  actionName?: string; // usado para vincular o log ao botão
-}
-
-interface GroupedActions {
-  category: string;
-  items: ActionItem[];
-}
 
 @Component({
   selector: 'app-post-cpr',
@@ -30,229 +13,56 @@ interface GroupedActions {
   styleUrls: ['./post-cpr.scss'],
   standalone: false
 })
-export class PostCpr {
-  // Ordem do protocolo pós-parada (AHA/fluxo prático)
-  private readonly categoryOrder = [
-    'Via aérea & Ventilação',
-    'Hemodinâmica',
-    'Temperatura',
-    'Metabólico',
-    'Sedação & UTI',
-    'Organização do cuidado',
-    'Outros'
-  ];
 
-  grouped: GroupedActions[] = [];
-  logList: LogEntry[] = [];
-  finalized = false;
+
+export class PostCpr {
+
+  interventions = posPcrData.firstIntervention;
+  lapTimes: Intervention[] = [];
+
+  time: number = 0;
+   milliseconds: number = 0;
 
   constructor(
     private matDialog: MatDialog,
-  ){
-    
-    moment.locale('pt-br');
+  ) { }
 
-    // 1) Dedup mantendo ordem original
-    const seen = new Set<string>();
-    const actions: ActionItem[] = posPcrData
-      .filter(x => {
-        const k = x.name.trim();
-        if (seen.has(k)) return false;
-        seen.add(k);
-        return true;
-      })
-      .map(x => ({ name: x.name.trim(), selected: false }));
 
-    // 2) Agrupar por categorias (regras por palavra-chave)
-    const buckets = new Map<string, ActionItem[]>();
-    this.categoryOrder.forEach(cat => buckets.set(cat, []));
+  captureTime(item: any) {
 
-    for (const a of actions) {
-      const cat = this.categorize(a.name);
-      if (!buckets.has(cat)) buckets.set(cat, []);
-      buckets.get(cat)!.push(a);
-    }
-
-    // 3) Montar array final respeitando a ordem do protocolo
-    this.grouped = this.categoryOrder
-      .filter(cat => (buckets.get(cat)?.length ?? 0) > 0)
-      .map(cat => ({ category: cat, items: buckets.get(cat)! }));
+    item.cliked = (item.cliked || 0) + 1;
+    const itemValue: Intervention = {
+      timer: this.formatTime(),
+      name: item.name,
+      label: item.label
+    };
+    this.lapTimes.push(itemValue);
   }
 
-  // Categorização simples por palavra-chave (case-insensitive)
-  private categorize(name: string): string {
-
-    
-    const s = name.toLowerCase();
-
-    // Via aérea & Ventilação
-    if (
-      s.includes('capnografia') ||
-      s.includes('tubo') ||
-      s.includes('iot') ||
-      s.includes('hiperóxia') ||
-      s.includes('hiperoxia') // caso sem acento
-    ) {
-      return 'Via aérea & Ventilação';
-    }
-
-    // Hemodinâmica
-    if (
-      s.includes('vasopressor') ||
-      s.includes('inotrópico') ||
-      s.includes('inotropico') ||
-      s.includes('cristaloide') ||
-      s.includes('lactato') ||
-      s.includes('diurese')
-    ) {
-      return 'Hemodinâmica';
-    }
-
-    // Temperatura
-    if (
-      s.includes('temperatura') ||
-      s.includes('febre')
-    ) {
-      return 'Temperatura';
-    }
-
-    // Metabólico
-    if (
-      s.includes('hipoglicemia') ||
-      s.includes('hiperglicemia') ||
-      s.includes('eletrólitos') ||
-      s.includes('eletrólitos') ||
-      s.includes('eletrólito') ||
-      s.includes('eletrólitos') ||
-      s.includes('eletrólitos') ||
-      s.includes('eletrólitos') || // redundâncias para garantir
-      s.includes('eletrólitos') ||
-      s.includes('eletrólitos') ||
-      s.includes('eletrólitos') ||
-      s.includes('eletrólitos') ||
-      s.includes('eletrólitos') ||
-      s.includes('eletrólitos') ||
-      s.includes('eletrólitos') ||
-      s.includes('eletrólitos') ||
-      s.includes('eletrólitos') ||
-      s.includes('eletrólitos') ||
-      s.includes('eletrólitos') ||
-      s.includes('eletrólitos') ||
-      s.includes('eletrólitos') ||
-      s.includes('eletrólitos') ||
-      s.includes('eletrólitos') ||
-      s.includes('eletrólitos') ||
-      s.includes('eletrólitos') ||
-      s.includes('eletrólitos') ||
-      s.includes('eletrólitos') || // (sim, repetido de propósito para cobrir variações)
-      s.includes('eletr') // fallback genérico
-    ) {
-      return 'Metabólico';
-    }
-
-    // Sedação & UTI
-    if (
-      s.includes('sedação') ||
-      s.includes('sedacao') ||
-      s.includes('analgesia')
-    ) {
-      return 'Sedação & UTI';
-    }
-
-    // Organização do cuidado
-    if (
-      s.includes('centro especializado') ||
-      s.includes('parada')
-    ) {
-      return 'Organização do cuidado';
-    }
-
-    return 'Outros';
+  formatTime(): string {
+    const minutes = Math.floor(this.time / 60);
+    const seconds = this.time % 60;
+    return `${this.padNumber(minutes)}:${this.padNumber(seconds)}:${this.padNumber(this.milliseconds, 2)}`;
   }
 
-  trackByName = (_: number, item: ActionItem) => item.name;
-
-  private now(): string {
-    return moment().format('LT');
+  padNumber(num: number, length: number = 2): string {
+    return num.toString().padStart(length, '0');
   }
 
-  hasAnySelected(): boolean {
-    return this.grouped.some(g => g.items.some(a => a.selected));
-  }
-
-  // Toggle + log: ao desmarcar, remove o log dessa ação
-  toggleAction(a: ActionItem) {
-    if (this.finalized) return;
-    a.selected = !a.selected;
-
-    if (a.selected) {
-      // Adiciona log de seleção
-      this.logList.unshift({
-        text: `Selecionado: ${a.name}`,
-        time: this.now(),
-        kind: 'action',
-        actionName: a.name
-      });
-    } else {
-      // Remove o log mais recente correspondente a essa ação
-      const idx = this.logList.findIndex(
-        e => e.kind === 'action' && e.actionName === a.name
-      );
-      if (idx !== -1) this.logList.splice(idx, 1);
+  removeLapItem(index: number, intem: any) {
+    this.lapTimes.splice(index, 1);
+    if (this.interventions.find(d => d.name === intem.name)) {
+      this.interventions.find(d => d.name === intem.name)!.cliked--;
     }
+    // if (this.intem.interventions.find(d => d.name === drug.name)) {
+    //   this.drugs.interventions.find(d => d.name === drug.name)!.cliked--;
+    // }
   }
 
-  // Remover um item do log manualmente (não mexe no estado do botão)
-  removeLog(idx: number) {
-    this.logList.splice(idx, 1);
+    restartApp() {
+    // this.resetStopwatch();
+    this.lapTimes = [];
+    // this.activeRithm = '';
   }
-
-  finalizar() {
-
-    if (this.finalized) return;
-
-    const escolhidas = this.grouped
-      .flatMap(g => g.items)
-      .filter(a => a.selected)
-      .map(a => `• ${a.name}`)
-      .join('\n');
-
-    this.logList.unshift({
-      text: escolhidas ? `Finalizado. Ações selecionadas:\n${escolhidas}` : 'Finalizado. Sem ações selecionadas.',
-      time: this.now(),
-      kind: 'finalize'
-    });
-    this.openSaveDialog(escolhidas);
-    this.finalized = true;
-  }
-
-  limpar() {
-    this.grouped.forEach(g => g.items.forEach(a => (a.selected = false)));
-    this.logList = [];
-    this.finalized = false;
-  }
-
-    openSaveDialog(content: String) {
-
-      const dialogRef = this.matDialog.open(SaveDialog,{ 
-        disableClose: true,
-        data: content
-      });
-      
-      dialogRef.afterClosed().subscribe(result => {
-        if (result) {
-     
-          //this.saveReportToLocalStorage(reportModel);
-        } else {
-         
-        }
-      });
-    }
-  
-
-
-
-
-
 
 }

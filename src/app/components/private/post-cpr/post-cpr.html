@@ -1,8 +1,56 @@
-<div class="post-cpr-layout simple">
+<div class="page">
 
-  <!-- Painel superior: ações rápidas -->
-  <section class="left-panel">
-    <!-- Barra de controles entre ações e log -->
+  <div class="panels left-p">
+    <div class="p-content">
+      <span class="p-title">Left-panel</span>
+      <div class="actions-section">
+        <div class="section">
+            <div class="right-panel-subheader">
+          <h3>Registro de Intervenções</h3>
+          <button class="save-button" (click)="restartApp()">Salvar e imprimir</button>
+        </div>
+          <div class="action-grid">
+            <ng-container *ngFor="let intervention of interventions">
+              <div class="drug-container">
+                <div class="drug-container-body" (click)="captureTime(intervention)">
+                  {{ intervention.name }}
+                  <span *ngIf="intervention.cliked">({{ intervention.cliked }})</span>
+                </div>
+              </div>
+
+            </ng-container>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panels right-p">
+    <div class="p-content">
+      <span class="p-title">Right-panel</span>
+      <div class="section">
+        <div class="right-panel-subheader">
+          <h3>Registro de Intervenções</h3>
+          <button mat-stroked-button color="warn" (click)="restartApp()">Reiniciar tudo</button>
+        </div>
+        <div class="log-list">
+          <div class="log-item" *ngFor="let lap of lapTimes; let i = index">
+            <span class="log-time">{{ lap.timer }}</span>
+            <span class="log-name">{{ i + 1 }}° {{lap.label}} - {{ lap.name }}</span>
+            <button mat-icon-button color="warn" (click)="removeLapItem(i, lap)">
+              <span class="material-symbols-outlined">close</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+
+
+    </div>
+  </div>
+
+  <!-- <section class="left-panel">
+ 
     <div class="controls-bar">
       <h3>Cuidados pós-PCR</h3>
       <div class="right-controls">
@@ -15,7 +63,7 @@
       </div>
     </div>
 
-    <!-- Grupos na ordem do protocolo -->
+
     <section class="category" *ngFor="let group of grouped">
       <h4>{{ group.category }}</h4>
 
@@ -28,13 +76,13 @@
     </section>
   </section>
 
-  <!-- Painel inferior: log -->
+
   <section class="right-panel">
     <div class="panel-header">
       <h3>Log de ações</h3>
     </div>
 
-    <!-- Lista rolável -->
+ 
     <div class="log-list" *ngIf="logList.length; else empty">
       <div *ngFor="let entry of logList; let i = index" class="log-item">
         <div class="icon">
@@ -61,6 +109,6 @@
     <ng-template #empty>
       <div class="empty">Sem registros ainda.</div>
     </ng-template>
-  </section>
+  </section> -->
 
 </div>
