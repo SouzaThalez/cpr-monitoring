@@ -1,0 +1,220 @@
+.page {
+  height: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  padding: 1rem;
+  box-sizing: border-box;
+  background: #fafafa;
+
+  .panels {
+    height: 100%;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+
+    .p-content {
+      height: 100%;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+       padding-left: 10px;
+      padding-top: 10px;
+      padding-right: 10px;
+      overflow: hidden;
+
+      .p-title {
+        font-weight: 600;
+        font-size: 0.95rem;
+        color: #6b7280;
+        margin-bottom: 0.5rem;
+      }
+
+      h3 {
+        margin: 0;
+        color: #374151;
+      }
+
+      .right-panel-subheader {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 0.75rem;
+      }
+    }
+
+    /* Painel esquerdo (cartões estilo drug-container) */
+    &.left-p {
+       height: 100%;
+      flex: 1.15;
+      border: 2px solid #b0acad;
+
+      .actions-section {
+        flex: 1;
+        overflow-y: auto;
+      }
+
+      .section {
+        margin-bottom: 1rem;
+      }
+
+      .action-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+        gap: 10px;
+        padding-bottom: 1rem;
+
+        .empty {
+          grid-column: 1 / -1;
+          color: #6b7280;
+        }
+      }
+
+      .drug-container {
+        background: #f9fafb;
+        border-radius: 8px;
+        border: 1px solid #e5e7eb;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+        cursor: pointer;
+        transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        text-align: center;
+
+        &:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        &.active {
+          border-color: #2563eb;
+          box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.15);
+        }
+
+        .drug-container-body {
+          padding: 12px;
+          min-height: 82px;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+          gap: 4px;
+
+          .name {
+            font-weight: 600;
+            font-size: 14px;
+            color: #1e293b;
+            word-break: break-word;
+            line-height: 1.2;
+          }
+
+          .count {
+            font-size: 12px;
+            color: #2563eb;
+            font-weight: 500;
+          }
+        }
+
+        .drug-footer {
+          background: #e2e8f0;
+          color: #475569;
+          font-size: 12px;
+          padding: 4px 6px;
+          border-top: 1px solid #cbd5e1;
+          border-radius: 0 0 8px 8px;
+          line-height: 1.2;
+        }
+      }
+    }
+
+    /* Painel direito (detalhes + scroll interno) */
+    &.right-p {
+      height: 100%;
+      flex: 1;
+      border: 1px dotted #2563eb;
+      background: #f3f4f6;
+      display: flex;
+      flex-direction: column;
+
+      .p-content {
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+        overflow: hidden; // garante que o scroll aconteça somente na lista
+      }
+
+      .log-list {
+        flex: 1;
+        overflow-y: auto;     // scroll interno
+        overflow-x: hidden;
+        max-height: 100%;
+        padding-right: 0.5rem;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+
+        /* Personalização opcional do scroll */
+        &::-webkit-scrollbar { width: 8px; }
+        &::-webkit-scrollbar-thumb {
+          background-color: #cbd5e1;
+          border-radius: 4px;
+        }
+        &::-webkit-scrollbar-thumb:hover { background-color: #94a3b8; }
+      }
+
+      .log-item {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        background: #fff;
+        padding: 0.6rem 1rem;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+        transition: background 0.2s ease;
+        flex-shrink: 0;
+
+        &:hover { background: #f5f5f5; }
+
+        .log-time {
+          font-weight: 600;
+          min-width: 70px;
+          color: #2563eb;
+        }
+
+        .log-name {
+          flex: 1;
+          color: #333;
+        }
+      }
+
+      .empty {
+        color: #6b7280;
+      }
+    }
+  }
+
+  /* Responsivo */
+  @media (max-width: 900px) {
+    flex-direction: column;
+
+    .panels {
+      width: 100%;
+      flex: none;
+    }
+
+    .left-p .action-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    @media (max-width: 600px) {
+      .left-p .action-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  }
+}

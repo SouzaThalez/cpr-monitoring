@@ -1,1 +1,71 @@
-<p>cpr-review works!</p>
+<div class="page">
+
+  <!-- Painel esquerdo: lista de relatórios -->
+  <div class="panels left-p">
+    <div class="p-content">
+      <span class="p-title">Histórico</span>
+
+      <div class="actions-section">
+        <div class="section">
+          <div class="right-panel-subheader">
+            <h3>Acompanhe todos os registros</h3>
+          </div>
+
+          <div class="action-grid">
+            <ng-container *ngFor="let card of reports">
+              <div
+                class="drug-container"
+                [class.active]="selected?.id === card.id"
+                (click)="selectReport(card)"
+              >
+                <div class="drug-container-body">
+                  <div class="name">{{ card.whenLabel }}</div>
+                  <div class="count">{{ card.subtitle }}</div>
+                </div>
+
+                <div class="drug-footer" *ngIf="card.metaLine">
+                  {{ card.metaLine }}
+                </div>
+              </div>
+            </ng-container>
+
+            <div *ngIf="!reports.length" class="empty">
+              Nenhum registro encontrado.
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Painel direito: detalhes do relatório selecionado -->
+  <div class="panels right-p">
+    <div class="p-content">
+      <span class="p-title">Log de informações</span>
+
+      <div class="section">
+        <div class="right-panel-subheader">
+          <h3>
+            {{ selected?.whenLabel || 'Selecione um registro' }}
+          </h3>
+        </div>
+
+        <div class="log-list">
+          <ng-container *ngIf="selected?.entries?.length; else empty">
+            <div class="log-item" *ngFor="let it of selected?.entries; let i = index">
+              <span class="log-time">{{ it.timer }}</span>
+              <span class="log-name">{{ idx(i) }}° {{ it.label }} - {{ it.name }}</span>
+            </div>
+          </ng-container>
+
+          <ng-template #empty>
+            <div class="empty">Nenhum item neste registro.</div>
+          </ng-template>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+</div>
