@@ -10,6 +10,10 @@ const routes: Routes = [
     path: 'private',
     loadChildren: () => import('./components/private/private-module').then((module) => module.PrivateModule),
   },
+    {
+    path: '**',
+    redirectTo: 'setup'
+  }
 ];
 
 @NgModule({
