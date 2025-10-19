@@ -22,14 +22,9 @@ display: flex;
   width: 200px;
   text-align: center;
   cursor: pointer;
-  // transition: transform 0.3s ease, box-shadow 0.3s ease;
+  
 }
 
-// .exit-card:hover {
-//   transform: translateY(-4px);
-//   box-shadow: 0 8px 16px rgba(0,0,0,0.15);
-//   cursor: pointer;
-// }
 
 .exit-card .card-icon {
   color: #ef4444; /* vermelho para saída */
@@ -44,10 +39,6 @@ display: flex;
   color: #ef4444;
   font-size: 0.9rem;
 }
-
-
-
-
 
 .card-icon {
   display: flex;
@@ -80,8 +71,7 @@ display: flex;
 }
 
 .card-container.active {
-  border: 3px solid #b0acad;
-  // box-shadow: 0 0 0 3px rgba(25,118,210,0.2);
+  border: 3px solid black;
 }
 
 .card-body {
