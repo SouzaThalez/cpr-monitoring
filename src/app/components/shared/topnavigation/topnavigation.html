@@ -1,6 +1,7 @@
 <div class="card-grid">
   <div class="main-cards">
-    <div class="card-container" [routerLink]="['/private/pcr-anotacoes']" routerLinkActive="active">
+
+    <div class="card-container" routerLink ="/{{moduleRouterName}}/{{routerPathOne}}" routerLinkActive="active">
       <div class="card-body">
         <div class="card-header">
           <div class="card-icon">
@@ -13,7 +14,7 @@
       </div>
     </div>
 
-    <div class="card-container" [routerLink]="['/private/cuidados-pos']" routerLinkActive="active">
+    <div class="card-container" routerLink ="/{{moduleRouterName}}/{{routerPathTwo}}" routerLinkActive="active">
       <div class="card-body">
         <div class="card-header">
           <div class="card-icon">
@@ -26,7 +27,7 @@
       </div>
     </div>
 
-    <div class="card-container" [routerLink]="['/private/pcr-review']" routerLinkActive="active">
+    <div class="card-container" routerLink ="/{{moduleRouterName}}/{{routerPathThree}}" routerLinkActive="active">
       <div class="card-body">
         <div class="card-header">
           <div class="card-icon">
@@ -38,9 +39,10 @@
         <div class="card-footer">Atualização: 05/08/2024</div>
       </div>
     </div>
+
   </div>
 
-  <div class="exit-card" [routerLink]="['/setup']" routerLinkActive="active">
+  <div class="card-container" routerLink ="/setup" routerLinkActive="active">
     <div class="card-body">
       <div class="card-header">
         <div class="card-icon">

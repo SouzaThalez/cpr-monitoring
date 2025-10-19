@@ -12,7 +12,7 @@ export class Setup {
   constructor(private router: Router) {}
 
   goToClassMode() {
-    this.router.navigate(['/class-mode']); 
+    this.router.navigate(['/lesson/aula-anotacoes']); 
   }
 
   goToExamMode() {

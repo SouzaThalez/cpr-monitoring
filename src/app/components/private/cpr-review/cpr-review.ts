@@ -2,9 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import moment from 'moment';
 import 'moment/locale/pt-br';
 
-import { ReportCard } from '../../models/reportCard';
-import { ReportModel } from '../../models/report';
-import { InterventionReportModel } from '../../models/interventionReport';
+import { ReportCard } from '../../../models/reportCard';
+import { ReportModel } from '../../../models/report';
+import { InterventionReportModel } from '../../../models/interventionReport';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({

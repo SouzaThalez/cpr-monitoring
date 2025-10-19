@@ -1,9 +1,14 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { Setup } from './components/setup/setup';
 
 const routes: Routes = [
   {
-    path: 'setup',
+    path:'setup',
+    component:Setup
+  },
+  {
+    path: 'lesson',
     loadChildren: () => import('./components/public/public-module').then((module) => module.PublicModule),
   },
   {

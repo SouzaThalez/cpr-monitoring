@@ -1,9 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
 import { PrivateRoutingModule } from './private-routing-module';
 import { Private } from './private';
-import { Topnavigation } from './topnavigation/topnavigation';
 import { CprNotes } from './cpr-notes/cpr-notes';
 import { PostCpr, } from './post-cpr/post-cpr';
 import { CprReview } from './cpr-review/cpr-review';
@@ -17,12 +15,12 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatDialogModule } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from './cpr-notes/confirm-dialog/confirm-dialog.component';
 import { SaveDialog } from './post-cpr/save-dialog/save-dialog';
+import { SharedModule } from '../shared/shared-module';
 
 
 @NgModule({
   declarations: [
     Private,
-    Topnavigation,
     CprNotes,
     PostCpr,
     CprReview,
@@ -39,6 +37,7 @@ import { SaveDialog } from './post-cpr/save-dialog/save-dialog';
     MatIconModule,
     MatMenuModule,
     MatDialogModule,
+    SharedModule
   
   ],
   providers:[

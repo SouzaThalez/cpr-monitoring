@@ -4,12 +4,12 @@ import { Router } from '@angular/router';
 import moment from 'moment';
 import { drugsPcrData } from '../../../data/drugsPcrData';
 import { pcrRithmsData } from '../../../data/pcrRithmsData';
-import { Drug } from '../../models/drug';
+import { Drug } from '../../../models/drug';
 import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { jsPDF } from "jspdf";
-import { ReportModel } from '../../models/report';
-import { Intervention } from '../../models/intervention';
+import { ReportModel } from '../../../models/report';
+import { Intervention } from '../../../models/intervention';
 
 @Component({
   selector: 'app-cpr-notes',

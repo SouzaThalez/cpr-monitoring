@@ -8,8 +8,8 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { posPcrData } from '../../../data/posPcrData';
 import { SaveDialog } from './save-dialog/save-dialog';
 
-import { Intervention } from '../../models/intervention';
-import { InterventionReportModel } from '../../models/interventionReport';
+import { Intervention } from '../../../models/intervention';
+import { InterventionReportModel } from '../../../models/interventionReport';
 
 @Component({
   selector: 'app-post-cpr',

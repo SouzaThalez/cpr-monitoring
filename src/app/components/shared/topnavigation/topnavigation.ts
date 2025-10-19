@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-topnavigation',
@@ -7,7 +7,12 @@ import { Component } from '@angular/core';
   styleUrl: './topnavigation.scss'
 })
 export class Topnavigation {
-    
+  
+  @Input() moduleRouterName = '';
+  @Input() routerPathOne = '';
+  @Input() routerPathTwo = '';
+  @Input() routerPathThree = '';
+  
   pageType = 'menus';      // ou algo como 'exams', 'settings', etc.
   alink = 'rcp-anotador';  // identificador do menu/rota
 
