@@ -1,11 +1,13 @@
 import { Component } from '@angular/core';
+import { MatButtonModule } from '@angular/material/button';
 import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-setup',
-  standalone: false,
+  standalone: true,
   templateUrl: './setup.html',
-  styleUrl: './setup.scss'
+  styleUrl: './setup.scss',
+  imports: [MatButtonModule],
 })
 export class Setup {
 
