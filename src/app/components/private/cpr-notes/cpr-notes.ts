@@ -4,7 +4,6 @@ import { Router } from '@angular/router';
 import moment from 'moment';
 import { drugsPcrData } from '../../../data/drugsPcrData';
 import { pcrRithmsData } from '../../../data/pcrRithmsData';
-import { Drug } from '../../../models/drug';
 import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { jsPDF } from "jspdf";
@@ -94,7 +93,7 @@ export class CprNotes {
   captureTime(drug: any) {
     
     drug.cliked = (drug.cliked || 0) + 1;
-    const drugValue: Drug = {
+    const drugValue: Intervention = {
       timer: this.formatTime(),
       name: drug.name,
       type: drug.type,
