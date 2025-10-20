@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import moment from 'moment';
@@ -18,6 +18,9 @@ import { Intervention } from '../../../models/intervention';
 })
 export class CprNotes {
 
+
+  @ViewChild('logList') logListRef!: ElementRef;
+  
   drugs = drugsPcrData;
   rithms = pcrRithmsData;
 
@@ -41,6 +44,18 @@ export class CprNotes {
   ngOnInit(): void { 
     this.restartApp()
   }
+
+  addLap(item: any) {
+  this.lapTimes.push(item);
+  setTimeout(() => this.scrollToBottom(), 0);
+}
+
+scrollToBottom() {
+  const el = this.logListRef?.nativeElement;
+  if (el) {
+    el.scrollTop = el.scrollHeight;
+  }
+}
 
   startStopwatch() {
     moment.locale('pt-br');
@@ -71,6 +86,15 @@ export class CprNotes {
     this.resetStopwatch();
     this.lapTimes = [];
     this.activeRithm = '';
+
+    this.drugs.rcpDrugs.forEach(element => {
+      element.cliked = 0
+    });
+
+    this.drugs.interventions.forEach(element => {
+      element.cliked = 0
+    });
+   
   }
 
   resetStopwatch() {
