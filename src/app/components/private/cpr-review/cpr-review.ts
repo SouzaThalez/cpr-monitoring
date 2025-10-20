@@ -61,8 +61,8 @@ export class CprReview implements OnInit {
         whenLabel,
         subtitle,
         entries,
-        footerLabel: 'relatório dos cuidados pos pcr',
-        raw: rep
+        footerLabel: 'Cuidados pós pcr',
+        raw: rep,
       });
     });
 
@@ -88,7 +88,7 @@ export class CprReview implements OnInit {
         whenLabel,
         subtitle,
         entries,
-        footerLabel: 'relatório da rcp',
+        footerLabel: 'Ciclo da rcp',
         raw: rep
       });
     });

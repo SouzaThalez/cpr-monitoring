@@ -60,6 +60,7 @@
           align-items: center;
           margin-bottom: 0.75rem;
         }
+
       }
 
       .action-grid {
@@ -147,6 +148,13 @@
         flex-direction: column;
         flex: 1;
         overflow: hidden; // garante que o scroll aconteça somente na lista
+
+        .section {
+          .right-panel-subheader {
+            padding: 10px;
+          }
+
+        }
       }
 
       .log-list {
