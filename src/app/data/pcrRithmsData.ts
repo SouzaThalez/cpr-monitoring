@@ -1,5 +1,11 @@
 export const pcrRithmsData = [
     {
+        name: 'Check.pulso'
+    },
+     {
+        name: 'Não.Check.pulso'
+    },
+    {
         name: 'FV'
     },
     {
@@ -15,6 +21,6 @@ export const pcrRithmsData = [
         name: 'Assistolia'
     },
     {
-        name: 'Não.Check'
+        name: 'Não.Check.Rithm'
     }
 ]

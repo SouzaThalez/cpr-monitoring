@@ -48,6 +48,12 @@ export const drugsPcrData ={
             type:'drug',
             id:8,
             cliked:0
+        },
+            {
+            name:'Outros.Procedimentos',
+            type:'cirurgico',
+            id:9,
+            cliked:0
         }
    
     ],

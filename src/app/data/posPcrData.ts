@@ -27,7 +27,7 @@ export const posPcrData = {
             description: 'Avaliar perfusão e resposta ao tratamento.'
         },
         {
-            name: 'Rp.volêmica com cristaloide e vasopressor',
+            name: 'Rp.volêmica com cristaloide',
             cliked: 0, description: 'Manter PAM > 65 mmHg.'
         },
         {
