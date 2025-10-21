@@ -49,9 +49,9 @@ export const drugsPcrData ={
             id:8,
             cliked:0
         },
-            {
-            name:'Outros.Procedimentos',
-            type:'cirurgico',
+        {
+            name:'Trombolitico',
+            type:'drug',
             id:9,
             cliked:0
         }
@@ -143,7 +143,7 @@ export const drugsPcrData ={
             cliked:0
         },
         {
-            name: 'Trombolitico',
+            name: 'Outros.Procedimentos',
             type:'drug',
             hasMenu:false,
             id:8,
