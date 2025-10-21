@@ -1,0 +1,17 @@
+.mat-mdc-menu-panel {
+
+    .mat-mdc-menu-content {
+        width: 220px;
+        padding: 10px;
+        display: flex;
+        flex-direction: column;
+        gap: 7px;
+
+        .mat-mdc-menu-item {
+            width: 220px !important;
+            text-align: center;
+            border: 2px solid gray;
+            border-radius: 7px;
+        }
+    }
+}
