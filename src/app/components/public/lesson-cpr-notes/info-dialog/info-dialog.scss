@@ -1,0 +1,39 @@
+.dialog-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.form-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  padding-top: 10px;
+}
+
+.button {
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  text-align: center;
+  font-weight: 500;
+}
+
+.cancel-button {
+  background-color: #eee;
+  color: #333;
+}
+
+.save-button {
+  background-color: #1976d2;
+  color: white;
+}
+
+.save-button.disabled {
+  opacity: 0.6;
+  pointer-events: none;
+}

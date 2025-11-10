@@ -12,6 +12,7 @@
         </button>
 
         <div class="rithm-selection-container" *ngIf="running">
+
           <mat-form-field appearance="outline" class="rithm-select">
             <mat-label>Check Rhythm</mat-label>
             <mat-select>
@@ -32,8 +33,23 @@
               <span class="rithm-value">Nenhum selecionado</span>
             </div>
           </ng-template>
+
         </div>
 
+      </div>
+      <div class="exam-info" *ngIf="examInfo != null">
+        <div class="sp">
+          <span class="label">Nome do Avaliador:</span>
+          <span class="value">{{ examInfo.avaliador }}</span>
+        </div>
+        <div class="sp">
+          <span class="label">Nome do Aluno:</span>
+          <span class="value">{{ examInfo.aluno }}</span>
+        </div>
+        <div class="sp">
+          <span class="label">Nome do Grupo/Aula:</span>
+          <span class="value">{{ examInfo.grupo }}</span>
+        </div>
       </div>
 
       <div class="actions-section" *ngIf="activeRithm">

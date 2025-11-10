@@ -22,9 +22,81 @@
       display: flex;
       flex-direction: column;
       padding-left: 10px;
-      padding-top: 10px;
+      padding-top: 4px;
       padding-right: 10px;
       overflow: hidden;
+
+      .exam-info {
+        // background: #f9fafc;
+        // border: 1px solid #d0d7de;
+        // border-radius: 10px;
+        // padding: 20px;
+        // box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+        font-family: 'Inter', sans-serif;
+        color: #333;
+        display: flex;
+        gap: 12px;
+        transition: all 0.3s ease;
+
+        &:hover {
+          background: #ffffff;
+          border-color: #b9c2cc;
+          box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+        }
+
+        .sp {
+          font-size: 15px;
+          background: #fff;
+          padding: 10px 14px;
+          border-radius: 6px;
+          border: 1px solid #e3e6ea;
+          display: flex;
+          flex-wrap: wrap;
+          align-items: center;
+          transition: background 0.3s;
+          gap: 2px;
+
+
+          &:hover {
+            background: #f3f6ff;
+          }
+
+             .label {
+      font-weight: 500;
+      color: #555;
+    }
+    
+    .value {
+      font-weight: 600;
+      color: #1a237e;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+
+      &::before {
+        content: '•';
+        color: #3f51b5;
+        font-size: 18px;
+      }
+    }
+
+       
+        }
+      }
+
+      /* Ajuste visual para destacar apenas o valor, caso queira: */
+      .exam-info .sp {
+        .label {
+          font-weight: 500;
+          color: #555;
+        }
+
+        .value {
+          font-weight: 600;
+          color: #0d47a1;
+        }
+      }
+
 
     }
 
@@ -110,7 +182,7 @@
       }
 
       .section {
-        margin-bottom: 1.5rem;
+        
 
         .section-title {
           font-weight: 600;

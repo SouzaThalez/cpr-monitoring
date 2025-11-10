@@ -8,6 +8,7 @@ import moment from 'moment';
 import { ReportModel } from '../../../models/report';
 import jsPDF from 'jspdf';
 import { SubmitDialog } from './submit-dialog/submit-dialog';
+import { InfoDialog } from './info-dialog/info-dialog';
 
 @Component({
   selector: 'app-lesson-cpr-notes',
@@ -31,6 +32,7 @@ export class LessonCprNotes {
   initialTime: string = '';
   endTime: string = '';
   activeDrug: any = null;
+  examInfo: any;
 
   constructor(
     private matDialog: MatDialog,
@@ -38,7 +40,8 @@ export class LessonCprNotes {
   ) { }
 
   ngOnInit(): void { 
-    this.restartApp()
+    this.restartApp();
+    this.openInfoDialog();
   }
 
   startStopwatch() {
@@ -149,6 +152,25 @@ export class LessonCprNotes {
     });
     
   }
+
+ openInfoDialog() {
+
+  const dialogRef = this.matDialog.open(InfoDialog, {
+    width: '400px',
+    disableClose: true
+  });
+
+  dialogRef.afterClosed().subscribe(result => {
+    if (result) {
+      this.examInfo = result;
+      console.log('Dados salvos:', result);
+    } else {
+      console.log('Cancelado');
+    }
+  });
+}
+
+
 
   private saveReportToLocalStorage(model: ReportModel) {
   const existingReports = JSON.parse(localStorage.getItem('reports') || '[]');

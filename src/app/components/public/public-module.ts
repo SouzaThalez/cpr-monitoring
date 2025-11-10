@@ -7,13 +7,15 @@ import { SharedModule } from '../shared/shared-module';
 import { Public } from './public';
 import { LessonPosPcr } from './lesson-pos-pcr/lesson-pos-pcr';
 import { LessonReview } from './lesson-review/lesson-review';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatDialogModule } from '@angular/material/dialog';
 import { SubmitDialog } from './lesson-cpr-notes/submit-dialog/submit-dialog';
+import { InfoDialog } from './lesson-cpr-notes/info-dialog/info-dialog';
+import { MatInputModule } from '@angular/material/input';
 
 
 @NgModule({
@@ -23,6 +25,7 @@ import { SubmitDialog } from './lesson-cpr-notes/submit-dialog/submit-dialog';
     LessonPosPcr,
     LessonReview,
     SubmitDialog,
+    InfoDialog,
   ],
   imports: [
     CommonModule,
@@ -34,7 +37,9 @@ import { SubmitDialog } from './lesson-cpr-notes/submit-dialog/submit-dialog';
     MatIconModule,
     MatMenuModule,
     MatDialogModule,
-    SharedModule
+    SharedModule,
+    ReactiveFormsModule,
+    MatInputModule
     
   ]
 })

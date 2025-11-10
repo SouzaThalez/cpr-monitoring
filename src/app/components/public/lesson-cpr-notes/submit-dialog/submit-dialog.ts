@@ -9,7 +9,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 })
 export class SubmitDialog {
 
-    saveReport = false;
+  saveReport = false;
 
   constructor(
     public dialogRef: MatDialogRef<SubmitDialog>,

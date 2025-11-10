@@ -1,0 +1,27 @@
+<h2 mat-dialog-title class="print-title">Informações da Avaliação</h2>
+
+<mat-dialog-content class="mat-typography print-text">
+  <form [formGroup]="form" class="dialog-form">
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Nome do Avaliador</mat-label>
+      <input matInput formControlName="avaliador" placeholder="Digite o nome do avaliador" />
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Nome do Aluno</mat-label>
+      <input matInput formControlName="aluno" placeholder="Digite o nome do aluno" />
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Nome do Grupo ou Aula</mat-label>
+      <input matInput formControlName="grupo" placeholder="Digite o nome do grupo ou aula" />
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions class="form-footer print-btns">
+  <div class="button cancel-button" (click)="onClose(false)">Cancelar</div>
+  <div class="button save-button" [class.disabled]="form.invalid" (click)="onClose(true)">
+    Salvar
+  </div>
+</mat-dialog-actions>
