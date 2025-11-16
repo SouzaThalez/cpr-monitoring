@@ -1,4 +1,5 @@
 import { Intervention } from "./intervention";
+import { Session } from "./session";
 
 export interface InterventionReportModel {
   timestamp?: string; 
@@ -7,5 +8,5 @@ export interface InterventionReportModel {
   totalTimer?: string;                 
   startTimer?: string;                 
   endTimer?: string;                    
-  user?: string;           
+  user: Session;              
 }             

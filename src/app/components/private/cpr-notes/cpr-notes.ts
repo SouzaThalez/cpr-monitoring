@@ -140,7 +140,6 @@ export class CprNotes {
     return `${this.padNumber(minutes)}:${this.padNumber(seconds)}:${this.padNumber(this.milliseconds, 2)}`;
   }
 
-
   private resetStopwatch() {
     clearInterval(this.timer);
     this.running = false;
@@ -200,9 +199,8 @@ export class CprNotes {
     existingReports.push(model);
     localStorage.setItem('reports', JSON.stringify(existingReports));
 
-    const existingSession = JSON.parse(localStorage.getItem('session') || '[]');
-    existingSession.push(session);
-    localStorage.setItem('session', JSON.stringify(existingSession));
+    //salva session apenas uma unica vez!
+    localStorage.setItem('session', JSON.stringify(session));
 
     // redireciona para outra rota se desejar
     this.router.navigateByUrl('/private/cuidados-pos');
