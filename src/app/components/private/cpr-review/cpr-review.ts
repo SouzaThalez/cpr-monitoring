@@ -162,7 +162,7 @@ export class CprReview implements OnInit {
     try {
       localStorage.removeItem('reports');
       localStorage.removeItem('interventionReports');
-      localStorage.removeItem('ReportInterventionList');
+      localStorage.removeItem('session');
 
       this.reports = [];
       this.selected = undefined;
