@@ -149,9 +149,35 @@
         flex: 1;
         overflow: hidden; // garante que o scroll aconteça somente na lista
 
+        .p-header {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+        }
+
+        .download-btn {
+          height: 56px; // mesma altura do mat-form-field
+          min-width: 160px;
+          border: none;
+          border-radius: 6px;
+          padding: 0 1.5rem;
+          font-size: 15px;
+          font-weight: 500;
+          color: #fff;
+          cursor: pointer;
+          transition: background 0.2s ease;
+
+
+          background-color: #4caf50;
+
+          &:hover {
+            background-color: #3e9143;
+          }
+        }
+
         .section {
           .right-panel-subheader {
-            padding: 10px;
+            padding-top: 10px;
           }
 
         }

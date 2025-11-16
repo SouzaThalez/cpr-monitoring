@@ -10,6 +10,7 @@ import { jsPDF } from "jspdf";
 import { ReportModel } from '../../../models/report';
 import { Intervention } from '../../../models/intervention';
 import { SessionInfoDialog } from './session-info-dialog/session-info-dialog';
+import { Session } from '../../../models/session';
 
 @Component({
   selector: 'app-cpr-notes',
@@ -36,7 +37,7 @@ export class CprNotes {
   initialTime: string = '';
   endTime: string = '';
   activeDrug: any = null;
-  sessionInfo: any;
+  sessionInfo?: Session;
 
   constructor(
     private matDialog: MatDialog,
@@ -48,21 +49,9 @@ export class CprNotes {
     this.openSessionDialog();
   }
 
-  addLap(item: any) {
-    this.lapTimes.push(item);
-    setTimeout(() => this.scrollToBottom(), 0);
-  }
-
-  scrollToBottom() {
-    const el = this.logListRef?.nativeElement;
-    if (el) {
-      el.scrollTop = el.scrollHeight;
-    }
-  }
-
   startStopwatch() {
 
-    
+
     moment.locale('pt-br');
     this.initialTime = moment().format('LT');
 
@@ -94,7 +83,7 @@ export class CprNotes {
     this.resetStopwatch();
     this.lapTimes = [];
     this.activeRithm = '';
-    this.sessionInfo = null;
+    this.sessionInfo = undefined;
 
     this.drugs.rcpDrugs.forEach(element => {
       element.cliked = 0
@@ -104,23 +93,6 @@ export class CprNotes {
       element.cliked = 0
     });
 
-  }
-
-  resetStopwatch() {
-    clearInterval(this.timer);
-    this.running = false;
-    this.time = 0;
-    this.milliseconds = 0;
-  }
-
-  formatTime(): string {
-    const minutes = Math.floor(this.time / 60);
-    const seconds = this.time % 60;
-    return `${this.padNumber(minutes)}:${this.padNumber(seconds)}:${this.padNumber(this.milliseconds, 2)}`;
-  }
-
-  padNumber(num: number, length: number = 2): string {
-    return num.toString().padStart(length, '0');
   }
 
   captureTime(drug: any) {
@@ -161,7 +133,27 @@ export class CprNotes {
     });
   }
 
-  openConfirmDialog() {
+
+  formatTime(): string {
+    const minutes = Math.floor(this.time / 60);
+    const seconds = this.time % 60;
+    return `${this.padNumber(minutes)}:${this.padNumber(seconds)}:${this.padNumber(this.milliseconds, 2)}`;
+  }
+
+
+  private resetStopwatch() {
+    clearInterval(this.timer);
+    this.running = false;
+    this.time = 0;
+    this.milliseconds = 0;
+  }
+
+
+  private padNumber(num: number, length: number = 2): string {
+    return num.toString().padStart(length, '0');
+  }
+
+  private openConfirmDialog() {
 
     const dialogRef = this.matDialog.open(ConfirmDialogComponent, { disableClose: true });
 
@@ -173,9 +165,9 @@ export class CprNotes {
           totalTimer: this.formatTime(),
           startTimer: this.initialTime,
           endTimer: this.endTime,
-          user: 'padrão'
+          user: this.sessionInfo!,
         };
-        this.saveReportToLocalStorage(reportModel);
+        this.saveReportToLocalStorage(reportModel, this.sessionInfo!);
         this.generatePDF(reportModel);
       } else {
         this.startStopwatch();
@@ -184,7 +176,7 @@ export class CprNotes {
 
   }
 
-  openSessionDialog() {
+  private openSessionDialog() {
 
     const dialogRef = this.matDialog.open(SessionInfoDialog, {
       width: '400px',
@@ -196,23 +188,27 @@ export class CprNotes {
         this.sessionInfo = result;
         console.log('Dados salvos:', this.sessionInfo);
       } else {
-       this.router.navigateByUrl('/setup');
+        this.router.navigateByUrl('/setup');
         console.log('Cancelado');
       }
     });
   }
 
+  private saveReportToLocalStorage(model: ReportModel, session: Session) {
 
-  private saveReportToLocalStorage(model: ReportModel) {
     const existingReports = JSON.parse(localStorage.getItem('reports') || '[]');
     existingReports.push(model);
     localStorage.setItem('reports', JSON.stringify(existingReports));
+
+    const existingSession = JSON.parse(localStorage.getItem('session') || '[]');
+    existingSession.push(session);
+    localStorage.setItem('session', JSON.stringify(existingSession));
 
     // redireciona para outra rota se desejar
     this.router.navigateByUrl('/private/cuidados-pos');
   }
 
-  generatePDF(model: ReportModel) {
+  private generatePDF(model: ReportModel) {
 
     const doc = new jsPDF();
 
@@ -234,16 +230,33 @@ export class CprNotes {
     );
     doc.text(wrappedText, margin, 30);
 
-    // Report Details
     doc.setFont("helvetica", "bold");
-    doc.text("Detalhes do Relatório:", 10, 50);
+    doc.text("Informações Gerais:", 10, 50);
+
     doc.setFont("courier", "normal");
     doc.setFontSize(12);
-    doc.text(`- Horário de início: ${model.startTimer}`, 10, 60);
-    doc.text(`- Horário de finalização: ${model.endTimer}`, 10, 68);
-    doc.text(`- Tempo total da parada: ${model.totalTimer}`, 10, 76);
-    doc.text(`- Data de realização: ${model.reportDate}`, 10, 84);
-    doc.text(`- Usuário: ${model.user}`, 10, 92);
+
+    const leftX = 10;
+    const rightX = 110;
+    let y = 60;
+
+    // Linha 1
+    doc.text(`- Início: ${model.startTimer}`, leftX, y);
+    doc.text(`- Avaliador: ${model.user.avaliator}`, rightX, y);
+
+    // Linha 2
+    y += 8;
+    doc.text(`- Fim: ${model.endTimer}`, leftX, y);
+    doc.text(`- Aluno: ${model.user.student}`, rightX, y);
+
+    // Linha 3
+    y += 8;
+    doc.text(`- Tempo Total: ${model.totalTimer}`, leftX, y);
+    doc.text(`- Grupo: ${model.user.group}`, rightX, y);
+
+    // Linha 4
+    y += 8;
+    doc.text(`- Data: ${model.reportDate}`, leftX, y);
 
     // Table Header
     doc.setFont("helvetica", "bold");
@@ -304,8 +317,20 @@ export class CprNotes {
     doc.text("Relatório gerado automaticamente em sistema", 105, pageHeight - 10, { align: "center" });
 
     // Save the PDF
-    doc.save("Relatorio.pdf");
+    doc.save("Relatorio-RCP.pdf");
 
+  }
+
+  private addLap(item: any) {
+    this.lapTimes.push(item);
+    setTimeout(() => this.scrollToBottom(), 0);
+  }
+
+  private scrollToBottom() {
+    const el = this.logListRef?.nativeElement;
+    if (el) {
+      el.scrollTop = el.scrollHeight;
+    }
   }
 
 }

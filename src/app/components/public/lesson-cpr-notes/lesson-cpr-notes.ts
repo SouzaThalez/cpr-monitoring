@@ -9,6 +9,7 @@ import { ReportModel } from '../../../models/report';
 import jsPDF from 'jspdf';
 import { SubmitDialog } from './submit-dialog/submit-dialog';
 import { InfoDialog } from './info-dialog/info-dialog';
+import { Session } from '../../../models/session';
 
 @Component({
   selector: 'app-lesson-cpr-notes',
@@ -20,10 +21,10 @@ export class LessonCprNotes {
 
   drugs = drugsPcrData;
   rithms = pcrRithmsData;
-
-
   activeRithm: string = '';
   lapTimes: Intervention[] = [];
+
+  sessionInfo?: Session;
 
   running: boolean = false;
   time: number = 0;
@@ -142,7 +143,7 @@ export class LessonCprNotes {
           totalTimer: this.formatTime(),
           startTimer: this.initialTime,
           endTimer: this.endTime,
-          user: 'padrão'
+          user: this.sessionInfo!,
         };
         this.saveReportToLocalStorage(reportModel);
         this.generatePDF(reportModel);

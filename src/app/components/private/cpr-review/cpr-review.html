@@ -46,8 +46,10 @@
   <!-- Painel direito: detalhes do relatório selecionado -->
   <div class="panels right-p">
     <div class="p-content">
-      <span class="p-title">Log de informações</span>
-
+      <div class="p-header">
+         <span class="p-title">Log de informações</span>
+          <button class="download-btn" (click)="DownloadPdf()">Download pdf</button>
+      </div>
       <div class="section">
         <div class="right-panel-subheader">
           <h3>
@@ -69,6 +71,7 @@
         </div>
 
       </div>
+      
     </div>
   </div>
 

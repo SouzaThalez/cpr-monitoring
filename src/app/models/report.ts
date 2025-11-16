@@ -1,4 +1,5 @@
 import { Intervention } from "./intervention";
+import { Session } from "./session";
 
 export interface ReportModel {
   timestamp?: string;       //(quando o relatório foi salvo)
@@ -7,5 +8,5 @@ export interface ReportModel {
   totalTimer?: string;                 
   startTimer?: string;                 
   endTimer?: string;                    
-  user?: string;           
+  user: Session;           
 }             
