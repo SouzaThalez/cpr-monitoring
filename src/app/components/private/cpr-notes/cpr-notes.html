@@ -1,6 +1,5 @@
 <div class="page">
 
-
   <div class="panels left-p">
     <div class="p-content">
 
@@ -22,7 +21,7 @@
           </mat-form-field>
 
           <div class="current-rithm" *ngIf="activeRithm; else noRithm">
-            <span class="rithm-label">Ritmo atual:</span>
+            <span class="rithm-label">Estado atual:</span>
             <span class="rithm-value">{{ activeRithm }}</span>
           </div>
 
@@ -34,6 +33,21 @@
           </ng-template>
         </div>
 
+      </div>
+
+      <div class="session-info" *ngIf="sessionInfo != null">
+        <div class="sp">
+          <span class="label">Nome do Avaliador:</span>
+          <span class="value">{{ sessionInfo.avaliador }}</span>
+        </div>
+        <div class="sp">
+          <span class="label">Nome do Aluno:</span>
+          <span class="value">{{ sessionInfo.aluno }}</span>
+        </div>
+        <div class="sp">
+          <span class="label">Nome do Grupo/Aula:</span>
+          <span class="value">{{ sessionInfo.grupo }}</span>
+        </div>
       </div>
 
       <div class="actions-section" *ngIf="activeRithm">
@@ -91,7 +105,6 @@
     </div>
   </div>
 
-
   <div class="panels right-p">
 
     <div class="p-content">
@@ -121,6 +134,5 @@
 
     </div>
   </div>
-
 
 </div>

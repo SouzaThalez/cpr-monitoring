@@ -18,7 +18,7 @@ import { InfoDialog } from './info-dialog/info-dialog';
 })
 export class LessonCprNotes {
 
-   drugs = drugsPcrData;
+  drugs = drugsPcrData;
   rithms = pcrRithmsData;
 
 
@@ -168,9 +168,7 @@ export class LessonCprNotes {
       console.log('Cancelado');
     }
   });
-}
-
-
+ }
 
   private saveReportToLocalStorage(model: ReportModel) {
   const existingReports = JSON.parse(localStorage.getItem('reports') || '[]');

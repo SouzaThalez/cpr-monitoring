@@ -4,8 +4,8 @@ import { Setup } from './components/setup/setup';
 
 const routes: Routes = [
   {
-    path:'setup',
-    component:Setup
+    path: 'setup',
+    component: Setup
   },
   {
     path: 'lesson',
@@ -15,7 +15,7 @@ const routes: Routes = [
     path: 'private',
     loadChildren: () => import('./components/private/private-module').then((module) => module.PrivateModule),
   },
-    {
+  {
     path: '**',
     redirectTo: 'setup'
   }

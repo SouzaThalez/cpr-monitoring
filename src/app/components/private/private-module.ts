@@ -5,7 +5,7 @@ import { Private } from './private';
 import { CprNotes } from './cpr-notes/cpr-notes';
 import { PostCpr, } from './post-cpr/post-cpr';
 import { CprReview } from './cpr-review/cpr-review';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatIconModule } from '@angular/material/icon';
@@ -16,6 +16,8 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from './cpr-notes/confirm-dialog/confirm-dialog.component';
 import { SaveDialog } from './post-cpr/save-dialog/save-dialog';
 import { SharedModule } from '../shared/shared-module';
+import { SessionInfoDialog } from './cpr-notes/session-info-dialog/session-info-dialog';
+import { MatInputModule } from '@angular/material/input';
 
 
 @NgModule({
@@ -26,6 +28,7 @@ import { SharedModule } from '../shared/shared-module';
     CprReview,
     ConfirmDialogComponent,
     SaveDialog,
+    SessionInfoDialog,
   ],
   imports: [
     CommonModule,
@@ -37,8 +40,9 @@ import { SharedModule } from '../shared/shared-module';
     MatIconModule,
     MatMenuModule,
     MatDialogModule,
-    SharedModule
-  
+    SharedModule,
+    ReactiveFormsModule,
+    MatInputModule  
   ],
   providers:[
     provideHttpClient(withInterceptorsFromDi())

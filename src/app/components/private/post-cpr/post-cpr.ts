@@ -10,6 +10,7 @@ import { SaveDialog } from './save-dialog/save-dialog';
 
 import { Intervention } from '../../../models/intervention';
 import { InterventionReportModel } from '../../../models/interventionReport';
+import jsPDF from 'jspdf';
 
 @Component({
   selector: 'app-post-cpr',
@@ -68,9 +69,15 @@ export class PostCpr {
   }
 
   openSaveDialog() {
-    const dialogRef = this.matDialog.open(SaveDialog, { disableClose: true });
+
+    const dialogRef = this.matDialog.open(SaveDialog,
+      {
+        disableClose: true
+      }
+    );
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
+
         const model: InterventionReportModel = {
           timestamp: new Date().toISOString(),
           interventionList: this.lapTimes,
@@ -85,107 +92,143 @@ export class PostCpr {
     });
   }
 
-  /** Persiste no array interventionReports */
+  restartApp() {
+    this.lapTimes = [];
+    this.interventions.forEach(i => (i.cliked = 0));
+  }
+
   private saveToLocalStorage(model: InterventionReportModel) {
+
     const existing: InterventionReportModel[] = JSON.parse(localStorage.getItem('interventionReports') || '[]');
     existing.push(model);
     localStorage.setItem('interventionReports', JSON.stringify(existing));
   }
 
-  /** Lê interventionReports e exporta CSV do registro mais recente (ou do conjunto) */
-  submitReport() {
-    const stored: InterventionReportModel[] = JSON.parse(localStorage.getItem('interventionReports') || '[]');
+  private submitReport() {
 
+    const stored: InterventionReportModel[] = JSON.parse(localStorage.getItem('interventionReports') || '[]');
+debugger
     if (!stored.length) {
       this.snackBar.open('Não há intervenções para salvar.', 'Fechar', { duration: 2500 });
       return;
     }
 
-    // passa a lista como veio do storage; o exportCsvReport normaliza
-    this.exportCsvReport(stored);
+  
+  //  this.generatePDF(stored);
 
     this.router.navigateByUrl('/private/pcr-review');
   }
 
-  /**
-   * Aceita tanto:
-   *  - Intervention[] (quando você passar só a lista)
-   *  - InterventionReportModel[] (como vem do localStorage)
-   * Normaliza para Intervention[] antes de montar o CSV.
-   */
-  private exportCsvReport(listOrModels: Intervention[] | InterventionReportModel[]) {
-    const rowsSource = this.normalizeCsvSource(listOrModels);
+  private generatePDF(model: InterventionReportModel) {
 
-    if (!rowsSource.length) {
-      this.snackBar.open('Nenhum dado para exportar.', 'Fechar', { duration: 2500 });
-      return;
-    }
+    const doc = new jsPDF();
 
-    const headers = ['#', 'Timer', 'Rótulo', 'Intervenção'];
-    const rows = rowsSource.map((x, i) => [
-      String(i + 1),
-      x.timer ?? '',
-      x.label ?? '',
-      x.name ?? ''
-    ]);
+    // Title
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(16);
+    doc.text("Relatório da RCP", 105, 20, { align: "center" });
 
-    const csv = this.buildCsv([headers, ...rows]);
-    const filename = `post_cpr_log_${moment().format('YYYYMMDD_HHmmss')}.csv`;
-    this.downloadFile(csv, filename, 'text/csv;charset=utf-8');
-  }
+    // Subtitle
+    doc.setFont("courier", "normal");
+    doc.setFontSize(12);
+    const pageWidth = doc.internal.pageSize.width;
+    const margin = 10;
+    const maxWidth = pageWidth - margin * 2;
 
-  /** Converte qualquer fonte para uma lista de Intervention */
-  private normalizeCsvSource(input: Intervention[] | InterventionReportModel[]): Intervention[] {
-    if (!Array.isArray(input) || input.length === 0) return [];
+    const wrappedText = doc.splitTextToSize(
+      "Este é um registro formal de todas as intervenções realizadas durante a massagem cardíaca, seguindo as normas e guidelines mais recentes para obter o melhor resultado.",
+      maxWidth
+    );
+    doc.text(wrappedText, margin, 30);
 
-    // Caso seja diretamente Intervention[]
-    const looksLikeIntervention =
-      'timer' in (input[0] as any) && 'name' in (input[0] as any) && 'label' in (input[0] as any);
-    if (looksLikeIntervention) {
-      return input as Intervention[];
-    }
+    // Report Details
+    doc.setFont("helvetica", "bold");
+    doc.text("Detalhes do Relatório:", 10, 50);
+    doc.setFont("courier", "normal");
+    doc.setFontSize(12);
 
-    // Caso seja InterventionReportModel[]
-    const models = input as InterventionReportModel[];
-    // Exporta o último relatório salvo (mais recente)
-    const last = models[models.length - 1];
-    return Array.isArray(last?.interventionList) ? last!.interventionList! : [];
-  }
+    doc.text(`- Horário de início: ${model.startTimer ?? "--:--"}`, 10, 60);
+    doc.text(`- Horário de finalização: ${model.endTimer ?? "--:--"}`, 10, 68);
+    doc.text(`- Tempo total da parada: ${model.totalTimer ?? "--:--"}`, 10, 76);
+    doc.text(`- Data de realização: ${model.interventionDate}`, 10, 84);
+    doc.text(`- Usuário: ${model.user}`, 10, 92);
 
-  /** CSV helpers */
-  private buildCsv(table: (string | number | null | undefined)[][]): string {
-    const escape = (val: any) => {
-      const s = (val ?? '').toString();
-      if (/[",\n]/.test(s)) {
-        return `"${s.replace(/"/g, '""')}"`;
+    // Table Header
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(12);
+    doc.text("Tabela de Intervenções:", 10, 100);
+    doc.setDrawColor(0);
+    doc.setFillColor(230, 230, 230);
+    doc.rect(10, 105, 190, 10, "F");
+
+    doc.text("Tempo", 15, 112);
+    doc.text("Nome", 75, 112);
+    doc.text("Tipo", 150, 112);
+
+    // Table Rows
+    let startY = 115;
+    const rowHeight = 10;
+    const pageHeight = doc.internal.pageSize.height;
+    const bottomMargin = 20;
+
+    let currentY = startY;
+
+    model.interventionList?.forEach((item: any) => {
+
+      if (currentY + rowHeight > pageHeight - bottomMargin) {
+        doc.addPage();
+
+        doc.setFont("helvetica", "bold");
+        doc.text("Tabela de Intervenções (continuação):", 10, 20);
+        doc.setFillColor(230, 230, 230);
+        doc.rect(10, 25, 190, 10, "F");
+
+        doc.text("Tempo", 15, 32);
+        doc.text("Nome", 75, 32);
+        doc.text("Tipo", 150, 32);
+
+        currentY = 35;
       }
-      return s;
-    };
-    const body = table.map(row => row.map(escape).join(',')).join('\r\n');
-    const BOM = '\uFEFF';
-    return BOM + body;
+
+      doc.rect(10, currentY, 190, rowHeight);
+
+      // timer
+      doc.text(item.timer ?? "--:--", 15, currentY + 7);
+
+      // nome + label
+      const nameText = item.label ? `${item.name} ${item.label}` : item.name;
+      doc.text(nameText, 75, currentY + 7);
+
+      // tipo
+      doc.text(item.label ?? "-", 150, currentY + 7);
+
+      currentY += rowHeight;
+    });
+
+    // Footer
+    doc.setFont("helvetica", "italic");
+    doc.setFontSize(10);
+    doc.text(
+      "Relatório gerado automaticamente em sistema",
+      105,
+      pageHeight - 10,
+      { align: "center" }
+    );
+
+    // Save
+    doc.save(`pcr_report_${Date.now()}.pdf`);
   }
 
-  private downloadFile(content: string, filename: string, type: string) {
-    const blob = new Blob([content], { type });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url; a.download = filename; a.click();
-    URL.revokeObjectURL(url);
-  }
-
-  formatTime(): string {
+  private formatTime(): string {
     const minutes = Math.floor(this.time / 60);
     const seconds = this.time % 60;
     return `${this.padNumber(minutes)}:${this.padNumber(seconds)}:${this.padNumber(this.milliseconds, 2)}`;
   }
 
-  padNumber(num: number, length: number = 2): string {
+  private padNumber(num: number, length: number = 2): string {
     return num.toString().padStart(length, '0');
   }
 
-  restartApp() {
-    this.lapTimes = [];
-    this.interventions.forEach(i => (i.cliked = 0));
-  }
+
+
 }

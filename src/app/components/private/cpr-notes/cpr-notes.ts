@@ -9,6 +9,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { jsPDF } from "jspdf";
 import { ReportModel } from '../../../models/report';
 import { Intervention } from '../../../models/intervention';
+import { SessionInfoDialog } from './session-info-dialog/session-info-dialog';
 
 @Component({
   selector: 'app-cpr-notes',
@@ -20,7 +21,7 @@ export class CprNotes {
 
 
   @ViewChild('logList') logListRef!: ElementRef;
-  
+
   drugs = drugsPcrData;
   rithms = pcrRithmsData;
 
@@ -35,29 +36,33 @@ export class CprNotes {
   initialTime: string = '';
   endTime: string = '';
   activeDrug: any = null;
+  sessionInfo: any;
 
   constructor(
     private matDialog: MatDialog,
     private router: Router
   ) { }
 
-  ngOnInit(): void { 
-    this.restartApp()
+  ngOnInit(): void {
+    this.restartApp();
+    this.openSessionDialog();
   }
 
   addLap(item: any) {
-  this.lapTimes.push(item);
-  setTimeout(() => this.scrollToBottom(), 0);
-}
-
-scrollToBottom() {
-  const el = this.logListRef?.nativeElement;
-  if (el) {
-    el.scrollTop = el.scrollHeight;
+    this.lapTimes.push(item);
+    setTimeout(() => this.scrollToBottom(), 0);
   }
-}
+
+  scrollToBottom() {
+    const el = this.logListRef?.nativeElement;
+    if (el) {
+      el.scrollTop = el.scrollHeight;
+    }
+  }
 
   startStopwatch() {
+
+    
     moment.locale('pt-br');
     this.initialTime = moment().format('LT');
 
@@ -71,6 +76,8 @@ scrollToBottom() {
         }
       }, 10);
     }
+
+
   }
 
   stopStopwatch() {
@@ -83,9 +90,11 @@ scrollToBottom() {
   }
 
   restartApp() {
+
     this.resetStopwatch();
     this.lapTimes = [];
     this.activeRithm = '';
+    this.sessionInfo = null;
 
     this.drugs.rcpDrugs.forEach(element => {
       element.cliked = 0
@@ -94,7 +103,7 @@ scrollToBottom() {
     this.drugs.interventions.forEach(element => {
       element.cliked = 0
     });
-   
+
   }
 
   resetStopwatch() {
@@ -115,7 +124,7 @@ scrollToBottom() {
   }
 
   captureTime(drug: any) {
-    
+
     drug.cliked = (drug.cliked || 0) + 1;
     const drugValue: Intervention = {
       timer: this.formatTime(),
@@ -155,7 +164,7 @@ scrollToBottom() {
   openConfirmDialog() {
 
     const dialogRef = this.matDialog.open(ConfirmDialogComponent, { disableClose: true });
-    
+
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         const reportModel: ReportModel = {
@@ -172,19 +181,38 @@ scrollToBottom() {
         this.startStopwatch();
       }
     });
-    
+
   }
+
+  openSessionDialog() {
+
+    const dialogRef = this.matDialog.open(SessionInfoDialog, {
+      width: '400px',
+      disableClose: true
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.sessionInfo = result;
+        console.log('Dados salvos:', this.sessionInfo);
+      } else {
+       this.router.navigateByUrl('/setup');
+        console.log('Cancelado');
+      }
+    });
+  }
+
 
   private saveReportToLocalStorage(model: ReportModel) {
-  const existingReports = JSON.parse(localStorage.getItem('reports') || '[]');
-  existingReports.push(model);
-  localStorage.setItem('reports', JSON.stringify(existingReports));
+    const existingReports = JSON.parse(localStorage.getItem('reports') || '[]');
+    existingReports.push(model);
+    localStorage.setItem('reports', JSON.stringify(existingReports));
 
-  // redireciona para outra rota se desejar
-  this.router.navigateByUrl('/private/cuidados-pos');
+    // redireciona para outra rota se desejar
+    this.router.navigateByUrl('/private/cuidados-pos');
   }
 
-  generatePDF(model: ReportModel){
+  generatePDF(model: ReportModel) {
 
     const doc = new jsPDF();
 
@@ -192,20 +220,20 @@ scrollToBottom() {
     doc.setFont("helvetica", "bold");
     doc.setFontSize(16);
     doc.text("Relatório da RCP", 105, 20, { align: "center" });
-  
+
     // Subtitle
     doc.setFont("courier", "normal");
     doc.setFontSize(12);
     const pageWidth = doc.internal.pageSize.width;
     const margin = 10;
     const maxWidth = pageWidth - margin * 2;
-  
+
     const wrappedText = doc.splitTextToSize(
       "Este é um registro formal de todas as intervenções realizadas durante a massagem cardíaca, seguindo as normas e guidelines mais recentes para obter o melhor resultado.",
       maxWidth
     );
     doc.text(wrappedText, margin, 30);
-  
+
     // Report Details
     doc.setFont("helvetica", "bold");
     doc.text("Detalhes do Relatório:", 10, 50);
@@ -216,7 +244,7 @@ scrollToBottom() {
     doc.text(`- Tempo total da parada: ${model.totalTimer}`, 10, 76);
     doc.text(`- Data de realização: ${model.reportDate}`, 10, 84);
     doc.text(`- Usuário: ${model.user}`, 10, 92);
-  
+
     // Table Header
     doc.setFont("helvetica", "bold");
     doc.setFontSize(12);
@@ -224,24 +252,24 @@ scrollToBottom() {
     doc.setDrawColor(0);
     doc.setFillColor(230, 230, 230);
     doc.rect(10, 105, 190, 10, "F");
-  
+
     doc.text("Tempo", 15, 112);
     doc.text("Nome", 75, 112);
     doc.text("Tipo", 150, 112);
-  
+
     // Table Rows
     let startY = 115;
     const rowHeight = 10;
     const pageHeight = doc.internal.pageSize.height;
     const bottomMargin = 20;
-  
+
     let currentY = startY; // Track the current Y position
-  
+
     model.reportList?.forEach((item: any) => {
       // If the row would overflow the page
       if (currentY + rowHeight > pageHeight - bottomMargin) {
         doc.addPage(); // Add a new page
-  
+
         // Recreate the table header
         doc.setFont("helvetica", "bold");
         doc.text("Tabela de Intervenções (continuação):", 10, 20);
@@ -250,34 +278,34 @@ scrollToBottom() {
         doc.text("Tempo", 15, 32);
         doc.text("Nome", 75, 32);
         doc.text("Tipo", 150, 32);
-  
+
         // Reset currentY to start below the new header
         currentY = 35;
       }
-    
+
       // Draw the row content
-      doc.rect(10, currentY, 190, rowHeight); 
+      doc.rect(10, currentY, 190, rowHeight);
       doc.text(item.timer, 15, currentY + 7);
-      if(item.label){
+      if (item.label) {
         doc.text(item.name + " " + item.label, 75, currentY + 7);
-      }else{
+      } else {
         doc.text(item.name, 75, currentY + 7);
       }
-     
+
       doc.text(item.type, 150, currentY + 7);
-  
+
       // Move to the next row position
       currentY += rowHeight;
     });
-  
+
     // Footer
     doc.setFont("helvetica", "italic");
     doc.setFontSize(10);
     doc.text("Relatório gerado automaticamente em sistema", 105, pageHeight - 10, { align: "center" });
-  
+
     // Save the PDF
     doc.save("Relatorio.pdf");
-  
+
   }
 
 }
