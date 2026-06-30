@@ -33,7 +33,7 @@ export class LessonCprNotes {
   initialTime: string = '';
   endTime: string = '';
   activeDrug: any = null;
-  examInfo: any;
+  lessonInfo: any;
 
   constructor(
     private matDialog: MatDialog,
@@ -134,8 +134,9 @@ export class LessonCprNotes {
   openSubmitDialog() {
 
     const dialogRef = this.matDialog.open(SubmitDialog, { disableClose: true });
-    
+  
     dialogRef.afterClosed().subscribe(result => {
+    
       if (result) {
         const reportModel: ReportModel = {
           reportList: this.lapTimes,
@@ -143,7 +144,7 @@ export class LessonCprNotes {
           totalTimer: this.formatTime(),
           startTimer: this.initialTime,
           endTimer: this.endTime,
-          user: this.sessionInfo!,
+          user: this.lessonInfo!,
         };
         this.saveReportToLocalStorage(reportModel);
         this.generatePDF(reportModel);
@@ -154,7 +155,7 @@ export class LessonCprNotes {
     
   }
 
- openInfoDialog() {
+  private openInfoDialog() {
 
   const dialogRef = this.matDialog.open(InfoDialog, {
     width: '400px',
@@ -163,24 +164,25 @@ export class LessonCprNotes {
 
   dialogRef.afterClosed().subscribe(result => {
     if (result) {
-      this.examInfo = result;
-      console.log('Dados salvos:', result);
+      this.lessonInfo = result;
+    
     } else {
       console.log('Cancelado');
     }
   });
- }
+  }
 
   private saveReportToLocalStorage(model: ReportModel) {
+    debugger
   const existingReports = JSON.parse(localStorage.getItem('reports') || '[]');
   existingReports.push(model);
   localStorage.setItem('reports', JSON.stringify(existingReports));
 
   // redireciona para outra rota se desejar
-  this.router.navigateByUrl('/private/cuidados-pos');
+  this.router.navigateByUrl('/lesson/aula-pos-pcr');
   }
 
-  generatePDF(model: ReportModel){
+  private generatePDF(model: ReportModel){
 
     const doc = new jsPDF();
 

@@ -1,4 +1,4 @@
-<div class="card-grid">
+<div class="card-grid" [ngClass]="isLessonMode ? 'blue' : 'red'">
   <div class="main-cards">
 
     <div class="card-container" routerLink ="/{{moduleRouterName}}/{{routerPathOne}}" routerLinkActive="active">

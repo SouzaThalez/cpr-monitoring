@@ -38,18 +38,14 @@
 
       </div>
 
-      <div class="exam-info" *ngIf="examInfo != null">
+      <div class="exam-info" *ngIf="lessonInfo != null">
         <div class="sp">
-          <span class="label">Nome do Avaliador:</span>
-          <span class="value">{{ examInfo.avaliador }}</span>
+          <span class="label">Professor:</span>
+          <span class="value">{{ lessonInfo.professor }}</span>
         </div>
         <div class="sp">
-          <span class="label">Nome do Aluno:</span>
-          <span class="value">{{ examInfo.aluno }}</span>
-        </div>
-        <div class="sp">
-          <span class="label">Nome do Grupo/Aula:</span>
-          <span class="value">{{ examInfo.grupo }}</span>
+          <span class="label">Aula:</span>
+          <span class="value">{{ lessonInfo.lesson }}</span>
         </div>
       </div>
 

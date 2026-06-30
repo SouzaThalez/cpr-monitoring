@@ -1,9 +1,15 @@
+
+
 .card-grid {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
   padding: 10px;
   background-color: var(--app-background-color);
+
+  &.blue{
+     background-color: #8aadbd;
+  }
 }
 
 /* cards principais à esquerda */

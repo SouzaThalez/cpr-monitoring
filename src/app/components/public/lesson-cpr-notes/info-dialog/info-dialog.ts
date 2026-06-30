@@ -17,9 +17,8 @@ form: FormGroup;
     private dialogRef: MatDialogRef<InfoDialog>
   ) {
     this.form = this.fb.group({
-      avaliador: ['', Validators.required],
-      aluno: ['', Validators.required],
-      grupo: ['', Validators.required]
+      professor: ['', Validators.required],
+      lesson: ['', Validators.required]
     });
   }
 

@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-topnavigation',
@@ -6,15 +6,35 @@ import { Component, Input } from '@angular/core';
   templateUrl: './topnavigation.html',
   styleUrl: './topnavigation.scss'
 })
-export class Topnavigation {
-  
+export class Topnavigation implements OnInit {
+
+
   @Input() moduleRouterName = '';
   @Input() routerPathOne = '';
   @Input() routerPathTwo = '';
   @Input() routerPathThree = '';
-  
-  pageType = 'menus';      // ou algo como 'exams', 'settings', etc.
-  alink = 'rcp-anotador';  // identificador do menu/rota
+
+
+  isLessonMode = false;
+
+  ngOnInit(): void {
+
+    switch (this.moduleRouterName) {
+      case 'private':
+          this.isLessonMode = true;
+        break;
+      case 'lesson':
+        this.isLessonMode = false;
+        break;
+
+      default:
+        break;
+    }
+
+
+  }
+
+
 
 
 }
