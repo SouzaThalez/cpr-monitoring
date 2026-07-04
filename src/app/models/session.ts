@@ -1,5 +1,5 @@
 export interface Session{
-    avaliator:string;
+    professor:string;
     student: string;
-    group: string;
+    lesson: string;
 }

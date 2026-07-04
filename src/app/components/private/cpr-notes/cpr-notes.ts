@@ -164,7 +164,7 @@ export class CprNotes {
           totalTimer: this.formatTime(),
           startTimer: this.initialTime,
           endTimer: this.endTime,
-          user: this.sessionInfo!,
+          reportInfo: this.sessionInfo!,
         };
         this.saveReportToLocalStorage(reportModel, this.sessionInfo!);
         this.generatePDF(reportModel);
@@ -176,7 +176,7 @@ export class CprNotes {
   }
 
   private openSessionDialog() {
-
+    
     const dialogRef = this.matDialog.open(SessionInfoDialog, {
       width: '400px',
       disableClose: true
@@ -240,17 +240,17 @@ export class CprNotes {
 
     // Linha 1
     doc.text(`- Início: ${model.startTimer}`, leftX, y);
-    doc.text(`- Avaliador: ${model.user.avaliator}`, rightX, y);
+    doc.text(`- Avaliador: ${model.reportInfo.professor}`, rightX, y);
 
     // Linha 2
     y += 8;
     doc.text(`- Fim: ${model.endTimer}`, leftX, y);
-    doc.text(`- Aluno: ${model.user.student}`, rightX, y);
+    doc.text(`- Aluno: ${model.reportInfo.student}`, rightX, y);
 
     // Linha 3
     y += 8;
     doc.text(`- Tempo Total: ${model.totalTimer}`, leftX, y);
-    doc.text(`- Grupo: ${model.user.group}`, rightX, y);
+    doc.text(`- Grupo: ${model.reportInfo.lesson}`, rightX, y);
 
     // Linha 4
     y += 8;

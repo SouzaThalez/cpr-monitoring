@@ -144,10 +144,10 @@ export class LessonCprNotes {
           totalTimer: this.formatTime(),
           startTimer: this.initialTime,
           endTimer: this.endTime,
-          user: this.lessonInfo!,
+          reportInfo: this.lessonInfo!,
         };
-        this.saveReportToLocalStorage(reportModel);
-        this.generatePDF(reportModel);
+        this.saveReportToLocalStorage(reportModel , this.lessonInfo);
+        // this.generatePDF(reportModel);
       } else {
         this.startStopwatch();
       }
@@ -156,7 +156,7 @@ export class LessonCprNotes {
   }
 
   private openInfoDialog() {
-
+    
   const dialogRef = this.matDialog.open(InfoDialog, {
     width: '400px',
     disableClose: true
@@ -172,110 +172,173 @@ export class LessonCprNotes {
   });
   }
 
-  private saveReportToLocalStorage(model: ReportModel) {
-    debugger
-  const existingReports = JSON.parse(localStorage.getItem('reports') || '[]');
-  existingReports.push(model);
-  localStorage.setItem('reports', JSON.stringify(existingReports));
+  private saveReportToLocalStorage(model: ReportModel , session: Session) {
+  debugger
+    const existingReports = JSON.parse(localStorage.getItem('reports') || '[]');
+    existingReports.push(model);
+    localStorage.setItem('reports', JSON.stringify(existingReports));
+    localStorage.setItem('session', JSON.stringify(session));
 
-  // redireciona para outra rota se desejar
-  this.router.navigateByUrl('/lesson/aula-pos-pcr');
+    this.generatePDF(model);
+
+    // redireciona para outra rota se desejar
+    this.router.navigateByUrl('/lesson/aula-pos-pcr');
   }
 
-  private generatePDF(model: ReportModel){
+  private generatePDF(model: ReportModel) {
 
     const doc = new jsPDF();
 
-    // Title
+    // ==========================
+    // Título
+    // ==========================
     doc.setFont("helvetica", "bold");
     doc.setFontSize(16);
     doc.text("Relatório da RCP", 105, 20, { align: "center" });
-  
-    // Subtitle
+
+    // ==========================
+    // Subtítulo
+    // ==========================
     doc.setFont("courier", "normal");
     doc.setFontSize(12);
+
     const pageWidth = doc.internal.pageSize.width;
+    const pageHeight = doc.internal.pageSize.height;
     const margin = 10;
     const maxWidth = pageWidth - margin * 2;
-  
+
     const wrappedText = doc.splitTextToSize(
       "Este é um registro formal de todas as intervenções realizadas durante a massagem cardíaca, seguindo as normas e guidelines mais recentes para obter o melhor resultado.",
       maxWidth
     );
+
     doc.text(wrappedText, margin, 30);
-  
-    // Report Details
+
+    // ==========================
+    // Detalhes do relatório
+    // ==========================
+    let currentY = 50;
+
     doc.setFont("helvetica", "bold");
-    doc.text("Detalhes do Relatório:", 10, 50);
+    doc.text("Detalhes do Relatório:", 10, currentY);
+
     doc.setFont("courier", "normal");
-    doc.setFontSize(12);
-    doc.text(`- Horário de início: ${model.startTimer}`, 10, 60);
-    doc.text(`- Horário de finalização: ${model.endTimer}`, 10, 68);
-    doc.text(`- Tempo total da parada: ${model.totalTimer}`, 10, 76);
-    doc.text(`- Data de realização: ${model.reportDate}`, 10, 84);
-    doc.text(`- Usuário: ${model.user}`, 10, 92);
-  
-    // Table Header
+
+    currentY += 10;
+    doc.text(`- Horário de início: ${model.startTimer}`, 10, currentY);
+
+    currentY += 8;
+    doc.text(`- Horário de finalização: ${model.endTimer}`, 10, currentY);
+
+    currentY += 8;
+    doc.text(`- Tempo total da parada: ${model.totalTimer}`, 10, currentY);
+
+    currentY += 8;
+    doc.text(`- Data de realização: ${model.reportDate}`, 10, currentY);
+
+    currentY += 8;
+    doc.text(`- Professor: ${model.reportInfo.professor}`, 10, currentY);
+
+    currentY += 8;
+    doc.text(`- Aula: ${model.reportInfo.lesson}`, 10, currentY);
+
+    // ==========================
+    // Espaço antes da tabela
+    // ==========================
+    currentY += 15;
+
+    // ==========================
+    // Cabeçalho da tabela
+    // ==========================
     doc.setFont("helvetica", "bold");
     doc.setFontSize(12);
-    doc.text("Tabela de Intervenções:", 10, 100);
+
+    doc.text("Tabela de Intervenções:", 10, currentY);
+
+    currentY += 5;
+
     doc.setDrawColor(0);
     doc.setFillColor(230, 230, 230);
-    doc.rect(10, 105, 190, 10, "F");
-  
-    doc.text("Tempo", 15, 112);
-    doc.text("Nome", 75, 112);
-    doc.text("Tipo", 150, 112);
-  
-    // Table Rows
-    let startY = 115;
+    doc.rect(10, currentY, 190, 10, "F");
+
+    doc.text("Tempo", 15, currentY + 7);
+    doc.text("Nome", 75, currentY + 7);
+    doc.text("Tipo", 150, currentY + 7);
+
+    // ==========================
+    // Linhas da tabela
+    // ==========================
+    currentY += 10;
+
     const rowHeight = 10;
-    const pageHeight = doc.internal.pageSize.height;
     const bottomMargin = 20;
-  
-    let currentY = startY; // Track the current Y position
-  
+
     model.reportList?.forEach((item: any) => {
-      // If the row would overflow the page
+
+      // Verifica se precisa criar uma nova página
       if (currentY + rowHeight > pageHeight - bottomMargin) {
-        doc.addPage(); // Add a new page
-  
-        // Recreate the table header
+
+        doc.addPage();
+
+        currentY = 20;
+
         doc.setFont("helvetica", "bold");
-        doc.text("Tabela de Intervenções (continuação):", 10, 20);
+        doc.text("Tabela de Intervenções (continuação):", 10, currentY);
+
+        currentY += 5;
+
         doc.setFillColor(230, 230, 230);
-        doc.rect(10, 25, 190, 10, "F");
-        doc.text("Tempo", 15, 32);
-        doc.text("Nome", 75, 32);
-        doc.text("Tipo", 150, 32);
-  
-        // Reset currentY to start below the new header
-        currentY = 35;
+        doc.rect(10, currentY, 190, 10, "F");
+
+        doc.text("Tempo", 15, currentY + 7);
+        doc.text("Nome", 75, currentY + 7);
+        doc.text("Tipo", 150, currentY + 7);
+
+        currentY += 10;
       }
-    
-      // Draw the row content
-      doc.rect(10, currentY, 190, rowHeight); 
+
+      doc.rect(10, currentY, 190, rowHeight);
+
+      doc.setFont("courier", "normal");
+
       doc.text(item.timer, 15, currentY + 7);
-      if(item.label){
-        doc.text(item.name + " " + item.label, 75, currentY + 7);
-      }else{
-        doc.text(item.name, 75, currentY + 7);
-      }
-     
+
+      const name = item.label
+        ? `${item.name} ${item.label}`
+        : item.name;
+
+      doc.text(name, 75, currentY + 7);
+
       doc.text(item.type, 150, currentY + 7);
-  
-      // Move to the next row position
+
       currentY += rowHeight;
     });
-  
-    // Footer
-    doc.setFont("helvetica", "italic");
-    doc.setFontSize(10);
-    doc.text("Relatório gerado automaticamente em sistema", 105, pageHeight - 10, { align: "center" });
-  
-    // Save the PDF
+
+    // ==========================
+    // Rodapé
+    // ==========================
+    const totalPages = doc.getNumberOfPages();
+
+    for (let i = 1; i <= totalPages; i++) {
+
+      doc.setPage(i);
+
+      doc.setFont("helvetica", "italic");
+      doc.setFontSize(10);
+
+      doc.text(
+        "Relatório gerado automaticamente em sistema",
+        pageWidth / 2,
+        pageHeight - 10,
+        { align: "center" }
+      );
+    }
+
+    // ==========================
+    // Salvar PDF
+    // ==========================
     doc.save("Relatorio.pdf");
-  
+
   }
 
 

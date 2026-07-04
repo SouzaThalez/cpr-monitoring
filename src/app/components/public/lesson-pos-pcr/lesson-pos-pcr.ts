@@ -84,7 +84,7 @@ export class LessonPosPcr {
           interventionList: this.lapTimes,
           interventionDate: moment().format('DD-MM-YYYY'),
           totalTimer: this.formatTime(),
-          user: this.sessionInfo!
+          interventionInfo: this.sessionInfo!
         };
 
         this.saveToLocalStorage(model);
@@ -120,7 +120,7 @@ export class LessonPosPcr {
       return;
     }
 
- 
+    debugger
     //pega sempre o ultimo relatorio
     this.generateInterventionPdf(stored[stored.length - 1]);
 
@@ -138,7 +138,7 @@ export class LessonPosPcr {
   }
 
   private generateInterventionPdf(model: InterventionReportModel) {
-
+debugger
     const doc = new jsPDF();
 
     doc.setFont("helvetica", "bold");
@@ -163,7 +163,7 @@ export class LessonPosPcr {
 
     // Garantir strings
     const date = model.interventionDate || "-";
-    const user = model.user || "-";
+    const user = model.interventionInfo || "-";
 
     doc.setFont("courier", "normal");
     doc.text(`- Data: ${date}`, 10, 60);

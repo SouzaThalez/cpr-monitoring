@@ -87,7 +87,7 @@ export class PostCpr {
           interventionList: this.lapTimes,
           interventionDate: moment().format('DD-MM-YYYY'),
           totalTimer: this.formatTime(),
-          user: this.sessionInfo!
+          interventionInfo: this.sessionInfo!
         };
 
         this.saveToLocalStorage(model);
@@ -166,7 +166,7 @@ export class PostCpr {
 
     // Garantir strings
     const date = model.interventionDate || "-";
-    const user = model.user || "-";
+    const user = model.interventionInfo || "-";
 
     doc.setFont("courier", "normal");
     doc.text(`- Data: ${date}`, 10, 60);

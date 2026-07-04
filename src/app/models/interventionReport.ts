@@ -8,5 +8,5 @@ export interface InterventionReportModel {
   totalTimer?: string;                 
   startTimer?: string;                 
   endTimer?: string;                    
-  user: Session;              
+  interventionInfo: Session;              
 }             

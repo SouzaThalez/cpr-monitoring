@@ -8,5 +8,5 @@ export interface ReportModel {
   totalTimer?: string;                 
   startTimer?: string;                 
   endTimer?: string;                    
-  user: Session;           
+  reportInfo: Session;           
 }             

@@ -233,7 +233,7 @@ export class CprReview implements OnInit {
     doc.text(`- Fim: ${model.endTimer}`, 10, 68);
     doc.text(`- Tempo total: ${model.totalTimer}`, 10, 76);
     doc.text(`- Data: ${model.reportDate}`, 10, 84);
-    doc.text(`- Usuário: ${model.user}`, 10, 92);
+    doc.text(`- Usuário: ${model.reportInfo}`, 10, 92);
 
     // Cabeçalho tabela
     doc.setFont("helvetica", "bold");
@@ -305,7 +305,7 @@ export class CprReview implements OnInit {
 
   // Garantir strings
   const date = model.interventionDate || "-";
-  const user = model.user || "-";
+  const user = model.interventionInfo || "-";
 
   doc.setFont("courier", "normal");
   doc.text(`- Data: ${date}`, 10, 60);
