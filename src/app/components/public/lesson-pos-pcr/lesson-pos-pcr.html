@@ -47,7 +47,7 @@
 
         <div class="log-list">
           <div class="log-item" *ngFor="let lap of lapTimes; let i = index">
-            <span class="log-time">{{ lap.timer }}</span>
+            <span class="log-time">Registro</span>
             <span class="log-name">{{ i + 1 }}° {{ lap.label }} - {{ lap.name }}</span>
             <button mat-icon-button color="warn" (click)="removeLapItem(i, lap)">
               <span class="material-symbols-outlined">close</span>

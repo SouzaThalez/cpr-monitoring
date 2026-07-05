@@ -21,6 +21,7 @@ export class LessonPosPcr {
   interventions = posPcrData.firstIntervention;
   lapTimes: Intervention[] = [];
   sessionInfo?: Session;
+  countItem = 0 ; 
 
   time: number = 0;
   milliseconds: number = 0;
@@ -51,14 +52,17 @@ export class LessonPosPcr {
     }
 
     item.cliked = (item.cliked || 0) + 1;
+    this.countItem = this.countItem + 1; // cFaz o registro da ordem dos cliques (1°,2°...)
 
     const entry: Intervention = {
       timer: this.formatTime(),
       name: item.name,
       label: item.label || 'Intervenção',
+      type: this.countItem.toString(),
     } as Intervention;
-
+ 
     this.lapTimes.push(entry);
+  
   }
 
   removeLapItem(index: number, item: Intervention) {
@@ -67,6 +71,7 @@ export class LessonPosPcr {
     if (found && found.cliked > 0) {
       found.cliked--;
     }
+    this.countItem = this.countItem - 1;
   }
 
   openSaveDialog() {
@@ -137,88 +142,132 @@ export class LessonPosPcr {
     return num.toString().padStart(length, '0');
   }
 
-  private generateInterventionPdf(model: InterventionReportModel) {
+ private generateInterventionPdf(model: InterventionReportModel) {
 
-    const doc = new jsPDF();
+  const doc = new jsPDF();
 
-    doc.setFont("helvetica", "bold");
-    doc.setFontSize(16);
-    doc.text("Relatório de Cuidados Pós-PCR", 105, 20, { align: "center" });
+  // ==========================
+  // Título
+  // ==========================
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(16);
+  doc.text("Relatório de Cuidados Pós-PCR", 105, 20, { align: "center" });
+
+  // ==========================
+  // Descrição
+  // ==========================
+  doc.setFont("courier", "normal");
+  doc.setFontSize(12);
+
+  const pageWidth = doc.internal.pageSize.width;
+  const pageHeight = doc.internal.pageSize.height;
+  const margin = 10;
+  const maxWidth = pageWidth - margin * 2;
+
+  const wrappedText = doc.splitTextToSize(
+    "Este documento lista todos os procedimentos realizados após o retorno da circulação espontânea.",
+    maxWidth
+  );
+
+  doc.text(wrappedText, margin, 30);
+
+  // ==========================
+  // Detalhes
+  // ==========================
+  doc.setFont("helvetica", "bold");
+  doc.text("Detalhes:", 10, 50);
+
+  const date = model.interventionDate || "-";
+  const user = model.interventionInfo || {};
+
+  doc.setFont("courier", "normal");
+
+  doc.text(`- Data: ${date}`, 10, 60);
+  doc.text(`- Professor: ${user.professor ?? "-"}`, 10, 70);
+  doc.text(`- Aula: ${user.lesson ?? "-"}`, 10, 80);
+
+  // ==========================
+  // Cabeçalho da tabela
+  // ==========================
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(12);
+
+  doc.text("Intervenções:", 10, 95);
+
+  doc.setFillColor(230, 230, 230);
+  doc.rect(10, 100, 190, 10, "F");
+
+  doc.text("Ordem", 15, 107);
+  doc.text("Intervenção", 45, 107);
+
+  // ==========================
+  // Linhas da tabela
+  // ==========================
+  let currentY = 110;
+  const rowHeight = 10;
+  const bottomMargin = 20;
+
+  model.interventionList?.forEach((item: any) => {
+
+    const ordem = item?.type ? `${item.type}°` : "-";
+    const name = item?.name ? String(item.name) : "-";
+
+    // Nova página
+    if (currentY + rowHeight > pageHeight - bottomMargin) {
+
+      doc.addPage();
+
+      currentY = 20;
+
+      doc.setFont("helvetica", "bold");
+      doc.text("Intervenções (continuação):", 10, currentY);
+
+      currentY += 5;
+
+      doc.setFillColor(230, 230, 230);
+      doc.rect(10, currentY, 190, 10, "F");
+
+      doc.text("Ordem", 15, currentY + 7);
+      doc.text("Intervenção", 45, currentY + 7);
+
+      currentY += 10;
+    }
+
+    // Linha da tabela
+    doc.rect(10, currentY, 190, rowHeight);
 
     doc.setFont("courier", "normal");
-    doc.setFontSize(12);
 
-    const pageWidth = doc.internal.pageSize.width;
-    const margin = 10;
-    const maxWidth = pageWidth - margin * 2;
+    doc.text(ordem, 15, currentY + 7);
+    doc.text(name, 45, currentY + 7);
 
-    const wrappedText = doc.splitTextToSize(
-      "Este documento lista todos os procedimentos realizados após o retorno da circulação espontânea.",
-      maxWidth
+    currentY += rowHeight;
+  });
+
+  // ==========================
+  // Rodapé
+  // ==========================
+  const totalPages = doc.getNumberOfPages();
+
+  for (let i = 1; i <= totalPages; i++) {
+    doc.setPage(i);
+
+    doc.setFont("helvetica", "italic");
+    doc.setFontSize(10);
+
+    doc.text(
+      "Relatório gerado automaticamente em sistema",
+      pageWidth / 2,
+      pageHeight - 10,
+      { align: "center" }
     );
-    doc.text(wrappedText, margin, 30);
-
-    doc.setFont("helvetica", "bold");
-    doc.text("Detalhes:", 10, 50);
-
-    // Garantir strings
-    const date = model.interventionDate || "-";
-    const user = model.interventionInfo || "-";
-
-    doc.setFont("courier", "normal");
-    doc.text(`- Data: ${date}`, 10, 60);
-    doc.text(`- Professor: ${user.professor}`, 10, 70);
-    doc.text(`- Aula: ${user.lesson}`, 10, 80);
-
-    // Cabeçalho tabela
-    doc.setFont("helvetica", "bold");
-    doc.text("Intervenções:", 10, 90);
-
-    doc.setFillColor(230, 230, 230);
-    doc.rect(10, 95, 190, 10, "F");
-
-    doc.text("Tempo", 15, 102);
-    doc.text("Nome", 75, 102);
-    doc.text("Tipo", 150, 102);
-
-    let currentY = 110;
-    const rowHeight = 10;
-    const pageHeight = doc.internal.pageSize.height;
-    const bottomMargin = 20;
-
-    model.interventionList?.forEach((item: any) => {
-
-      // Sanitizar dados (evita jsPDF error)
-      const timer = item?.timer ? String(item.timer) : "-";
-      const name = item?.name ? String(item.name) : "-";
-      const label = item?.label ? String(item.label) : "";
-      const type = item?.type ? String(item.type) : "-";
-
-      if (currentY + rowHeight > pageHeight - bottomMargin) {
-        doc.addPage();
-
-        doc.setFont("helvetica", "bold");
-        doc.text("Intervenções (cont.):", 10, 20);
-        doc.rect(10, 25, 190, 10, "F");
-        doc.text("Tempo", 15, 32);
-        doc.text("Nome", 75, 32);
-        doc.text("Tipo", 150, 32);
-
-        currentY = 35;
-      }
-
-      // Linha normalizada
-      doc.rect(10, currentY, 190, rowHeight);
-
-      doc.text(timer, 15, currentY + 7);
-      doc.text(`${name} ${label}`.trim(), 75, currentY + 7);
-      doc.text(type, 150, currentY + 7);
-
-      currentY += rowHeight;
-    });
-
-    doc.save("Relatorio-PosPCR.pdf");
   }
+
+  // ==========================
+  // Salvar PDF
+  // ==========================
+  doc.save("Relatorio-PosPCR.pdf");
+}
 
 
 }
