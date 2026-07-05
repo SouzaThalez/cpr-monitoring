@@ -173,7 +173,7 @@ export class LessonCprNotes {
   }
 
   private saveReportToLocalStorage(model: ReportModel , session: Session) {
-  debugger
+  
     const existingReports = JSON.parse(localStorage.getItem('reports') || '[]');
     existingReports.push(model);
     localStorage.setItem('reports', JSON.stringify(existingReports));

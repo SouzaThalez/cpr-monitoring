@@ -120,11 +120,11 @@ export class LessonPosPcr {
       return;
     }
 
-    debugger
+ 
     //pega sempre o ultimo relatorio
     this.generateInterventionPdf(stored[stored.length - 1]);
 
-    this.router.navigateByUrl('/private/pcr-review');
+    this.router.navigateByUrl('/lesson/aula-review');
   }
 
   private formatTime(): string {
@@ -138,7 +138,7 @@ export class LessonPosPcr {
   }
 
   private generateInterventionPdf(model: InterventionReportModel) {
-debugger
+
     const doc = new jsPDF();
 
     doc.setFont("helvetica", "bold");
@@ -167,7 +167,8 @@ debugger
 
     doc.setFont("courier", "normal");
     doc.text(`- Data: ${date}`, 10, 60);
-    doc.text(`- Usuário: ${user}`, 10, 70);
+    doc.text(`- Professor: ${user.professor}`, 10, 70);
+    doc.text(`- Aula: ${user.lesson}`, 10, 80);
 
     // Cabeçalho tabela
     doc.setFont("helvetica", "bold");
