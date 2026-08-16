@@ -14,7 +14,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 })
 export class LessonReview {
 
-    reports: ReportCard[] = [];
+  reports: ReportCard[] = [];
   selected?: ReportCard;
 
   constructor(
@@ -28,6 +28,7 @@ export class LessonReview {
 
   /** Carrega e normaliza dados de localStorage */
   private loadFromLocalStorage() {
+
     const parsedReports: ReportModel[] =
       this.safeParse<ReportModel[]>(localStorage.getItem('reports')) || [];
 
@@ -38,6 +39,7 @@ export class LessonReview {
 
     // Pós-PCR
     interventionReports.forEach((rep, idx) => {
+      
       const entries = Array.isArray(rep.interventionList) ? rep.interventionList : [];
       const t = this.pickTimestampFromIntervention(rep) ?? new Date().toISOString();
       const when = moment(t).isValid() ? moment(t) : moment();
