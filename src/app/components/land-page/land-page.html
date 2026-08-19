@@ -5,9 +5,26 @@
   ========================== -->
   <header class="navbar">
 
-    <nav class="navbar-links">
+    <button
+      type="button"
+      class="menu-toggle"
+      [class.open]="mobileMenuOpen"
+      [attr.aria-expanded]="mobileMenuOpen"
+      aria-label="Abrir menu"
+      (click)="toggleMobileMenu(); $event.stopPropagation()"
+    >
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
 
-      <div class="products-menu" (click)="$event.stopPropagation()">
+    <nav
+      class="navbar-links"
+      [class.open]="mobileMenuOpen"
+      (click)="$event.stopPropagation()"
+    >
+
+      <div class="products-menu">
 
         <button
           type="button"
@@ -48,11 +65,19 @@
 
       </div>
 
-      <a href="#quem-somos" class="link-item">
+      <a
+        href="#quem-somos"
+        class="link-item"
+        (click)="closeMobileMenu()"
+      >
         Quem somos
       </a>
 
-      <a href="#lista-espera" class="link-item">
+      <a
+        href="#lista-espera"
+        class="link-item"
+        (click)="closeMobileMenu()"
+      >
         Entrar para lista de espera
       </a>
 
@@ -66,6 +91,13 @@
     </div>
 
   </header>
+
+
+  @if (mobileMenuOpen) {
+
+    <div class="menu-backdrop" (click)="closeMobileMenu()"></div>
+
+  }
 
 
   <!-- =========================

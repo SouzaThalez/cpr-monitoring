@@ -16,6 +16,8 @@ export class LandPage {
 
   productsMenuOpen = false;
 
+  mobileMenuOpen = false;
+
   @ViewChild('plansSection') plansSection?: ElementRef<HTMLElement>;
 
 
@@ -24,10 +26,21 @@ export class LandPage {
   }
 
 
-  selectProduct(product: Product): void {
-    
-    this.selectedProduct = product;
+  toggleMobileMenu(): void {
+    this.mobileMenuOpen = !this.mobileMenuOpen;
     this.productsMenuOpen = false;
+  }
+
+
+  closeMobileMenu(): void {
+    this.mobileMenuOpen = false;
+    this.productsMenuOpen = false;
+  }
+
+
+  selectProduct(product: Product): void {
+    this.selectedProduct = product;
+    this.closeMobileMenu();
   }
 
 
@@ -39,7 +52,18 @@ export class LandPage {
 
   @HostListener('document:keydown.escape')
   onEscape(): void {
-    this.productsMenuOpen = false;
+    this.closeMobileMenu();
+  }
+
+
+  // fecha o menu mobile ao voltar para a largura de desktop
+  @HostListener('window:resize')
+  onResize(): void {
+
+    if (window.innerWidth > 950) {
+      this.closeMobileMenu();
+    }
+
   }
 
 

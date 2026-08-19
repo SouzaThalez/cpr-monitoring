@@ -72,6 +72,75 @@
 }
 
 
+/* botão hambúrguer: só aparece no mobile */
+.menu-toggle {
+  padding: 0;
+
+  width: 26px;
+  height: 20px;
+
+  display: none;
+  flex-direction: column;
+  justify-content: space-between;
+
+  border: none;
+  background: none;
+
+  cursor: pointer;
+
+  span {
+    width: 100%;
+    height: 2px;
+
+    display: block;
+
+    border-radius: 2px;
+
+    background: #26364f;
+
+    transition: transform 0.3s ease, opacity 0.2s ease, background 0.3s ease;
+  }
+
+  &.open span {
+    background: #147fe8;
+
+    &:nth-child(1) {
+      transform: translateY(9px) rotate(45deg);
+    }
+
+    &:nth-child(2) {
+      opacity: 0;
+    }
+
+    &:nth-child(3) {
+      transform: translateY(-9px) rotate(-45deg);
+    }
+  }
+}
+
+
+.menu-backdrop {
+  background: rgba(16, 36, 66, 0.35);
+
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+
+  animation: backdrop-in 0.25s ease;
+}
+
+
+@keyframes backdrop-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+
 .navbar-logo {
   width: 180px;
 
@@ -578,30 +647,114 @@
 @media (max-width: 950px) {
 
   .navbar {
-    padding: 18px 5%;
+    padding: 0 5%;
 
-    height: auto;
+    height: 70px;
 
-    flex-direction: column-reverse;
+    background: #ffffff;
 
-    gap: 16px;
+    /* backdrop-filter cria bloco de contenção e quebraria o position:fixed da gaveta */
+    backdrop-filter: none;
   }
 
 
+  .menu-toggle {
+    display: flex;
+
+    order: 1;
+  }
+
+
+  .navbar-logo {
+    width: 150px;
+
+    order: 2;
+  }
+
+
+  /* menu vira gaveta lateral */
   .navbar-links {
-    flex-wrap: wrap;
-    justify-content: center;
+    padding: 26px 24px 40px;
 
-    gap: 24px;
+    width: min(320px, 84vw);
+
+    flex-direction: column;
+    align-items: stretch;
+
+    gap: 6px;
+
+    border-left: 1px solid #edf1f5;
+
+    background: #ffffff;
+
+    box-shadow: -18px 0 40px rgba(38, 54, 79, 0.12);
+
+    overflow-y: auto;
+
+    position: fixed;
+    top: 70px;
+    right: 0;
+    bottom: 0;
+    z-index: 95;
+
+    transform: translateX(100%);
+
+    visibility: hidden;
+
+    transition: transform 0.3s ease, visibility 0.3s ease;
+
+    &.open {
+      transform: translateX(0);
+
+      visibility: visible;
+    }
   }
 
 
-  .products-panel {
-    left: 50%;
+  .navbar-links .link-item {
+    padding: 14px 4px;
 
-    transform: translateX(-50%);
+    border-bottom: 1px solid #f2f6fa;
+
+    text-align: left;
+
+    font-size: 16px;
+  }
+
+
+  .products-menu {
+    width: 100%;
+  }
+
+
+  .menu-trigger {
+    width: 100%;
+
+    justify-content: space-between;
+  }
+
+
+  /* dentro da gaveta o painel abre em linha, sem flutuar */
+  .products-panel {
+    padding: 4px 0 10px;
+
+    min-width: 0;
+
+    border: none;
+    border-radius: 0;
+
+    background: none;
+
+    box-shadow: none;
+
+    position: static;
 
     animation: none;
+  }
+
+
+  .product-option {
+    padding: 12px 10px;
   }
 
 
@@ -636,7 +789,7 @@
   .plans-section {
     padding: 70px 5%;
 
-    scroll-margin-top: 20px;
+    scroll-margin-top: 70px;
   }
 
 
