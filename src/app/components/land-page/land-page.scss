@@ -1,0 +1,668 @@
+/* =====================================================
+   BASE
+===================================================== */
+
+.land-page {
+  min-height: 100vh;
+
+  display: flex;
+  flex-direction: column;
+
+  background: linear-gradient(160deg, #ffffff 0%, #f5faff 100%);
+
+  color: #26364f;
+
+  font-family: 'Roboto', sans-serif;
+}
+
+
+/* =====================================================
+   NAVEGAÇÃO
+===================================================== */
+
+.navbar {
+  padding: 0 7%;
+
+  height: 80px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  border-bottom: 1px solid #edf1f5;
+
+  background: rgba(255, 255, 255, 0.85);
+
+  backdrop-filter: blur(10px);
+
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+
+.navbar-links {
+  display: flex;
+  align-items: center;
+
+  gap: 36px;
+}
+
+
+.link-item {
+  padding: 0;
+
+  border: none;
+  background: none;
+
+  color: #26364f;
+  text-decoration: none;
+
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 500;
+
+  cursor: pointer;
+
+  transition: color 0.3s ease;
+
+  &:hover {
+    color: #147fe8;
+  }
+}
+
+
+.navbar-logo {
+  width: 180px;
+
+  display: flex;
+  align-items: center;
+
+  img {
+    width: 100%;
+    height: auto;
+
+    display: block;
+  }
+}
+
+
+/* =====================================================
+   MENU DE PRODUTOS
+===================================================== */
+
+.products-menu {
+  position: relative;
+}
+
+
+.menu-trigger {
+  display: flex;
+  align-items: center;
+
+  gap: 8px;
+
+  &.open {
+    color: #147fe8;
+
+    .chevron {
+      transform: rotate(-135deg) translate(-2px, -2px);
+    }
+  }
+}
+
+
+.chevron {
+  width: 7px;
+  height: 7px;
+
+  border-right: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
+
+  transform: rotate(45deg) translate(-2px, -2px);
+
+  transition: transform 0.3s ease;
+}
+
+
+.products-panel {
+  padding: 8px;
+
+  min-width: 260px;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 4px;
+
+  border: 1px solid #edf1f5;
+  border-radius: 12px;
+
+  background: #ffffff;
+
+  box-shadow: 0 18px 40px rgba(38, 54, 79, 0.12);
+
+  position: absolute;
+  top: calc(100% + 18px);
+  left: 0;
+  z-index: 110;
+
+  animation: panel-in 0.2s ease;
+}
+
+
+@keyframes panel-in {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+.product-option {
+  padding: 12px 14px;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 3px;
+
+  border: none;
+  border-radius: 8px;
+
+  background: none;
+
+  text-align: left;
+
+  font-family: inherit;
+
+  cursor: pointer;
+
+  transition: background 0.2s ease;
+
+  &:hover {
+    background: #f4f8fd;
+  }
+
+  &.active {
+    background: #eef6ff;
+
+    .option-name {
+      color: #147fe8;
+    }
+  }
+
+  .option-name {
+    color: #26364f;
+
+    font-size: 15px;
+    font-weight: 600;
+  }
+
+  .option-category {
+    color: #8795a5;
+
+    font-size: 12px;
+  }
+}
+
+
+/* =====================================================
+   PRODUTO EM DESTAQUE
+===================================================== */
+
+.hero {
+  flex: 1;
+
+  padding: 90px 7%;
+
+  display: flex;
+  align-items: center;
+
+  gap: 70px;
+}
+
+
+.hero-text {
+  flex: 1;
+
+  max-width: 520px;
+}
+
+
+.hero-category {
+  padding: 6px 14px;
+
+  display: inline-block;
+
+  border-radius: 20px;
+
+  background: #eef6ff;
+
+  color: #147fe8;
+
+  font-size: 12px;
+  font-weight: 600;
+
+  letter-spacing: 0.4px;
+
+  text-transform: uppercase;
+}
+
+
+.hero-text h1 {
+  margin: 22px 0 0;
+
+  font-size: 58px;
+  font-weight: 500;
+
+  line-height: 1.1;
+
+  letter-spacing: -1px;
+}
+
+
+.hero-text p {
+  margin: 22px 0 0;
+
+  color: #718096;
+
+  font-size: 17px;
+
+  line-height: 1.7;
+}
+
+
+.hero-actions {
+  margin-top: 40px;
+
+  display: flex;
+
+  gap: 14px;
+}
+
+
+.button-primary,
+.button-secondary {
+  padding: 14px 26px;
+
+  border-radius: 8px;
+
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition: all 0.3s ease;
+}
+
+
+.button-primary {
+  border: 1px solid #147fe8;
+
+  background: #147fe8;
+  color: #ffffff;
+
+  &:hover {
+    background: #0968c7;
+
+    transform: translateY(-2px);
+
+    box-shadow: 0 10px 22px rgba(20, 127, 232, 0.22);
+  }
+}
+
+
+.button-secondary {
+  border: 1px solid #d8e3ee;
+
+  background: #ffffff;
+  color: #26364f;
+
+  &:hover {
+    border-color: #147fe8;
+
+    color: #147fe8;
+
+    transform: translateY(-2px);
+  }
+}
+
+
+.hero-image {
+  flex: 1;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  img {
+    width: 100%;
+    max-width: 620px;
+
+    display: block;
+
+    border-radius: 16px;
+
+    box-shadow: 0 30px 60px rgba(38, 54, 79, 0.14);
+  }
+}
+
+
+/* =====================================================
+   PLANOS DO PRODUTO
+===================================================== */
+
+.plans-section {
+  padding: 80px 7%;
+
+  border-top: 1px solid #edf1f5;
+
+  background: #f7fafc;
+
+  /* compensa a navbar fixa ao rolar até a seção */
+  scroll-margin-top: 80px;
+}
+
+
+.section-title {
+  margin-bottom: 45px;
+
+  text-align: center;
+
+  > span {
+    color: #147fe8;
+
+    font-size: 13px;
+    font-weight: 600;
+
+    letter-spacing: 1px;
+
+    text-transform: uppercase;
+  }
+
+  h2 {
+    margin: 10px 0;
+
+    color: #102442;
+
+    font-size: 38px;
+    font-weight: 500;
+
+    letter-spacing: -1px;
+  }
+
+  p {
+    margin: 0;
+
+    color: #718096;
+
+    font-size: 16px;
+  }
+}
+
+
+.plans {
+  max-width: 850px;
+
+  margin: 0 auto;
+
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+
+  gap: 25px;
+
+  align-items: start;
+}
+
+
+.plan-card {
+  padding: 35px;
+
+  display: flex;
+  flex-direction: column;
+
+  border: 1px solid #e1e9f0;
+  border-radius: 14px;
+
+  background: #ffffff;
+
+  box-shadow: 0 10px 30px rgba(20, 50, 80, 0.05);
+
+  position: relative;
+
+  &.featured {
+    border: 2px solid #147fe8;
+
+    box-shadow: 0 15px 40px rgba(20, 127, 232, 0.12);
+  }
+
+  h3 {
+    margin: 0 0 15px;
+
+    color: #102442;
+
+    font-size: 27px;
+  }
+
+  ul {
+    padding: 0;
+    margin: 0 0 30px;
+
+    flex: 1;
+
+    list-style: none;
+  }
+
+  li {
+    padding: 8px 0;
+
+    color: #4a5c70;
+
+    font-size: 14px;
+  }
+}
+
+
+.featured-label {
+  padding: 5px 12px;
+
+  border-radius: 20px;
+
+  background: #147fe8;
+
+  color: #ffffff;
+
+  font-size: 11px;
+  font-weight: 600;
+
+  position: absolute;
+  top: -13px;
+  right: 25px;
+}
+
+
+.plan-label {
+  margin-bottom: 8px;
+
+  display: block;
+
+  color: #147fe8;
+
+  font-size: 12px;
+  font-weight: 600;
+
+  letter-spacing: 0.7px;
+
+  text-transform: uppercase;
+}
+
+
+.price {
+  margin-bottom: 15px;
+
+  color: #102442;
+
+  font-size: 36px;
+  font-weight: 700;
+
+  small {
+    color: #718096;
+
+    font-size: 13px;
+    font-weight: 400;
+  }
+}
+
+
+.plan-description {
+  margin: 0 0 25px;
+
+  min-height: 55px;
+
+  color: #718096;
+
+  font-size: 14px;
+
+  line-height: 1.6;
+}
+
+
+.plan-button {
+  width: 100%;
+}
+
+
+/* =====================================================
+   CHAMADA FINAL
+===================================================== */
+
+.final-cta {
+  padding: 75px 7%;
+
+  text-align: center;
+
+  background: #ffffff;
+
+  h2 {
+    margin: 0 0 12px;
+
+    color: #102442;
+
+    font-size: 34px;
+    font-weight: 500;
+  }
+
+  p {
+    max-width: 500px;
+
+    margin: 0 auto 25px;
+
+    color: #718096;
+
+    line-height: 1.6;
+  }
+}
+
+
+/* =====================================================
+   RESPONSIVO
+===================================================== */
+
+@media (max-width: 950px) {
+
+  .navbar {
+    padding: 18px 5%;
+
+    height: auto;
+
+    flex-direction: column-reverse;
+
+    gap: 16px;
+  }
+
+
+  .navbar-links {
+    flex-wrap: wrap;
+    justify-content: center;
+
+    gap: 24px;
+  }
+
+
+  .products-panel {
+    left: 50%;
+
+    transform: translateX(-50%);
+
+    animation: none;
+  }
+
+
+  .hero {
+    padding: 60px 5%;
+
+    flex-direction: column;
+
+    text-align: center;
+
+    gap: 50px;
+  }
+
+
+  .hero-text {
+    max-width: 100%;
+  }
+
+
+  .hero-text h1 {
+    font-size: 42px;
+  }
+
+
+  .hero-actions {
+    justify-content: center;
+
+    flex-wrap: wrap;
+  }
+
+
+  .plans-section {
+    padding: 70px 5%;
+
+    scroll-margin-top: 20px;
+  }
+
+
+  .section-title h2 {
+    font-size: 30px;
+  }
+
+
+  .plans {
+    max-width: 450px;
+
+    grid-template-columns: 1fr;
+  }
+
+
+  .plan-description {
+    min-height: auto;
+  }
+
+
+  .final-cta {
+    padding: 60px 5%;
+
+    h2 {
+      font-size: 28px;
+    }
+  }
+
+}

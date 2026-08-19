@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ProductInfo } from './product-info';
+import { LandPage } from './land-page';
 
-describe('ProductInfo', () => {
-  let component: ProductInfo;
-  let fixture: ComponentFixture<ProductInfo>;
+describe('LandPage', () => {
+  let component: LandPage;
+  let fixture: ComponentFixture<LandPage>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ProductInfo]
+      declarations: [LandPage]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(ProductInfo);
+    fixture = TestBed.createComponent(LandPage);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

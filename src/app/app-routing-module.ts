@@ -1,28 +1,12 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { Setup } from './components/setup/setup';
-import { LandingPage } from './components/landing-page/landing-page';
-import { ProductInfo } from './components/landing-page/product-info/product-info';
-import { LandingPageInfo } from './components/landing-page/landing-page-info/landing-page-info';
+import { LandPage } from './components/land-page/land-page';
 
-const routes: Routes = [ 
+const routes: Routes = [
   {
-    path: 'landing-page',
-    component: LandingPage,
-    children:[
-      {
-        path:'product',
-        component:ProductInfo
-      },
-      {
-        path:'landing-page-info',
-        component:LandingPageInfo
-      },
-      {
-        path: '**',
-        redirectTo: 'landing-page-info'
-      }
-    ]
+    path: 'land-page',
+    component: LandPage
   },
   {
     path: 'setup',
@@ -38,7 +22,7 @@ const routes: Routes = [
   },
   {
     path: '**',
-    redirectTo: 'landing-page'
+    redirectTo: 'land-page'
   }
 ];
 

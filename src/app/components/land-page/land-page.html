@@ -1,0 +1,229 @@
+<div class="land-page">
+
+  <!-- =========================
+       NAVEGAÇÃO
+  ========================== -->
+  <header class="navbar">
+
+    <nav class="navbar-links">
+
+      <div class="products-menu" (click)="$event.stopPropagation()">
+
+        <button
+          type="button"
+          class="link-item menu-trigger"
+          [class.open]="productsMenuOpen"
+          (click)="toggleProductsMenu()"
+        >
+          Produtos
+          <span class="chevron"></span>
+        </button>
+
+        @if (productsMenuOpen) {
+
+          <div class="products-panel">
+
+            @for (product of products; track product.slug) {
+
+              <button
+                type="button"
+                class="product-option"
+                [class.active]="product.slug === selectedProduct.slug"
+                (click)="selectProduct(product)"
+              >
+                <span class="option-name">
+                  {{ product.name }}
+                </span>
+
+                <span class="option-category">
+                  {{ product.category }}
+                </span>
+              </button>
+
+            }
+
+          </div>
+
+        }
+
+      </div>
+
+      <a href="#quem-somos" class="link-item">
+        Quem somos
+      </a>
+
+      <a href="#lista-espera" class="link-item">
+        Entrar para lista de espera
+      </a>
+
+    </nav>
+
+    <div class="navbar-logo">
+      <img
+        src="assets/images/selath-inovation-logo.png"
+        alt="Selath Innovation"
+      />
+    </div>
+
+  </header>
+
+
+  <!-- =========================
+       PRODUTO EM DESTAQUE
+  ========================== -->
+  <main class="hero">
+
+    <div class="hero-text">
+
+      <span class="hero-category">
+        {{ selectedProduct.category }}
+      </span>
+
+      <h1>
+        {{ selectedProduct.name }}
+      </h1>
+
+      <p>
+        {{ selectedProduct.description }}
+      </p>
+
+      <div class="hero-actions">
+
+        <button
+          type="button"
+          class="button-primary"
+          (click)="openProductDetails()"
+        >
+          Detalhes do produto
+        </button>
+
+        <button
+          type="button"
+          class="button-secondary"
+          (click)="openPlans()"
+        >
+          Ver planos
+        </button>
+
+      </div>
+
+    </div>
+
+    <div class="hero-image">
+      <img
+        [src]="selectedProduct.images[0].src"
+        [alt]="selectedProduct.images[0].alt"
+      />
+    </div>
+
+  </main>
+
+
+  <!-- =========================
+       PLANOS DO PRODUTO
+  ========================== -->
+  <section class="plans-section" id="planos" #plansSection>
+
+    <div class="section-title">
+
+      <span>
+        Planos {{ selectedProduct.name }}
+      </span>
+
+      <h2>
+        {{ selectedProduct.plansTitle }}
+      </h2>
+
+      <p>
+        {{ selectedProduct.plansDescription }}
+      </p>
+
+    </div>
+
+
+    <div class="plans">
+
+      @for (plan of selectedProduct.plans; track plan.name) {
+
+        <div class="plan-card" [class.featured]="plan.featured">
+
+          @if (plan.featured && plan.featuredLabel) {
+
+            <span class="featured-label">
+              {{ plan.featuredLabel }}
+            </span>
+
+          }
+
+          <span class="plan-label">
+            {{ plan.label }}
+          </span>
+
+          <h3>
+            {{ plan.name }}
+          </h3>
+
+          <div class="price">
+            {{ plan.price }}
+            <small>{{ plan.period }}</small>
+          </div>
+
+          <p class="plan-description">
+            {{ plan.description }}
+          </p>
+
+          <ul>
+
+            @for (feature of plan.features; track feature) {
+
+              <li>
+                {{ feature }}
+              </li>
+
+            }
+
+          </ul>
+
+          <button
+            type="button"
+            [class.button-primary]="plan.featured"
+            [class.button-secondary]="!plan.featured"
+            class="plan-button"
+            (click)="selectPlan(plan)"
+          >
+            {{ plan.buttonLabel }}
+          </button>
+
+        </div>
+
+      }
+
+    </div>
+
+  </section>
+
+
+  <!-- =========================
+       CHAMADA FINAL
+  ========================== -->
+  <section class="final-cta">
+
+    <h2>
+      {{ selectedProduct.ctaTitle }}
+    </h2>
+
+    <p>
+      {{ selectedProduct.ctaDescription }}
+    </p>
+
+    <button
+      type="button"
+      class="button-primary"
+      (click)="openPlans()"
+    >
+      Ver planos
+    </button>
+
+  </section>
+
+</div>
