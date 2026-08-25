@@ -2,11 +2,16 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { Setup } from './components/setup/setup';
 import { LandPage } from './components/land-page/land-page';
+import { ProductDetails } from './components/product-details/product-details';
 
 const routes: Routes = [
   {
     path: 'land-page',
     component: LandPage
+  },
+  {
+    path: 'land-page/product/:slug',
+    component: ProductDetails
   },
   {
     path: 'setup',

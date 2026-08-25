@@ -1,0 +1,324 @@
+<div class="product-details">
+
+  <!-- =========================
+       NAVEGAÇÃO
+  ========================== -->
+  <header class="navbar">
+
+    <button
+      type="button"
+      class="back-button"
+      (click)="goBack()"
+    >
+      <span class="back-arrow"></span>
+      Voltar
+    </button>
+
+    <div class="navbar-logo">
+      <img
+        src="assets/images/selath-inovation-logo.png"
+        alt="Selath Innovation"
+      />
+    </div>
+
+  </header>
+
+
+  @if (product) {
+
+    <!-- =========================
+         APRESENTAÇÃO DO PRODUTO
+    ========================== -->
+    <main class="hero">
+
+      <div class="hero-text">
+
+        <div class="product-logo" [class.contain]="product.logoContain">
+          <img
+            [src]="product.logo.src"
+            [alt]="product.logo.alt"
+          />
+        </div>
+
+        <span class="hero-category">
+          {{ product.category }}
+        </span>
+
+        <h1>
+          {{ product.name }}
+        </h1>
+
+        <p>
+          {{ product.description }}
+        </p>
+
+        <div class="hero-actions">
+
+          <button
+            type="button"
+            class="button-primary"
+            (click)="openPlans()"
+          >
+            Ver planos
+          </button>
+
+          <button
+            type="button"
+            class="button-secondary"
+            (click)="goBack()"
+          >
+            Voltar para a página inicial
+          </button>
+
+        </div>
+
+      </div>
+
+      <div class="hero-gallery">
+
+        <div class="gallery-main">
+          <img
+            [src]="product.images[activeImageIndex].src"
+            [alt]="product.images[activeImageIndex].alt"
+          />
+        </div>
+
+        @if (product.images.length > 1) {
+
+          <div class="gallery-thumbs">
+
+            @for (image of product.images; track image.src; let i = $index) {
+
+              <button
+                type="button"
+                class="thumb"
+                [class.active]="i === activeImageIndex"
+                (click)="selectImage(i)"
+              >
+                <img
+                  [src]="image.src"
+                  [alt]="image.alt"
+                />
+              </button>
+
+            }
+
+          </div>
+
+        }
+
+      </div>
+
+    </main>
+
+
+    <!-- =========================
+         RECURSOS DA PLATAFORMA
+    ========================== -->
+    <section class="features-section">
+
+      <div class="section-title">
+
+        <span>
+          {{ product.details.tagline }}
+        </span>
+
+        <h2>
+          {{ product.details.title }}
+        </h2>
+
+        <p>
+          {{ product.details.description }}
+        </p>
+
+      </div>
+
+
+      <div class="features">
+
+        @for (feature of product.details.features; track feature.title) {
+
+          <div class="feature-card">
+
+            <span class="feature-icon">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.7"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <path [attr.d]="icons[feature.icon]" />
+              </svg>
+            </span>
+
+            <h3>
+              {{ feature.title }}
+            </h3>
+
+            <p>
+              {{ feature.description }}
+            </p>
+
+          </div>
+
+        }
+
+      </div>
+
+    </section>
+
+
+    <!-- =========================
+         COMO FUNCIONA
+    ========================== -->
+    <section class="steps-section">
+
+      <h2 class="block-title">
+        {{ product.details.stepsTitle }}
+      </h2>
+
+      <div class="steps">
+
+        @for (step of product.details.steps; track step.title; let i = $index) {
+
+          <div class="step">
+
+            <span class="step-number">
+              {{ i + 1 }}
+            </span>
+
+            <h3>
+              {{ step.title }}
+            </h3>
+
+            <p>
+              {{ step.description }}
+            </p>
+
+          </div>
+
+        }
+
+      </div>
+
+    </section>
+
+
+    <!-- =========================
+         SELOS DE CONFIANÇA
+    ========================== -->
+    <section class="highlights">
+
+      @for (highlight of product.details.highlights; track highlight.label) {
+
+        <div class="highlight">
+
+          <span class="highlight-icon">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.7"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <path [attr.d]="icons[highlight.icon]" />
+            </svg>
+          </span>
+
+          <span class="highlight-label">
+            {{ highlight.label }}
+          </span>
+
+        </div>
+
+      }
+
+    </section>
+
+
+    <!-- =========================
+         PARA QUEM É
+    ========================== -->
+    <section class="audience-section">
+
+      <h2 class="block-title">
+        {{ product.details.audienceTitle }}
+      </h2>
+
+      <ul class="audience-list">
+
+        @for (item of product.details.audience; track item) {
+
+          <li>
+
+            <span class="check-icon">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <path d="M20 6L9 17l-5-5" />
+              </svg>
+            </span>
+
+            {{ item }}
+
+          </li>
+
+        }
+
+      </ul>
+
+    </section>
+
+
+
+
+    <!-- =========================
+         OUTROS PRODUTOS
+    ========================== -->
+    @if (otherProducts.length) {
+
+      <section class="other-products">
+
+        <h2>
+          Conheça também
+        </h2>
+
+        <div class="other-list">
+
+          @for (item of otherProducts; track item.slug) {
+
+            <a
+              class="other-card"
+              [routerLink]="['/land-page/product', item.slug]"
+            >
+              <span class="other-name">
+                {{ item.name }}
+              </span>
+
+              <span class="other-category">
+                {{ item.category }}
+              </span>
+            </a>
+
+          }
+
+        </div>
+
+      </section>
+
+    }
+
+  }
+
+</div>

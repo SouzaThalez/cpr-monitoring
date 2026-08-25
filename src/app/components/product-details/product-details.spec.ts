@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 
-import { LandPage } from './land-page';
+import { ProductDetails } from './product-details';
 
-describe('LandPage', () => {
-  let component: LandPage;
-  let fixture: ComponentFixture<LandPage>;
+describe('ProductDetails', () => {
+  let component: ProductDetails;
+  let fixture: ComponentFixture<ProductDetails>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [LandPage],
+      declarations: [ProductDetails],
       providers: [provideRouter([])]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(LandPage);
+    fixture = TestBed.createComponent(ProductDetails);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

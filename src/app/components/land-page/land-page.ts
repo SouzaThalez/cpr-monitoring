@@ -1,4 +1,5 @@
 import { Component, ElementRef, HostListener, ViewChild } from '@angular/core';
+import { Router } from '@angular/router';
 import { Product, ProductPlan } from '../../models/product';
 import { productsData, defaultProductSlug, findProductBySlug } from '../../data/productsData';
 
@@ -19,6 +20,9 @@ export class LandPage {
   mobileMenuOpen = false;
 
   @ViewChild('plansSection') plansSection?: ElementRef<HTMLElement>;
+
+
+  constructor(private router: Router) {}
 
 
   toggleProductsMenu(): void {
@@ -67,8 +71,9 @@ export class LandPage {
   }
 
 
-  // TODO: apontar para a página de detalhes quando ela existir
+  // abre a página de detalhes do produto selecionado
   openProductDetails(): void {
+    this.router.navigate(['/land-page/product', this.selectedProduct.slug]);
   }
 
 
