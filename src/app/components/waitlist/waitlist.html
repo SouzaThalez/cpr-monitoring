@@ -1,0 +1,184 @@
+<div class="waitlist">
+
+  <!-- =========================
+       NAVEGAÇÃO
+  ========================== -->
+  <header class="navbar">
+
+    <button
+      type="button"
+      class="back-button"
+      (click)="goBack()"
+    >
+      <span class="back-arrow"></span>
+      Voltar
+    </button>
+
+    <div class="navbar-logo">
+      <img
+        src="assets/images/selath-inovation-logo.png"
+        alt="Selath Innovation"
+      />
+    </div>
+
+  </header>
+
+
+  <main class="content">
+
+    <div class="section-title">
+
+      <span>
+        Lista de espera
+      </span>
+
+      <h1>
+        Seja um dos primeiros a usar
+      </h1>
+
+      <p>
+        Escolha o produto que você quer acompanhar e deixe o seu e-mail para
+        receber o aviso assim que o acesso for liberado.
+      </p>
+
+    </div>
+
+
+    @if (!submitted) {
+
+      <form class="waitlist-form" (ngSubmit)="submit()">
+
+        <!-- =========================
+             ESCOLHA DO PRODUTO
+        ========================== -->
+        <section class="form-block">
+
+          <h2>
+            Escolha o produto
+          </h2>
+
+          <div class="product-list">
+
+            @for (product of products; track product.slug) {
+
+              <button
+                type="button"
+                class="product-card"
+                [class.active]="isSelected(product)"
+                [attr.aria-pressed]="isSelected(product)"
+                (click)="selectProduct(product)"
+              >
+
+                <div class="product-logo" [class.contain]="product.logoContain">
+                  <img
+                    [src]="product.logo.src"
+                    [alt]="product.logo.alt"
+                  />
+                </div>
+
+                <span class="product-name">
+                  {{ product.name }}
+                </span>
+
+                <span class="product-category">
+                  {{ product.category }}
+                </span>
+
+              </button>
+
+            }
+
+          </div>
+
+        </section>
+
+
+        <!-- =========================
+             E-MAIL
+        ========================== -->
+        <section class="form-block">
+
+          <h2>
+            Informe o seu e-mail
+          </h2>
+
+          <label class="email-field" for="email">
+
+            <input
+              id="email"
+              name="email"
+              type="email"
+              placeholder="seu@email.com"
+              autocomplete="email"
+              [(ngModel)]="email"
+              (ngModelChange)="onEmailChange()"
+            />
+
+          </label>
+
+        </section>
+
+
+        @if (errorMessage) {
+
+          <p class="form-error">
+            {{ errorMessage }}
+          </p>
+
+        }
+
+
+        <button
+          type="submit"
+          class="button-primary submit-button"
+        >
+          Entrar para a lista de espera
+        </button>
+
+      </form>
+
+    } @else {
+
+      <!-- =========================
+           CONFIRMAÇÃO
+      ========================== -->
+      <section class="success">
+
+        <div class="success-icon"></div>
+
+        <h2>
+          Cadastro confirmado
+        </h2>
+
+        <p>
+          Avisaremos em <strong>{{ email }}</strong> assim que o
+          <strong>{{ selectedProduct?.name }}</strong> estiver disponível.
+        </p>
+
+        <div class="success-actions">
+
+          <button
+            type="button"
+            class="button-secondary"
+            (click)="reset()"
+          >
+            Cadastrar outro e-mail
+          </button>
+
+          <button
+            type="button"
+            class="button-primary"
+            (click)="goBack()"
+          >
+            Voltar para a página inicial
+          </button>
+
+        </div>
+
+      </section>
+
+    }
+
+  </main>
+
+</div>

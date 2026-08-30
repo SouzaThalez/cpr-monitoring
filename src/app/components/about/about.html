@@ -1,0 +1,138 @@
+<div class="about">
+
+  <!-- =========================
+       NAVEGAÇÃO
+  ========================== -->
+  <header class="navbar">
+
+    <button
+      type="button"
+      class="back-button"
+      (click)="goBack()"
+    >
+      <span class="back-arrow"></span>
+      Voltar
+    </button>
+
+    <div class="navbar-logo">
+      <img
+        src="assets/images/selath-inovation-logo.png"
+        alt="Selath Innovation"
+      />
+    </div>
+
+  </header>
+
+
+  <main class="content">
+
+    <div class="section-title">
+
+      <span>
+        Quem somos
+      </span>
+
+      <h1>
+        Tecnologia feita para a saúde
+      </h1>
+
+      <p>
+        A Selath Innovation desenvolve plataformas que organizam o dia a dia de
+        laboratórios de simulação, clínicas e instituições de ensino em saúde.
+      </p>
+
+    </div>
+
+
+    <!-- =========================
+         APRESENTAÇÃO
+    ========================== -->
+    <section class="card">
+
+      <h2>
+        O que fazemos
+      </h2>
+
+      <p>
+        Transformamos processos manuais e planilhas soltas em sistemas simples de
+        usar. Cada produto nasce de uma necessidade real de quem trabalha na
+        ponta: registrar, acompanhar e ter os dados na mão na hora de decidir.
+      </p>
+
+      <p>
+        Nosso compromisso é com um software que a equipe consiga usar no meio da
+        rotina, sem treinamento longo e sem burocracia.
+      </p>
+
+    </section>
+
+
+    <!-- =========================
+         PRODUTOS
+    ========================== -->
+    <section class="card">
+
+      <h2>
+        Nossos produtos
+      </h2>
+
+      <div class="product-list">
+
+        @for (product of products; track product.slug) {
+
+          <a
+            class="product-card"
+            [routerLink]="['/land-page/product', product.slug]"
+          >
+
+            <div class="product-logo" [class.contain]="product.logoContain">
+              <img
+                [src]="product.logo.src"
+                [alt]="product.logo.alt"
+              />
+            </div>
+
+            <span class="product-name">
+              {{ product.name }}
+            </span>
+
+            <span class="product-category">
+              {{ product.category }}
+            </span>
+
+          </a>
+
+        }
+
+      </div>
+
+    </section>
+
+
+    <!-- =========================
+         CHAMADA FINAL
+    ========================== -->
+    <section class="final-cta">
+
+      <h2>
+        Quer acompanhar de perto?
+      </h2>
+
+      <p>
+        Entre para a lista de espera e receba o aviso assim que o acesso for
+        liberado.
+      </p>
+
+      <button
+        type="button"
+        class="button-primary"
+        (click)="openWaitlist()"
+      >
+        Entrar para a lista de espera
+      </button>
+
+    </section>
+
+  </main>
+
+</div>

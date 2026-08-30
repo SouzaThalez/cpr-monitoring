@@ -3,6 +3,8 @@ import { RouterModule, Routes } from '@angular/router';
 import { Setup } from './components/setup/setup';
 import { LandPage } from './components/land-page/land-page';
 import { ProductDetails } from './components/product-details/product-details';
+import { Waitlist } from './components/waitlist/waitlist';
+import { About } from './components/about/about';
 
 const routes: Routes = [
   {
@@ -12,6 +14,14 @@ const routes: Routes = [
   {
     path: 'land-page/product/:slug',
     component: ProductDetails
+  },
+  {
+    path: 'quem-somos',
+    component: About
+  },
+  {
+    path: 'lista-espera',
+    component: Waitlist
   },
   {
     path: 'setup',
