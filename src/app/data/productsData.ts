@@ -136,7 +136,7 @@ export const productsData: Product[] = [
     name: 'MoonCpr',
     category: 'Processos e ensino',
     description:
-      'Uma plataforma para organização de fluxos, protocolos e processos, ajudando equipes a trabalharem de forma mais eficiente e estruturada.',
+      'Uma plataforma que permite instituições de ensino acompanhar e avaliar treinamentos de RCP, reduzindo o trabalho manual dos instrutores.',
     logo: {
       src: 'assets/images/logo-img.png',
       alt: 'MoonCpr'

@@ -16,7 +16,24 @@ export class Waitlist {
   // produto escolhido pelo usuário; começa vazio para obrigar a escolha
   selectedProduct?: Product;
 
+  name = '';
+
+  institution = '';
+
+  role = '';
+
   email = '';
+
+  // opções do menu "Gostaria de usar esta plataforma para?"
+  purposeOptions: string[] = [
+    'Cursos',
+    'Aulas',
+    'Avaliação',
+    'Treinamentos',
+    'Outros',
+  ];
+
+  purpose = '';
 
   // mensagem exibida abaixo do formulário quando algo está incompleto
   errorMessage = '';
@@ -38,7 +55,8 @@ export class Waitlist {
   }
 
 
-  onEmailChange(): void {
+  // limpa o aviso de erro assim que o usuário corrige qualquer campo
+  onFieldChange(): void {
     this.errorMessage = '';
   }
 
@@ -50,8 +68,28 @@ export class Waitlist {
       return;
     }
 
+    if (!this.name.trim()) {
+      this.errorMessage = 'Informe o seu nome.';
+      return;
+    }
+
+    if (!this.institution.trim()) {
+      this.errorMessage = 'Informe a sua instituição.';
+      return;
+    }
+
+    if (!this.role.trim()) {
+      this.errorMessage = 'Informe o seu cargo.';
+      return;
+    }
+
     if (!this.isValidEmail(this.email)) {
       this.errorMessage = 'Informe um e-mail válido para receber as novidades.';
+      return;
+    }
+
+    if (!this.purpose) {
+      this.errorMessage = 'Escolha para que você pretende usar a plataforma.';
       return;
     }
 
@@ -66,7 +104,11 @@ export class Waitlist {
   reset(): void {
     this.submitted = false;
     this.selectedProduct = undefined;
+    this.name = '';
+    this.institution = '';
+    this.role = '';
     this.email = '';
+    this.purpose = '';
     this.errorMessage = '';
   }
 

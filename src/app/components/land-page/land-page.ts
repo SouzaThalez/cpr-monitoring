@@ -79,10 +79,7 @@ export class LandPage {
 
   // rola até a seção de planos do produto selecionado, na mesma página
   openPlans(): void {
-    this.plansSection?.nativeElement.scrollIntoView({
-      behavior: 'smooth',
-      block: 'start'
-    });
+    this.router.navigate(['/lista-espera']);
   }
 
 

@@ -37,8 +37,8 @@
       </h1>
 
       <p>
-        Escolha o produto que você quer acompanhar e deixe o seu e-mail para
-        receber o aviso assim que o acesso for liberado.
+        Escolha o produto que você quer usar e deixe os seus dados para
+        receber o e-mail de confirmação de acesso.
       </p>
 
     </div>
@@ -94,27 +94,126 @@
 
 
         <!-- =========================
-             E-MAIL
+             DADOS DO CLIENTE
         ========================== -->
         <section class="form-block">
 
           <h2>
-            Informe o seu e-mail
+            Informe os seus dados
           </h2>
 
-          <label class="email-field" for="email">
+          <div class="field-grid">
 
-            <input
-              id="email"
-              name="email"
-              type="email"
-              placeholder="seu@email.com"
-              autocomplete="email"
-              [(ngModel)]="email"
-              (ngModelChange)="onEmailChange()"
-            />
+            <label class="form-field" for="name">
 
-          </label>
+              <span class="field-label">
+                Nome
+              </span>
+
+              <input
+                id="name"
+                name="name"
+                type="text"
+                placeholder="Seu nome completo"
+                autocomplete="name"
+                [(ngModel)]="name"
+                (ngModelChange)="onFieldChange()"
+              />
+
+            </label>
+
+
+            <label class="form-field" for="institution">
+
+              <span class="field-label">
+                Instituição
+              </span>
+
+              <input
+                id="institution"
+                name="institution"
+                type="text"
+                placeholder="Empresa, escola ou universidade"
+                autocomplete="organization"
+                [(ngModel)]="institution"
+                (ngModelChange)="onFieldChange()"
+              />
+
+            </label>
+
+
+            <label class="form-field" for="role">
+
+              <span class="field-label">
+                Cargo
+              </span>
+
+              <input
+                id="role"
+                name="role"
+                type="text"
+                placeholder="Seu cargo ou função"
+                autocomplete="organization-title"
+                [(ngModel)]="role"
+                (ngModelChange)="onFieldChange()"
+              />
+
+            </label>
+
+
+            <label class="form-field" for="email">
+
+              <span class="field-label">
+                E-mail
+              </span>
+
+              <input
+                id="email"
+                name="email"
+                type="email"
+                placeholder="seu@email.com"
+                autocomplete="email"
+                [(ngModel)]="email"
+                (ngModelChange)="onFieldChange()"
+              />
+
+            </label>
+
+
+            <label class="form-field full-width" for="purpose">
+
+              <span class="field-label">
+                Gostaria de usar esta plataforma para?
+              </span>
+
+              <div class="select-wrapper">
+
+                <select
+                  id="purpose"
+                  name="purpose"
+                  [(ngModel)]="purpose"
+                  (ngModelChange)="onFieldChange()"
+                >
+
+                  <option value="" disabled selected>
+                    Selecione uma opção
+                  </option>
+
+                  @for (option of purposeOptions; track option) {
+
+                    <option [value]="option">
+                      {{ option }}
+                    </option>
+
+                  }
+
+                </select>
+
+              </div>
+
+            </label>
+
+          </div>
 
         </section>
 
@@ -132,7 +231,7 @@
           type="submit"
           class="button-primary submit-button"
         >
-          Entrar para a lista de espera
+          Quero testar a plataforma !
         </button>
 
       </form>
@@ -151,7 +250,8 @@
         </h2>
 
         <p>
-          Avisaremos em <strong>{{ email }}</strong> assim que o
+          Obrigado, <strong>{{ name }}</strong>! Avisaremos em
+          <strong>{{ email }}</strong> assim que o
           <strong>{{ selectedProduct?.name }}</strong> estiver disponível.
         </p>
 
