@@ -53,9 +53,17 @@
         ========================== -->
         <section class="form-block">
 
-          <h2>
-            Escolha o produto
-          </h2>
+          <div class="block-header">
+
+            <h2>
+              Escolha o produto
+            </h2>
+
+            <span class="selected-product">
+              {{ selectedProduct.name }}
+            </span>
+
+          </div>
 
           <div class="product-list">
 
@@ -230,8 +238,9 @@
         <button
           type="submit"
           class="button-primary submit-button"
+          [disabled]="sending"
         >
-          Quero testar a plataforma !
+          {{ sending ? 'Enviando...' : 'Quero testar a plataforma !' }}
         </button>
 
       </form>
@@ -252,7 +261,7 @@
         <p>
           Obrigado, <strong>{{ name }}</strong>! Avisaremos em
           <strong>{{ email }}</strong> assim que o
-          <strong>{{ selectedProduct?.name }}</strong> estiver disponível.
+          <strong>{{ selectedProduct.name }}</strong> estiver disponível.
         </p>
 
         <div class="success-actions">

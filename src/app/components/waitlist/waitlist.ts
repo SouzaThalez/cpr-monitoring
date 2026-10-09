@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Product } from '../../models/product';
-import { productsData } from '../../data/productsData';
+import { productsData, findProductBySlug } from '../../data/productsData';
+import { WaitlistEntry, WaitlistService } from '../../services/waitlist-service';
 
 @Component({
   selector: 'app-waitlist',
@@ -9,12 +10,12 @@ import { productsData } from '../../data/productsData';
   templateUrl: './waitlist.html',
   styleUrl: './waitlist.scss'
 })
-export class Waitlist {
+export class Waitlist implements OnInit {
 
   products: Product[] = productsData;
 
-  // produto escolhido pelo usuário; começa vazio para obrigar a escolha
-  selectedProduct?: Product;
+  // produto escolhido pelo usuário; o primeiro da lista é o padrão
+  selectedProduct: Product = productsData[0];
 
   name = '';
 
@@ -40,8 +41,20 @@ export class Waitlist {
 
   submitted = false;
 
+  // bloqueia o botão enquanto o cadastro está a caminho do Apps Script
+  sending = false;
 
-  constructor(private router: Router) {}
+
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router,
+    private waitlistService: WaitlistService
+  ) {}
+
+
+  ngOnInit(): void {
+    this.selectedProduct = this.resolveProduct();
+  }
 
 
   selectProduct(product: Product): void {
@@ -51,7 +64,7 @@ export class Waitlist {
 
 
   isSelected(product: Product): boolean {
-    return this.selectedProduct?.slug === product.slug;
+    return this.selectedProduct.slug === product.slug;
   }
 
 
@@ -63,8 +76,7 @@ export class Waitlist {
 
   submit(): void {
 
-    if (!this.selectedProduct) {
-      this.errorMessage = 'Escolha o produto que você quer acompanhar.';
+    if (this.sending) {
       return;
     }
 
@@ -94,16 +106,32 @@ export class Waitlist {
     }
 
     this.errorMessage = '';
-    this.submitted = true;
+    this.sending = true;
 
-    // TODO: enviar o cadastro para o backend quando o endpoint existir
+    this.waitlistService.register(this.buildEntry()).subscribe({
+
+      next: () => {
+        this.sending = false;
+        this.submitted = true;
+      },
+
+      error: (error) => {
+        this.sending = false;
+        this.errorMessage =
+          'Não foi possível enviar o seu cadastro agora. Tente novamente em alguns instantes.';
+        console.error('Falha ao enviar o cadastro da lista de espera', error);
+      }
+
+    });
+
   }
 
 
   // permite cadastrar outro e-mail sem sair da página
   reset(): void {
     this.submitted = false;
-    this.selectedProduct = undefined;
+    this.sending = false;
+    this.selectedProduct = this.resolveProduct();
     this.name = '';
     this.institution = '';
     this.role = '';
@@ -115,6 +143,43 @@ export class Waitlist {
 
   goBack(): void {
     this.router.navigate(['/land-page']);
+  }
+
+
+  private buildEntry(): WaitlistEntry {
+
+    return {
+      name: this.name.trim(),
+      institution: this.institution.trim(),
+      role: this.role.trim(),
+      email: this.email.trim(),
+      purpose: this.purpose,
+      productName: this.selectedProduct.name,
+      productSlug: this.selectedProduct.slug,
+      productUrl: this.buildProductUrl()
+    };
+
+  }
+
+
+  // o base href muda entre o ng serve e o GitHub Pages; o baseURI cobre os dois
+  private buildProductUrl(): string {
+
+    return new URL(
+      `land-page/product/${this.selectedProduct.slug}`,
+      document.baseURI
+    ).href;
+
+  }
+
+
+  // o produto vem da land page pela query string; sem ela usa o primeiro da lista
+  private resolveProduct(): Product {
+
+    const slug = this.route.snapshot.queryParamMap.get('produto');
+
+    return findProductBySlug(slug) ?? productsData[0];
+
   }
 
 

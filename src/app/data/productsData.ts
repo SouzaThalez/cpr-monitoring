@@ -129,7 +129,7 @@ export const productsData: Product[] = [
     },
     ctaTitle: 'Pronto para começar?',
     ctaDescription:
-      'Experimente o Linchpin e descubra uma forma mais simples de organizar seus processos.'
+      'Experimente o Linchpin e descubra uma forma mais simples de gerir seus simuladores e aparelhos.'
   },
   {
     slug: 'mooncpr',
@@ -257,7 +257,7 @@ export const productsData: Product[] = [
     },
     ctaTitle: 'Pronto para começar?',
     ctaDescription:
-      'Experimente o MoonCpr e estruture os protocolos da sua equipe de forma simples.'
+      'Experimente o MoonCpr e estruture os protocolos da sua equipe durante uma RCP.'
   },
     {
     slug: 'selathcare',

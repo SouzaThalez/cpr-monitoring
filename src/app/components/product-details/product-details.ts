@@ -70,11 +70,10 @@ export class ProductDetails implements OnInit {
   }
 
 
-  // rola até a seção de planos, na mesma página
+  // leva para a lista de espera com este produto já marcado
   openPlans(): void {
-    this.plansSection?.nativeElement.scrollIntoView({
-      behavior: 'smooth',
-      block: 'start'
+    this.router.navigate(['/lista-espera'], {
+      queryParams: { produto: this.product?.slug }
     });
   }
 

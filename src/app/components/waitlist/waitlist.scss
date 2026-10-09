@@ -207,6 +207,41 @@
 }
 
 
+/* cabeçalho do bloco de produtos: título à esquerda e produto escolhido à direita */
+.block-header {
+  margin-bottom: clamp(14px, 2.5vw, 18px);
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 12px;
+
+  flex-wrap: wrap;
+
+  h2 {
+    margin: 0;
+  }
+}
+
+
+.selected-product {
+  padding: 5px 12px;
+
+  border: 1px solid #cfe4fb;
+  border-radius: 999px;
+
+  background: #eff7ff;
+
+  color: #147fe8;
+
+  font-size: clamp(12px, 1.9vw, 13px);
+  font-weight: 600;
+
+  white-space: nowrap;
+}
+
+
 .product-list {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -404,6 +439,14 @@
 
 .submit-button {
   width: 100%;
+
+  &:disabled {
+    opacity: 0.65;
+
+    cursor: default;
+
+    transform: none;
+  }
 }
 
 

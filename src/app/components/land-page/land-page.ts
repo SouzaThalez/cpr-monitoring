@@ -77,9 +77,11 @@ export class LandPage {
   }
 
 
-  // rola até a seção de planos do produto selecionado, na mesma página
+  // leva para a lista de espera com o produto selecionado já marcado
   openPlans(): void {
-    this.router.navigate(['/lista-espera']);
+    this.router.navigate(['/lista-espera'], {
+      queryParams: { produto: this.selectedProduct.slug }
+    });
   }
 
 
