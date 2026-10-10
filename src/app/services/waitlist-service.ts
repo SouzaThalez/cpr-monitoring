@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
  * dispara os e-mails. Gerada em "Implantar > Nova implantação > App da Web"
  * e termina em /exec. O código do script está em scripts/waitlist-apps-script.gs.
  */
-export const waitlistEndpoint = 'https://script.google.com/macros/s/AKfycbylz7M-yE7JUB5GD7h-YoASexi22SLC6KxjeZzlVoIVSad1Kro5WAUXeJPLJX7G_ift/exec';
+export const waitlistEndpoint = 'https://script.google.com/macros/s/AKfycbyBe6-ErG-xTUMcbAb_uMa2UnLbZB0w-gOxL60wSUY2k4jcDkYH7l1HHA7RfaLL5-nWIQ/exec';
 
 export interface WaitlistEntry {
   name: string;
@@ -18,6 +18,7 @@ export interface WaitlistEntry {
   productName: string;
   productSlug: string;
   productUrl: string;
+  accessUrl: string;
 }
 
 @Injectable({ providedIn: 'root' })

@@ -68,6 +68,9 @@ export interface ProductDetailContent {
 export interface Product {
   slug: string;                  // usado na rota /landing-page/product/:slug
   name: string;
+  accessUrl: string;             // link para usar o produto, enviado no e-mail da lista de espera;
+                                 // aceita URL absoluta ou caminho relativo ao base href.
+                                 // vazio = produto ainda não publicado
   category: string;              // ex.: 'Sistema para saúde'
   description: string;
   logo: ProductImage;

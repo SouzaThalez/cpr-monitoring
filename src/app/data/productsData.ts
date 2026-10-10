@@ -3,6 +3,8 @@ import { Product } from '../models/product';
 export const productsData: Product[] = [
   {
     slug: 'linchpin',
+    
+    accessUrl: 'https://tibia.fandom.com/wiki/Knight_Equipment', // Preencher com o link do produto quando ele for publicado
     name: 'Linchpin',
     category: 'Sistema para saúde',
     description:
@@ -133,6 +135,7 @@ export const productsData: Product[] = [
   },
   {
     slug: 'mooncpr',
+    accessUrl: 'https://souzathalez.github.io/cpr-monitoring/setup',
     name: 'MoonCpr',
     category: 'Processos e ensino',
     description:
@@ -261,6 +264,8 @@ export const productsData: Product[] = [
   },
     {
     slug: 'selathcare',
+    // TODO: preencher com o link do produto quando ele for publicado
+    accessUrl: '',
     name: 'SelathCare',
     category: 'Gestão em saúde',
     description:

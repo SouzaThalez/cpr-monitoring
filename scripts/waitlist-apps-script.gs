@@ -33,6 +33,10 @@
  */
 
 
+// id da planilha, o trecho da URL entre /d/ e /edit. Deixe vazio se o script
+// foi criado pela própria planilha (Extensões > Apps Script)
+const SPREADSHEET_ID = '';
+
 // aba da planilha onde as inscrições são gravadas; é criada se não existir
 const SHEET_NAME = 'Lista de espera';
 
@@ -50,7 +54,9 @@ const HEADERS = [
   'Cargo',
   'E-mail',
   'Finalidade',
-  'Link do produto'
+  'Link do produto',
+  'Link de acesso'
+  
 ];
 
 
@@ -97,6 +103,15 @@ function doGet() {
 }
 
 
+function jsonResponse(payload) {
+
+  return ContentService
+    .createTextOutput(JSON.stringify(payload))
+    .setMimeType(ContentService.MimeType.JSON);
+
+}
+
+
 function appendEntry(entry) {
 
   const sheet = getSheet();
@@ -109,7 +124,8 @@ function appendEntry(entry) {
     entry.role || '',
     entry.email || '',
     entry.purpose || '',
-    entry.productUrl || ''
+    entry.productUrl || '',
+    entry.accessUrl || ''
   ]);
 
 }
@@ -117,7 +133,18 @@ function appendEntry(entry) {
 
 function getSheet() {
 
-  const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+  // getActiveSpreadsheet() só responde quando o script é vinculado à planilha
+  // (criado em Extensões > Apps Script). Script avulso precisa do ID.
+  const spreadsheet = SPREADSHEET_ID
+    ? SpreadsheetApp.openById(SPREADSHEET_ID)
+    : SpreadsheetApp.getActiveSpreadsheet();
+
+  if (!spreadsheet) {
+    throw new Error(
+      'Planilha não encontrada. Preencha SPREADSHEET_ID com o id que aparece ' +
+      'na URL da planilha, entre /d/ e /edit.'
+    );
+  }
 
   let sheet = spreadsheet.getSheetByName(SHEET_NAME);
 
@@ -125,47 +152,73 @@ function getSheet() {
     sheet = spreadsheet.insertSheet(SHEET_NAME);
   }
 
-  // cabeçalho é escrito uma única vez, na primeira inscrição
+  // cabeçalho é escrito na primeira inscrição e reescrito quando o script
+  // passa a gravar colunas novas, para os dados não saírem desalinhados
   if (sheet.getLastRow() === 0) {
     sheet.appendRow(HEADERS);
-    sheet.getRange(1, 1, 1, HEADERS.length).setFontWeight('bold');
     sheet.setFrozenRows(1);
+  } else if (sheet.getLastColumn() < HEADERS.length) {
+    sheet.getRange(1, 1, 1, HEADERS.length).setValues([HEADERS]);
   }
+
+  sheet.getRange(1, 1, 1, HEADERS.length).setFontWeight('bold');
 
   return sheet;
 
 }
 
 
-// e-mail de confirmação para quem se inscreveu, com o link do produto
+// e-mail de confirmação para quem se inscreveu. Produto já publicado leva o
+// link de acesso; os que ainda não têm link levam a página de apresentação
 function sendConfirmation(entry) {
 
   const product = entry.productName || 'a plataforma';
+  const released = Boolean(entry.accessUrl);
 
-  const subject = 'Confirmamos a sua inscrição na lista de espera';
+  const subject = released
+    ? `Seu acesso ao ${product} está liberado`
+    : 'Confirmamos a sua inscrição na lista de espera';
 
-  const lines = [
+  const message = released
+    ? `Recebemos a sua inscrição e o ${product} já está disponível: ` +
+        'você pode começar a usar agora mesmo pelo link abaixo.'
+    : `Recebemos a sua inscrição na lista de espera do ${product}. ` +
+        'Avisaremos neste e-mail assim que o seu acesso estiver liberado.';
+
+  const buttonUrl = released ? entry.accessUrl : entry.productUrl;
+  const buttonLabel = released ? `Acessar o ${product}` : `Conhecer o ${product}`;
+
+  const textLines = [
     `Olá, ${entry.name}!`,
     '',
-    `Recebemos a sua inscrição na lista de espera do ${product}. ` +
-      'Avisaremos neste e-mail assim que o seu acesso estiver liberado.',
-    '',
-    entry.productUrl ? `Conheça o produto: ${entry.productUrl}` : '',
-    '',
-    `Equipe ${FROM_NAME}`
+    message
   ];
+
+  if (buttonUrl) {
+    textLines.push('', `${buttonLabel}: ${buttonUrl}`);
+  }
+
+  // quem já tem acesso recebe também a página do produto, como referência
+  if (released && entry.productUrl) {
+    textLines.push('', `Sobre o produto: ${entry.productUrl}`);
+  }
+
+  textLines.push('', `Equipe ${FROM_NAME}`);
 
   const htmlBody =
     '<div style="font-family:Roboto,Arial,sans-serif;color:#26364f;line-height:1.6">' +
       `<p>Olá, <strong>${escapeHtml(entry.name)}</strong>!</p>` +
-      `<p>Recebemos a sua inscrição na lista de espera do ` +
-        `<strong>${escapeHtml(product)}</strong>. Avisaremos neste e-mail ` +
-        'assim que o seu acesso estiver liberado.</p>' +
-      (entry.productUrl
-        ? `<p style="margin:26px 0"><a href="${escapeHtml(entry.productUrl)}" ` +
+      `<p>${escapeHtml(message)}</p>` +
+      (buttonUrl
+        ? `<p style="margin:26px 0"><a href="${escapeHtml(buttonUrl)}" ` +
             'style="background:#147fe8;color:#ffffff;padding:12px 22px;' +
             'border-radius:8px;text-decoration:none;font-weight:600;' +
-            'display:inline-block">Conhecer o ' + escapeHtml(product) + '</a></p>'
+            `display:inline-block">${escapeHtml(buttonLabel)}</a></p>`
+        : '') +
+      (released && entry.productUrl
+        ? `<p style="font-size:14px">Quer saber mais? ` +
+            `<a href="${escapeHtml(entry.productUrl)}" style="color:#147fe8">` +
+            `Conheça o ${escapeHtml(product)}</a>.</p>`
         : '') +
       `<p style="color:#718096">Equipe ${escapeHtml(FROM_NAME)}</p>` +
     '</div>';
@@ -173,7 +226,7 @@ function sendConfirmation(entry) {
   MailApp.sendEmail({
     to: entry.email,
     subject: subject,
-    body: lines.join('\n'),
+    body: textLines.join('\n'),
     htmlBody: htmlBody,
     name: FROM_NAME
   });
@@ -197,7 +250,8 @@ function sendNotification(entry) {
     `Cargo: ${entry.role || '-'}`,
     `E-mail: ${entry.email || '-'}`,
     `Finalidade: ${entry.purpose || '-'}`,
-    `Link do produto: ${entry.productUrl || '-'}`
+    `Link do produto: ${entry.productUrl || '-'}`,
+    `Link de acesso: ${entry.accessUrl || '(produto ainda sem link)'}`
   ].join('\n');
 
   MailApp.sendEmail({

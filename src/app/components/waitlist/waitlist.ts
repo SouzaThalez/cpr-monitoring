@@ -75,7 +75,7 @@ export class Waitlist implements OnInit {
 
 
   submit(): void {
-
+debugger
     if (this.sending) {
       return;
     }
@@ -156,20 +156,33 @@ export class Waitlist implements OnInit {
       purpose: this.purpose,
       productName: this.selectedProduct.name,
       productSlug: this.selectedProduct.slug,
-      productUrl: this.buildProductUrl()
+      productUrl: this.buildProductUrl(),
+      accessUrl: this.buildAccessUrl()
     };
 
   }
 
 
-  // o base href muda entre o ng serve e o GitHub Pages; o baseURI cobre os dois
+  // página de apresentação do produto
   private buildProductUrl(): string {
+    return this.buildUrl(`land-page/product/${this.selectedProduct.slug}`);
+  }
 
-    return new URL(
-      `land-page/product/${this.selectedProduct.slug}`,
-      document.baseURI
-    ).href;
 
+  // link para usar o produto; vazio enquanto ele não foi publicado
+  private buildAccessUrl(): string {
+
+    const accessUrl = this.selectedProduct.accessUrl;
+
+    return accessUrl ? this.buildUrl(accessUrl) : '';
+
+  }
+
+
+  // o base href muda entre o ng serve e o GitHub Pages, e o baseURI cobre os
+  // dois; URL absoluta passa intacta, então accessUrl aceita os dois formatos
+  private buildUrl(path: string): string {
+    return new URL(path, document.baseURI).href;
   }
 
 
