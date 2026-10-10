@@ -9,6 +9,7 @@ import { Observable } from 'rxjs';
  */
 export const waitlistEndpoint = 'https://script.google.com/macros/s/AKfycbyBe6-ErG-xTUMcbAb_uMa2UnLbZB0w-gOxL60wSUY2k4jcDkYH7l1HHA7RfaLL5-nWIQ/exec';
 
+
 export interface WaitlistEntry {
   name: string;
   institution: string;

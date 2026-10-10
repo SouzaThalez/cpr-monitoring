@@ -3,8 +3,7 @@ import { Product } from '../models/product';
 export const productsData: Product[] = [
   {
     slug: 'linchpin',
-    
-    accessUrl: 'https://tibia.fandom.com/wiki/Knight_Equipment', // Preencher com o link do produto quando ele for publicado
+    accessUrl: '', // Preencher com o link do produto quando ele for publicado
     name: 'Linchpin',
     category: 'Sistema para saúde',
     description:
@@ -264,8 +263,7 @@ export const productsData: Product[] = [
   },
     {
     slug: 'selathcare',
-    // TODO: preencher com o link do produto quando ele for publicado
-    accessUrl: '',
+    accessUrl: '', //Preencher com o link do produto quando ele for publicado
     name: 'SelathCare',
     category: 'Gestão em saúde',
     description:
