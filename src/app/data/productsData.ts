@@ -5,7 +5,7 @@ export const productsData: Product[] = [
     slug: 'linchpin',
     accessUrl: '', // Preencher com o link do produto quando ele for publicado
     name: 'Linchpin',
-    category: 'Sistema para saúde',
+    category: 'Gestão de Simuladores',
     description:
       'Uma plataforma desenvolvida para facilitar o gerenciamento de processos, registros e atividades em ambientes de saúde, tornando as informações mais organizadas e acessíveis.',
     logo: {
@@ -261,22 +261,22 @@ export const productsData: Product[] = [
     ctaDescription:
       'Experimente o MoonCpr e estruture os protocolos da sua equipe durante uma RCP.'
   },
-    {
-    slug: 'selathcare',
+  {
+    slug: 'Sistema de Provas',
     accessUrl: '', //Preencher com o link do produto quando ele for publicado
-    name: 'SelathCare',
-    category: 'Gestão em saúde',
+    name: 'Sistema de Provas',
+    category: 'Avaliação de Conhecimento',
     description:
-      'Uma solução digital para facilitar a gestão de clínicas, consultórios e serviços de saúde, centralizando informações e proporcionando uma visão mais estratégica dos processos.',
+      'Avaliações simples, rápidas e completas. Crie e aplique provas de ensino, acompanhando o desempenho dos seus alunos em tempo real.',
     logo: {
-      src: 'assets/images/selath-inovation-logo.png',
-      alt: 'SelathCare'
+      src: 'assets/images/survey-login.png',
+      alt: 'Sistema de Provas'
     },
     logoContain: true,
     images: [
       {
-        src: 'assets/images/login-linchpin.png',
-        alt: 'Plataforma SelathCare apresentada em um tablet'
+        src: 'assets/images/survey-tablet-image.png',
+        alt: 'Plataforma de prova apresentada em um tablet'
       }
     ],
     plansTitle: 'Escolha a melhor opção',
@@ -317,29 +317,34 @@ export const productsData: Product[] = [
       }
     ],
     details: {
-      tagline: 'Gestão em saúde',
-      title: 'Uma visão completa do seu serviço de saúde',
+      tagline: 'Avaliação de conhecimento',
+      title: 'Uma visão completa do Sistema',
       description:
-        'Pacientes, agenda, prontuário e resultados em um único lugar, para clínicas e consultórios que querem crescer com organização.',
+        'Criação e gerenciamento de avaliações, questões, alternativas e resultados em um único lugar, para professores e instituições de ensino.',
       features: [
         {
           icon: 'users',
-          title: 'Cadastro de pacientes',
+          title: 'Cadastro de provas compostas',
           description: 'Todo o histórico do paciente centralizado e fácil de encontrar.'
         },
         {
+          icon: 'sliders',
+          title: 'Cadastro de provas simples',
+          description: 'Cada profissional com seu acesso, sua agenda e seus registros.'
+        },
+        {
           icon: 'calendar',
-          title: 'Agenda de atendimentos',
+          title: 'Agendamento de provas',
           description: 'Organize os horários da equipe e reduza faltas e encaixes perdidos.'
         },
         {
           icon: 'folder',
-          title: 'Prontuário digital',
+          title: 'Relatório digital',
           description: 'Registre a evolução dos atendimentos de forma simples e segura.'
         },
         {
           icon: 'money',
-          title: 'Gestão financeira',
+          title: 'Gestão de notas',
           description: 'Acompanhe recebimentos, despesas e o resultado do mês.'
         },
         {
@@ -347,11 +352,7 @@ export const productsData: Product[] = [
           title: 'Indicadores e métricas',
           description: 'Enxergue a operação da clínica em números para decidir com clareza.'
         },
-        {
-          icon: 'sliders',
-          title: 'Múltiplos profissionais',
-          description: 'Cada profissional com seu acesso, sua agenda e seus registros.'
-        }
+    
       ],
       stepsTitle: 'Como funciona',
       steps: [
