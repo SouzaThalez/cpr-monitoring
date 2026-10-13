@@ -180,13 +180,13 @@ function sendConfirmation(entry) {
     : 'Confirmamos a sua inscrição na lista de espera';
 
   const message = released
-    ? `Recebemos a sua inscrição e o ${product} já está disponível: ` +
-        'você pode começar a usar agora mesmo pelo link abaixo.'
+    ? `Recebemos a sua inscrição e o ${product} ainda não está disponível: ` +
+        'Porém você já pode começar a entender um pouco mais sobre o produto assistindo o video abaixo.'
     : `Recebemos a sua inscrição na lista de espera do ${product}. ` +
         'Avisaremos neste e-mail assim que o seu acesso estiver liberado.';
 
   const buttonUrl = released ? entry.accessUrl : entry.productUrl;
-  const buttonLabel = released ? `Acessar o ${product}` : `Conhecer o ${product}`;
+  const buttonLabel = released ? `Assistir video do ${product}` : `Conhecer o ${product}`;
 
   const textLines = [
     `Olá, ${entry.name}!`,
