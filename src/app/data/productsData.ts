@@ -134,7 +134,7 @@ export const productsData: Product[] = [
   },
   {
     slug: 'mooncpr',
-    accessUrl: 'https://souzathalez.github.io/cpr-monitoring/setup',
+    accessUrl: 'https://drive.google.com/file/d/1eyVyP8MEQdiY_9gziAQd2hOKHlSO9FFP/view?usp=sharing',
     name: 'MoonCpr',
     category: 'Processos e ensino',
     description:
